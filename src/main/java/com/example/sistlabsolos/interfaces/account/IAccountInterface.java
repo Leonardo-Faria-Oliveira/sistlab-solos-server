@@ -1,4 +1,4 @@
-package com.example.sistlabsolos.interfaces;
+package com.example.sistlabsolos.interfaces.account;
 
 import java.sql.Date;
 import java.util.UUID;

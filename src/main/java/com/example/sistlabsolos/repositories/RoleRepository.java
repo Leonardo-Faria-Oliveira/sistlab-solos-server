@@ -1,4 +1,4 @@
-package com.example.sistlabsolos.interfaces.repositories;
+package com.example.sistlabsolos.repositories;
 
 import java.util.UUID;
 
