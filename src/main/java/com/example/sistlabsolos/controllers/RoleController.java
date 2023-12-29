@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.sistlabsolos.dtos.CreateRoleDto;
+
+import com.example.sistlabsolos.dtos.role.CreateRoleDto;
 import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.services.RoleService;
 import jakarta.validation.Valid;

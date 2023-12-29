@@ -3,7 +3,7 @@ package com.example.sistlabsolos.interfaces.account;
 import java.sql.Date;
 import java.util.UUID;
 
-public interface IAccountInterface {
+public interface IAccount {
     UUID id =  new UUID(0, 0);
     String name = "";
     String email = "";

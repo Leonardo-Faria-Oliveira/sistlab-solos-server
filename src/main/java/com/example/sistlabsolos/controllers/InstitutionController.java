@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.sistlabsolos.dtos.CreateInstitutionDto;
+
+import com.example.sistlabsolos.dtos.institution.CreateInstitutionDto;
 import com.example.sistlabsolos.models.Institution;
 import com.example.sistlabsolos.services.InstitutionService;
 import com.example.sistlabsolos.utils.CreateCodeInstitution;
@@ -30,10 +31,10 @@ public class InstitutionController {
 
     @PostMapping()
       public ResponseEntity<Institution> createInstitution(@RequestBody @Valid CreateInstitutionDto createInstitutionDto) throws BadRequestException{
-        CreateCodeInstitution createCodeInstitution = new CreateCodeInstitution();
+        
         Institution res = this.institutionService.create(
             createInstitutionDto.name(),
-            createCodeInstitution.createCode(createInstitutionDto.name()).toString()
+            CreateCodeInstitution.createCode(createInstitutionDto.name()).toString()
         );
         if(res == null){
             throw new BadRequestException("Instituicao ja existe");

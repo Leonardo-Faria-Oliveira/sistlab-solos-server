@@ -12,5 +12,6 @@ import com.example.sistlabsolos.models.Institution;
 public abstract class InstitutionAbstract {
     public abstract Institution create(String name, String code);
     public abstract List<Institution> getInstitutions();
-    public abstract Optional<Institution> getInstitutionById(UUID institutionId) throws Exception;
+    public abstract Optional<Institution> getInstitutionById(UUID institutionId);
+    public abstract Institution getInstitutionByName(String name);
 }

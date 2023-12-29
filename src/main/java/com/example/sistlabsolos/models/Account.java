@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.example.sistlabsolos.interfaces.account.IAccountInterface;
+import com.example.sistlabsolos.interfaces.account.IAccount;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +16,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 
 @MappedSuperclass
-public class Account implements IAccountInterface {
+public class Account implements IAccount {
 
     @Serial 
     private static final long serialVersionUID = 1L;
@@ -29,11 +29,9 @@ public class Account implements IAccountInterface {
     private String name;
 
     @NotBlank
-    @UniqueElements
     private String email;
 
     @NotBlank
-    @UniqueElements
     private String password;
 
     private String contact;
@@ -50,6 +48,16 @@ public class Account implements IAccountInterface {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.contact = contact;
+        this.createdAt = createdAt;
+        this.active = active;
+    }
+
+        public Account(UUID id, @NotBlank String name, @NotBlank @UniqueElements String email,
+            String contact, LocalDateTime createdAt, boolean active) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
         this.contact = contact;
         this.createdAt = createdAt;
         this.active = active;
