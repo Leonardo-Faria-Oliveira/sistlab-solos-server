@@ -14,12 +14,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "permissoes")
+@Table(name = "permissoes",  
+uniqueConstraints = @UniqueConstraint(columnNames={"name"}),
+indexes = @Index(columnList = "name"))
 public class Role implements Serializable {
 
     @Serial
@@ -30,7 +34,6 @@ public class Role implements Serializable {
     private UUID roleId;
 
     @NotBlank
-    @UniqueElements
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY, orphanRemoval = false)
