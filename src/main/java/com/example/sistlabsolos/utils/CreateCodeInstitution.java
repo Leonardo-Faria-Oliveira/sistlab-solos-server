@@ -1,12 +1,13 @@
 package com.example.sistlabsolos.utils;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 public class CreateCodeInstitution {
     
-
-    public Integer createCode(String name){
-        var a = name.hashCode();
-        System.out.println(a);
-        return a;
+    public String createCode(String name){
+        var code = BCrypt.withDefaults().hashToString(12, name.toCharArray());
+        System.out.println(code);
+        return code.substring(0,5).replace("$", "2");
     }
 
 }
