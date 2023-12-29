@@ -9,4 +9,5 @@ import com.example.sistlabsolos.models.Institution;
 
 @Repository
 public interface InstitutionRepository extends JpaRepository<Institution, UUID> {
+    Institution findByName(String name);
 }

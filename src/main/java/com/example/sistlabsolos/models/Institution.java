@@ -13,13 +13,17 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
-@Table(name = "instituicoes")
+@Table(name = "instituicoes",  
+uniqueConstraints = @UniqueConstraint(columnNames={"name", "code"}),
+indexes = @Index(columnList = "name"))
 public class Institution implements Serializable{
  
     @Serial 
@@ -30,11 +34,9 @@ public class Institution implements Serializable{
     private UUID institutionId;
 
     @NotBlank
-    @UniqueElements
     private String name;
 
     @NotBlank
-    @UniqueElements
     private String code;
 
     @OneToMany(mappedBy = "institution", fetch = FetchType.LAZY, orphanRemoval = false)

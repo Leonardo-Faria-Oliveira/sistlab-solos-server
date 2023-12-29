@@ -1,41 +1,59 @@
 package com.example.sistlabsolos.services;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.sistlabsolos.abstracts.InstitutionAbstract;
-import com.example.sistlabsolos.interfaces.institution.ICreateInstitutionRequest;
-import com.example.sistlabsolos.interfaces.institution.ICreateInstitutionResponse;
-import com.example.sistlabsolos.interfaces.institution.IGetInstitutionsResponse;
 import com.example.sistlabsolos.models.Institution;
+import com.example.sistlabsolos.repositories.InstitutionRepository;
 
-public class InstitutionService{
+
+@Service
+public class InstitutionService extends InstitutionAbstract {
     
     @Autowired
-    InstitutionAbstract institutionAbstract;
+    InstitutionRepository institutionRepository;
 
-    public ICreateInstitutionResponse create(ICreateInstitutionRequest req){
+    public Institution create(String name, String code){
+        
+        System.out.println(name + " - "+ code);
 
         var institution = new Institution(
-            req.name,
-            req.code
+            name,
+            code
         );
 
-        return this.institutionAbstract.create(institution);
+        var alreadyBeenInserted = this.institutionRepository.findByName(name);
+
+        if(alreadyBeenInserted == null){
+            return this.institutionRepository.save(institution);
+
+        }
+        return null;
+        
+    
+    }
+
+    @Override
+    public List<Institution> getInstitutions() {
+
+        return this.institutionRepository.findAll();
 
     }
 
-    public IGetInstitutionsResponse getInstitutions(){
-
-        return this.institutionAbstract.getInstitutions();
-
+    @Override
+    public Optional<Institution> getInstitutionById(UUID institutionId) throws Exception {
+        
+        Optional<Institution> institution = this.institutionRepository.findById(institutionId);
+        
+        return institution;
+     
     }
 
-    public ICreateInstitutionResponse getInstitutionById(UUID institutionId){
-
-        return this.institutionAbstract.getInstitutionById(institutionId);
-
-    }
+   
 
 }

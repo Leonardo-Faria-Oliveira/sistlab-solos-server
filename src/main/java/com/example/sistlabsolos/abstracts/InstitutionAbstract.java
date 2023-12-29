@@ -1,13 +1,16 @@
 package com.example.sistlabsolos.abstracts;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import com.example.sistlabsolos.interfaces.institution.ICreateInstitutionResponse;
-import com.example.sistlabsolos.interfaces.institution.IGetInstitutionsResponse;
+import org.springframework.stereotype.Repository;
+
 import com.example.sistlabsolos.models.Institution;
 
+@Repository
 public abstract class InstitutionAbstract {
-    public abstract ICreateInstitutionResponse create(Institution institution);
-    public abstract IGetInstitutionsResponse getInstitutions();
-    public abstract ICreateInstitutionResponse getInstitutionById(UUID institutionId);
+    public abstract Institution create(String name, String code);
+    public abstract List<Institution> getInstitutions();
+    public abstract Optional<Institution> getInstitutionById(UUID institutionId) throws Exception;
 }
