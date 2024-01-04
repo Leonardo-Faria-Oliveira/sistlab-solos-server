@@ -1,12 +1,7 @@
 package com.example.sistlabsolos.controllers;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.sistlabsolos.dtos.institution.CreateInstitutionDto;
+import com.example.sistlabsolos.dtos.institution.CreateInstitutionRequestDto;
+import com.example.sistlabsolos.dtos.institution.CreateInstitutionResponseDto;
+import com.example.sistlabsolos.dtos.institution.GetInstitutionByIdDto;
+import com.example.sistlabsolos.dtos.institution.GetInstitutionsDto;
 import com.example.sistlabsolos.models.Institution;
 import com.example.sistlabsolos.services.InstitutionService;
 import com.example.sistlabsolos.utils.CreateCodeInstitution;
@@ -30,41 +27,71 @@ public class InstitutionController {
     InstitutionService institutionService;
 
     @PostMapping()
-      public ResponseEntity<Institution> createInstitution(@RequestBody @Valid CreateInstitutionDto createInstitutionDto) throws BadRequestException{
-        
-        Institution res = this.institutionService.create(
+      public ResponseEntity<CreateInstitutionResponseDto> createInstitution(@RequestBody @Valid CreateInstitutionRequestDto createInstitutionDto){
+        try {
+
+            Institution res = this.institutionService.create(
             createInstitutionDto.name(),
             CreateCodeInstitution.createCode(createInstitutionDto.name()).toString()
-        );
-        if(res == null){
-            throw new BadRequestException("Instituicao ja existe");
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+            );
+            if(res == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateInstitutionResponseDto(null, "Instituição já existe"));
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateInstitutionResponseDto(res, null));
 
+            
+        } catch (Exception e) {
+            // System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateInstitutionResponseDto(null, e.getMessage()));
+        }
+        
     }
 
     @GetMapping()
-    public ResponseEntity<List<Institution>> getInstitutions(){
+    public ResponseEntity<GetInstitutionsDto> getInstitutions(){
 
-        return ResponseEntity.status(HttpStatus.OK).body(
-            this.institutionService.getInstitutions()
-        );
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetInstitutionsDto(this.institutionService.getInstitutions(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetInstitutionsDto(null, e.getMessage()));
+            
+        }
+
 
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Institution>> getInstitutionById(
+    public ResponseEntity<GetInstitutionByIdDto> getInstitutionById(
         @PathVariable(value = "id") UUID id
-    ) throws Exception{
+    ){
 
-        var institution = this.institutionService.getInstitutionById(id);
+        try {
 
-        if(institution.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada");
+            var institution = this.institutionService.getInstitutionById(id);
+
+            if(institution.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetInstitutionByIdDto(null, "Instituição não encontrada")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetInstitutionByIdDto(institution, null)
+            );
+            
+        } catch (Exception e) {
+            
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new GetInstitutionByIdDto(null, e.getMessage())
+                );
+            
         }
-        return ResponseEntity.status(HttpStatus.OK).body(
-            institution
-        );
+
+
         
     }
    

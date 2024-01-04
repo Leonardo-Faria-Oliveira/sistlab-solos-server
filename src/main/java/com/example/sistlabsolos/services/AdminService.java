@@ -15,7 +15,6 @@ import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.repositories.AdminRepository;
 
 
-
 @Service
 public class AdminService extends AdminAbstract {
     
@@ -73,9 +72,9 @@ public class AdminService extends AdminAbstract {
     }
 
     @Override
-    public Optional<Admin> getAdminByEmailAndPassword(String email, String password) {
+    public Optional<Admin> getAdminByEmail(String email) {
         
-        Optional<Admin> admin = this.adminRepository.findByEmailAndPassword(email, password);
+        Optional<Admin> admin = this.adminRepository.findByEmail(email);
 
         return admin;
     }

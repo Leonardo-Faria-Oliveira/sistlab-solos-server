@@ -1,13 +1,9 @@
 package com.example.sistlabsolos.controllers;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +12,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.sistlabsolos.dtos.admin.CreateAdminDto;
-import com.example.sistlabsolos.dtos.admin.LogInAdminDto;
+import com.example.sistlabsolos.dtos.admin.CreateAdminRequestDto;
+import com.example.sistlabsolos.dtos.admin.CreateAdminResponseDto;
+import com.example.sistlabsolos.dtos.admin.GetAdminByIdDto;
+import com.example.sistlabsolos.dtos.admin.GetAdminsDto;
+import com.example.sistlabsolos.dtos.admin.LogInAdminRequestDto;
+import com.example.sistlabsolos.dtos.admin.LogInAdminResponseDto;
+import com.example.sistlabsolos.interfaces.account.IAccount;
 import com.example.sistlabsolos.models.Admin;
 import com.example.sistlabsolos.models.Institution;
 import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.services.AdminService;
+import com.example.sistlabsolos.services.AuthService;
 import com.example.sistlabsolos.services.InstitutionService;
 import com.example.sistlabsolos.services.RoleService;
-import com.example.sistlabsolos.utils.EncrypterDecrypter;
 
 import jakarta.validation.Valid;
 
@@ -42,88 +42,192 @@ public class AdminController {
     @Autowired
     InstitutionService institutionService;
 
+    @Autowired
+    AuthService authService;
+    
     @PostMapping()
-      public ResponseEntity<Admin> createAdmin(@RequestBody @Valid CreateAdminDto createAdminDto) throws BadRequestException{
-        Role role = this.roleService.getRoleByName(createAdminDto.roleName());
-
-        if(role == null){
-            throw new ResourceNotFoundException("Role não encontrada");
-        }
-
-        Institution institution = this.institutionService.getInstitutionByName(createAdminDto.institutionName());
-   
-        if(institution == null){
-            throw new ResourceNotFoundException("Instituição não encontrada");
-        }
+      public ResponseEntity<?> createAdmin(@RequestBody @Valid CreateAdminRequestDto createAdminDto) throws BadRequestException{
         
-        Admin res = this.adminService.create(
-            createAdminDto.name(),
-            createAdminDto.email(),
-            EncrypterDecrypter.encrypt(createAdminDto.password()),
-            createAdminDto.contact(),
-            LocalDateTime.now(),
-            true,
-            role,
-            institution
-        
-        );
-        if(res == null){
-            throw new BadRequestException("Administrador ja existe");
+        try {
+
+            Role role = this.roleService.getRoleByName(createAdminDto.roleName());
+
+            if(role == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateAdminResponseDto(null, "Role não existe")
+                );
+                
+            }
+
+            Institution institution = this.institutionService.getInstitutionByName(createAdminDto.institutionName());
+    
+            if(institution == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateAdminResponseDto(null, "Instituição não existe")
+                );
+                
+            }
+            
+            Admin res = this.adminService.create(
+                createAdminDto.name(),
+                createAdminDto.email(),
+                createAdminDto.password(),
+                createAdminDto.contact(),
+                LocalDateTime.now(),
+                true,
+                role,
+                institution
+            
+            );
+            if(res == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateAdminResponseDto(null, "Administrador já existe")
+                );
+                
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateAdminResponseDto(res, null)
+            );
+            
+        } catch (Exception e) {
+                      
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateAdminResponseDto(null, e.getMessage())
+            );
+
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+
+        
 
     }
 
     @GetMapping()
-    public ResponseEntity<List<Admin>> getAdmins(){
+    public ResponseEntity<?> getAdmins(){
 
-        var admins = this.adminService.getAdmins();
+        // System.out.println("new GetAdminsDto(admins, null)");
+        try {
+
+            var admins = this.adminService.getAdmins();
         
-        for (Admin admin : admins) {
-            // System.out.println(admin.getInstitution().getName());
-            admin.setPassword(null);
-        }
-      
-        return ResponseEntity.status(HttpStatus.OK).body(
-           admins
-        );
+            for (Admin admin : admins) {
 
+                admin.setPassword(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetAdminsDto(admins, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetAdminsDto(null, e.getMessage())
+            );
+            
+        }
+
+        
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Admin>> getAdminById(
+    public ResponseEntity<GetAdminByIdDto> getAdminById(
         @PathVariable(value = "id") UUID id
-    ) throws Exception{
+    ){
 
-        var admin = this.adminService.getAdminById(id);
+        try {
 
-        if(admin.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada");
+            var admin = this.adminService.getAdminById(id);
+
+            if(admin.isEmpty()){
+                
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetAdminByIdDto(null, "Admnistrador não encontrado")  
+                );
+
+            }
+            else{
+
+                admin.get().setPassword(null);
+            
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetAdminByIdDto(admin, null)  
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetAdminByIdDto(null, e.getMessage())  
+            );
+
+
         }
-        else{
-            admin.get().setPassword(null);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-          admin  
-        );
+
+        
         
     }
 
-    // @GetMapping("/auth")
-    // public ResponseEntity<Optional<Admin>> logIn(
-    //     @RequestBody @Valid LogInAdminDto logInAdminDto
-    // ) throws Exception{
+    @PostMapping("/auth/login")
+    public ResponseEntity<LogInAdminResponseDto> logIn(
+        @RequestBody @Valid LogInAdminRequestDto logInAdminDto
+    ){
 
-    //     var adminAccess = this.adminService.getAdminByEmailAndPassword(
-    //         logInAdminDto.email(), 
-    //         EncrypterDecrypter.encrypt(logInAdminDto.password())
-    //     );
+        try {
 
-    //     if(adminAccess == null){
-    //         throw new ResourceNotFoundException("Administrador não existe");
-    //     }
+            var admin = this.adminService.getAdminByEmail(
+                logInAdminDto.email()
+            );
+            
+            if(admin.isEmpty()){
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new LogInAdminResponseDto(null, "Administrador não existe")  
+                );
+
+            }
+
+            // if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
+
+            //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+            //         new LogInAdminResponseDto(null, "Senha está incorreta")  
+            //     );
+
+            // }
+
+            IAccount account = new Admin(
+                admin.get().getId(),
+                admin.get().getName(),
+                admin.get().getEmail(),
+                admin.get().getContact(),
+                admin.get().getCreatedAt(),
+                admin.get().isActive(),
+                admin.get().getRole(),
+                admin.get().getInstitution()
+            );
+
+            var token = this.authService.generateToken(account);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new LogInAdminResponseDto(token, null)  
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new LogInAdminResponseDto(null, e.getMessage())  
+            );
+            
+        } 
+        
+
 
         
-    // }
+    }
    
 }

@@ -6,9 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Value;
-
 import com.example.sistlabsolos.interfaces.account.IAccount;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -131,6 +129,6 @@ public class Account implements IAccount {
         this.active = active;
     }
 
-
+    
 
 }

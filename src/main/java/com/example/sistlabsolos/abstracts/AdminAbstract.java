@@ -26,5 +26,5 @@ public abstract class AdminAbstract {
     );
     public abstract List<Admin> getAdmins();
     public abstract Optional<Admin> getAdminById(UUID adminId);
-    public abstract Optional<Admin> getAdminByEmailAndPassword(String email, String password) throws Exception;
+    public abstract Optional<Admin> getAdminByEmail(String email);
 }

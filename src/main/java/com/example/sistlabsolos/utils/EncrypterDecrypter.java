@@ -1,6 +1,5 @@
 package com.example.sistlabsolos.utils;
 
-import java.beans.JavaBean;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 

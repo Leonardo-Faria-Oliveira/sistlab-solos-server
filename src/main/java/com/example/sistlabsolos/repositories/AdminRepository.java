@@ -9,6 +9,6 @@ import com.example.sistlabsolos.models.Admin;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, UUID> {
     Admin findByName(String name);
-    Admin findByEmail(String email);
+    Optional<Admin> findByEmail(String email);
     Optional<Admin> findByEmailAndPassword(String email, String password);
 }

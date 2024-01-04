@@ -11,4 +11,5 @@ public interface IAccount {
     String contact = "";
     Date createdAt = new Date(0);
     boolean active = true;
+    public String getEmail();
 }

@@ -1,13 +1,9 @@
 package com.example.sistlabsolos.models;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import org.hibernate.validator.constraints.UniqueElements;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
@@ -21,7 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "administradores", 
 uniqueConstraints = @UniqueConstraint(columnNames={"name", "email", "contact"}),
 indexes = @Index(columnList = "name"))
-public class Admin extends Account implements Serializable {
+public class Admin extends Account {
     
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -94,6 +90,9 @@ public class Admin extends Account implements Serializable {
     public void setInstitution(Institution institution) {
         this.institution = institution;
     }
+
+
+
 
     
 }
