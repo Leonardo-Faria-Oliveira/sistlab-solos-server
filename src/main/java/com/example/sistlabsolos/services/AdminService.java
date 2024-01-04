@@ -65,18 +65,15 @@ public class AdminService extends AdminAbstract {
     @Override
     public Optional<Admin> getAdminById(UUID AdminId){
         
-        Optional<Admin> admin = this.adminRepository.findById(AdminId);
-        
-        return admin;
+        return this.adminRepository.findById(AdminId);
      
     }
 
     @Override
     public Optional<Admin> getAdminByEmail(String email) {
         
-        Optional<Admin> admin = this.adminRepository.findByEmail(email);
+        return this.adminRepository.findByEmail(email);
 
-        return admin;
     }
 
    

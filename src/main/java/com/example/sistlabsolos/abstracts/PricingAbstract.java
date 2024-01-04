@@ -21,6 +21,6 @@ public abstract class PricingAbstract {
         boolean active
     );
     public abstract List<Pricing> getPricings();
-    public abstract Optional<Pricing> getPricingById(UUID PricingId);
+    public abstract Optional<Pricing> getPricingById(UUID pricingId);
     public abstract Pricing getPricingByName(String name);
 }

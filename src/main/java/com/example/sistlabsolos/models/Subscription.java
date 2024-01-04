@@ -17,10 +17,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "assinaturas")
-public class Subscription implements Serializable {
+public class Subscription{
     
     @Serial 
     private static final long serialVersionUID = 1L;
@@ -32,14 +33,14 @@ public class Subscription implements Serializable {
     @Value("${some.key}:0")
     private Integer usage;
 
-    @Value("${some.key}:0")@NotBlank
+    @Value("${some.key}:0")
     private Integer lateDays;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Value("${some.key:true}")
-    private boolean iPaid;
+    private boolean isPaid;
 
     @Value("${some.key:true}")
     private boolean active;
@@ -52,6 +53,16 @@ public class Subscription implements Serializable {
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
+    public Subscription() {
+        this.usage = 0;
+        this.lateDays = 0;
+        this.createdAt = LocalDateTime.now();
+        this.isPaid = true;
+        this.active = true;
+        this.pricing = new Pricing();
+        this.lab = new Lab();
+    }
+
     public Subscription(Integer usage, 
     @NotBlank Integer lateDays, 
     LocalDateTime createdAt, 
@@ -62,7 +73,7 @@ public class Subscription implements Serializable {
         this.usage = usage;
         this.lateDays = lateDays;
         this.createdAt = createdAt;
-        this.iPaid = iPaid;
+        this.isPaid = iPaid;
         this.active = active;
         this.pricing = pricing;
         this.lab = lab;
@@ -80,7 +91,7 @@ public class Subscription implements Serializable {
         this.usage = usage;
         this.lateDays = lateDays;
         this.createdAt = createdAt;
-        this.iPaid = iPaid;
+        this.isPaid = iPaid;
         this.active = active;
         this.pricing = pricing;
         this.lab = lab;
@@ -122,12 +133,12 @@ public class Subscription implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public boolean isiPaid() {
-        return iPaid;
+    public boolean isPaid() {
+        return isPaid;
     }
 
-    public void setiPaid(boolean iPaid) {
-        this.iPaid = iPaid;
+    public void setIsPaid(boolean iPaid) {
+        this.isPaid = iPaid;
     }
 
     public boolean isActive() {

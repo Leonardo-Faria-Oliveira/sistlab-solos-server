@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "enderecos")
@@ -25,16 +26,16 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotBlank
+    @NotNull
     private String city;
 
-    @NotBlank
+    @NotNull
     private String state;
 
-    @NotBlank
+    @NotNull
     private String country;
 
-    @NotBlank
+    @NotNull
     private Integer number;
 
     private Integer zipCode;
@@ -47,7 +48,7 @@ public class Address implements Serializable {
     private Lab lab;
 
 
-    public Address(@NotBlank String city, @NotBlank String state, @NotBlank String country, @NotBlank Integer number,
+    public Address(@NotNull String city, @NotNull String state, @NotNull String country, @NotNull Integer number,
             Integer zipCode, LocalDateTime createdAt) {
         this.city = city;
         this.state = state;
@@ -57,15 +58,15 @@ public class Address implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Address(@NotBlank String city, @NotBlank String state, @NotBlank String country, @NotBlank Integer number) {
+    public Address(@NotNull String city, @NotNull String state, @NotNull String country, @NotNull Integer number) {
         this.city = city;
         this.state = state;
         this.country = country;
         this.number = number;
     }
 
-    public Address(UUID id, @NotBlank String city, @NotBlank String state, @NotBlank String country,
-            @NotBlank Integer number, Integer zipCode, LocalDateTime createdAt) {
+    public Address(UUID id, @NotNull String city, @NotNull String state, @NotNull String country,
+            @NotNull Integer number, Integer zipCode, LocalDateTime createdAt) {
         this.id = id;
         this.city = city;
         this.state = state;

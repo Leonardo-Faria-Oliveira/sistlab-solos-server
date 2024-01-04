@@ -10,18 +10,24 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Value;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "laboratorios")
+@Table(name = "laboratorios",
+uniqueConstraints = @UniqueConstraint(columnNames={"email"}),
+indexes = @Index(columnList = "name"))
 public class Lab implements Serializable{
     
     @Serial 
@@ -35,7 +41,6 @@ public class Lab implements Serializable{
     private String name;
 
     @NotBlank
-    @UniqueElements
     private String email;
 
     private String markUrl;
@@ -48,8 +53,7 @@ public class Lab implements Serializable{
     @Value("${some.key:true}")
     private boolean active;
 
-    @NotBlank
-    @OneToOne(mappedBy = "lab", fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.LAZY)
     private Address address;
 
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
@@ -57,6 +61,14 @@ public class Lab implements Serializable{
 
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Employee> employeeList = new ArrayList<>();
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
 
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Client> clientList = new ArrayList<>();
@@ -86,6 +98,9 @@ public class Lab implements Serializable{
         this.active = active;
         this.address = address;
      
+    }
+
+    public Lab() {
     }
 
     public static long getSerialversionuid() {

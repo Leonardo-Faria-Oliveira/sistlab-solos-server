@@ -60,18 +60,14 @@ public class PricingService extends PricingAbstract {
     @Override
     public Optional<Pricing> getPricingById(UUID PricingId){
         
-        Optional<Pricing> pricing = this.pricingRepository.findById(PricingId);
-        
-        return pricing;
+        return this.pricingRepository.findById(PricingId);
      
     }
 
     @Override
     public Pricing getPricingByName(String name) {
         
-        Pricing pricing = this.pricingRepository.findByName(name);
-        
-        return pricing;
+        return this.pricingRepository.findByName(name);
         
     }
 

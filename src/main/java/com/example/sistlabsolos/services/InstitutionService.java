@@ -48,18 +48,14 @@ public class InstitutionService extends InstitutionAbstract {
     @Override
     public Optional<Institution> getInstitutionById(UUID institutionId){
         
-        Optional<Institution> institution = this.institutionRepository.findById(institutionId);
-        
-        return institution;
+        return this.institutionRepository.findById(institutionId);
      
     }
 
     @Override
     public Institution getInstitutionByName(String name) {
         
-        Institution institution = this.institutionRepository.findByName(name);
-        
-        return institution;
+        return this.institutionRepository.findByName(name);
         
     }
 

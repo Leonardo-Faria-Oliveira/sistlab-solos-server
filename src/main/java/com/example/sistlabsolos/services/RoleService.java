@@ -43,17 +43,15 @@ public class RoleService extends RoleAbstract {
     @Override
     public Optional<Role> getRoleById(UUID roleId){
         
-        Optional<Role> role = this.roleRepository.findById(roleId);
-        
-        return role;
+        return this.roleRepository.findById(roleId);
      
     }
 
     @Override
     public Role getRoleByName(String name) {
         
-        Role role = this.roleRepository.findByName(name);
-        return role;
+        return this.roleRepository.findByName(name);
+        
         
     }
 
