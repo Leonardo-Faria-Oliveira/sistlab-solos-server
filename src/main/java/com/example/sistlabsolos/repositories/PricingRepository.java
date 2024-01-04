@@ -9,4 +9,6 @@ import com.example.sistlabsolos.models.Pricing;
 
 @Repository
 public interface PricingRepository extends JpaRepository<Pricing, UUID> {
+
+    Pricing findByName(String name);
 }

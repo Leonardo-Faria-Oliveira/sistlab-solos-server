@@ -26,6 +26,7 @@ import com.example.sistlabsolos.services.AdminService;
 import com.example.sistlabsolos.services.AuthService;
 import com.example.sistlabsolos.services.InstitutionService;
 import com.example.sistlabsolos.services.RoleService;
+import com.example.sistlabsolos.utils.Encrypter;
 
 import jakarta.validation.Valid;
 
@@ -73,7 +74,7 @@ public class AdminController {
             Admin res = this.adminService.create(
                 createAdminDto.name(),
                 createAdminDto.email(),
-                createAdminDto.password(),
+                Encrypter.encrypt(createAdminDto.password()),
                 createAdminDto.contact(),
                 LocalDateTime.now(),
                 true,
@@ -193,13 +194,13 @@ public class AdminController {
 
             }
 
-            // if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
+            if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
 
-            //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-            //         new LogInAdminResponseDto(null, "Senha está incorreta")  
-            //     );
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new LogInAdminResponseDto(null, "Senha está incorreta")  
+                );
 
-            // }
+            }
 
             IAccount account = new Admin(
                 admin.get().getId(),

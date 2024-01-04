@@ -17,12 +17,17 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "planos")
+@Table(name = "planos",
+uniqueConstraints = @UniqueConstraint(columnNames={"value"}),
+indexes = @Index(columnList = "name"))
 public class Pricing implements Serializable{
     
     @Serial 
@@ -38,14 +43,13 @@ public class Pricing implements Serializable{
     @NotBlank
     private String description;
 
-    @NotBlank
-    @UniqueElements
+    @NotNull
     private Double value;
 
-    @NotBlank
+    @NotNull
     private Integer reportsLimit;
 
-    @NotBlank
+    @NotNull
     private Integer employeesLimit;
 
     @CreationTimestamp
@@ -56,6 +60,16 @@ public class Pricing implements Serializable{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pricing", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Subscription> subscriptionList = new ArrayList<>();
+
+    public Pricing() {        
+        this.name = "";
+        this.description = "";
+        this.value = 0.00;
+        this.reportsLimit = 0;
+        this.employeesLimit = 0;
+        this.createdAt = LocalDateTime.now();
+        this.active = true;
+    }
 
     public Pricing(@NotBlank String name, @NotBlank String description, @NotBlank @UniqueElements Double value,
             @NotBlank Integer reportsLimit, @NotBlank Integer employeesLimit, LocalDateTime createdAt, boolean active) {

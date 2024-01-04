@@ -50,7 +50,6 @@ public class RoleController {
     @GetMapping()
     public ResponseEntity<GetRolesDto> getRoles(){
 
-        // System.out.println(" \n nnnnnnnnnnnnnnnnnnn \n");
         
         try {
 
