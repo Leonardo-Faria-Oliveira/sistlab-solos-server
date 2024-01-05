@@ -8,15 +8,12 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.sistlabsolos.abstracts.LabAbstract;
 import com.example.sistlabsolos.models.Address;
 import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
-import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.models.Subscription;
 import com.example.sistlabsolos.repositories.EmployeeRepository;
 import com.example.sistlabsolos.repositories.LabRepository;
