@@ -10,7 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// @Component
+@Component
 public class SecurityFilter extends OncePerRequestFilter{
 
     @Autowired
@@ -23,7 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         
         var servLetPath = request.getServletPath();
 
-        if(servLetPath.contains("/auth/login")){
+        if(servLetPath.contains("/auth/login") || servLetPath.contains("/create")){
             filterChain.doFilter(request, response);
         }
         try {
@@ -38,7 +38,12 @@ public class SecurityFilter extends OncePerRequestFilter{
 
             }
 
-            response.sendError(401, "Usuário sem permissão");
+            else{
+
+                response.sendError(401, "Usuário sem permissão");
+            
+            }
+           
 
             
         } catch (Exception e) {

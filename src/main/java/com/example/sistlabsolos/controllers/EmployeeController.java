@@ -1,229 +1,245 @@
-// package com.example.sistlabsolos.controllers;
+package com.example.sistlabsolos.controllers;
 
-// import java.time.LocalDateTime;
-// import java.util.UUID;
-// import org.apache.coyote.BadRequestException;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RestController;
-// import com.example.sistlabsolos.interfaces.account.IAccount;
-// import com.example.sistlabsolos.models.Employee;
-// import com.example.sistlabsolos.models.Institution;
-// import com.example.sistlabsolos.models.Role;
-// import com.example.sistlabsolos.services.EmployeeService;
-// import com.example.sistlabsolos.services.AuthService;
-// import com.example.sistlabsolos.services.InstitutionService;
-// import com.example.sistlabsolos.services.LabService;
-// import com.example.sistlabsolos.services.RoleService;
-// import com.example.sistlabsolos.utils.Encrypter;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
+import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
+import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
+import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
+import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
+import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
+import com.example.sistlabsolos.interfaces.account.IAccount;
+import com.example.sistlabsolos.models.Employee;
+import com.example.sistlabsolos.models.Lab;
+import com.example.sistlabsolos.models.Role;
+import com.example.sistlabsolos.services.EmployeeService;
+import com.example.sistlabsolos.services.AuthService;
+import com.example.sistlabsolos.services.LabService;
+import com.example.sistlabsolos.services.RoleService;
+import com.example.sistlabsolos.utils.Encrypter;
 
-// import jakarta.validation.Valid;
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import jakarta.validation.Valid;
 
-// @RestController
-// @RequestMapping("/v1/Employee")
-// public class EmployeeController {
+@RestController
+@RequestMapping("/v1/employee")
+public class EmployeeController {
 
-//     @Autowired
-//     EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-//     @Autowired
-//     RoleService roleService;
+    @Autowired
+    RoleService roleService;
 
-//     @Autowired
-//     LabService labService;
+    @Autowired
+    LabService labService;
 
-//     @Autowired
-//     AuthService authService;
+    @Autowired
+    AuthService authService;
     
-//     @PostMapping()
-//       public ResponseEntity<?> createEmployee(@RequestBody @Valid CreateEmployeeRequestDto createEmployeeDto) throws BadRequestException{
+    @PostMapping("/create")
+      public ResponseEntity<CreateEmployeeResponseDto> createEmployee(
+        @RequestBody @Valid CreateEmployeeRequestDto createEmployeeDto) throws BadRequestException{
         
-//         try {
+        try {
 
-//             Role role = this.roleService.getRoleByName(createEmployeeDto.roleName());
+            Role role = this.roleService.getRoleByName(createEmployeeDto.roleName());
 
-//             if(role == null){
+            if(role == null){
                 
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                     new CreateEmployeeResponseDto(null, "Role não existe")
-//                 );
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Role não existe")
+                );
                 
-//             }
+            }
 
-//             Institution institution = this.institutionService.getInstitutionByName(createEmployeeDto.institutionName());
+            Lab lab = this.labService.getLabByName(createEmployeeDto.labName());
     
-//             if(institution == null){
+            if(lab == null){
                 
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                     new CreateEmployeeResponseDto(null, "Instituição não existe")
-//                 );
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Laboratorio não existe")
+                );
                 
-//             }
+            }
             
-//             Employee res = this.employeeService.create(
-//                 createEmployeeDto.name(),
-//                 createEmployeeDto.email(),
-//                 Encrypter.encrypt(createEmployeeDto.password()),
-//                 createEmployeeDto.contact(),
-//                 LocalDateTime.now(),
-//                 true,
-//                 role,
-//                 institution
-            
-//             );
-//             if(res == null){
+            Employee res = this.employeeService.create(
+                createEmployeeDto.name(),
+                createEmployeeDto.email(),
+                Encrypter.encrypt(createEmployeeDto.password()),
+                createEmployeeDto.contact(),
+                LocalDateTime.now(),
+                true,
+                createEmployeeDto.job(),
+                role,
+                lab
+            );
+            if(res == null){
                 
-//                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                     new CreateEmployeeResponseDto(null, "Employeeistrador já existe")
-//                 );
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Funcionário já existe")
+                );
                 
-//             }
+            }
 
-//             return ResponseEntity.status(HttpStatus.CREATED).body(
-//                 new CreateEmployeeResponseDto(res, null)
-//             );
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateEmployeeResponseDto(res, null)
+            );
             
-//         } catch (Exception e) {
+        } catch (Exception e) {
                       
-//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-//                 new CreateEmployeeResponseDto(null, e.getMessage())
-//             );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateEmployeeResponseDto(null, e.getMessage())
+            );
 
-//         }
+        }
 
         
 
-//     }
+    }
 
-//     @GetMapping()
-//     public ResponseEntity<?> getEmployees(){
+    @GetMapping()
+    public ResponseEntity<GetEmployeesDto> getEmployees(){
 
-//         // System.out.println("new GetEmployeesDto(Employees, null)");
-//         try {
-
-//             var Employees = this.EmployeeService.getEmployees();
         
-//             for (Employee Employee : Employees) {
+        try {
 
-//                 Employee.setPassword(null);
+            var employees = this.employeeService.getEmployees();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
             
-//             }
+            }
 
         
-//             return ResponseEntity.ok(
-//                 new GetEmployeesDto(Employees, null)
-//             );
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
 
-//         } catch (Exception e) {
+        } catch (Exception e) {
             
-//             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                 new GetEmployeesDto(null, e.getMessage())
-//             );
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
             
-//         }
+        }
 
         
-//     }
+    }
 
-//     @GetMapping("{id}")
-//     public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
-//         @PathVariable(value = "id") UUID id
-//     ){
 
-//         try {
+    @GetMapping("{id}")
+    public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
+        @PathVariable(value = "id") UUID id
+    ){
 
-//             var Employee = this.EmployeeService.getEmployeeById(id);
+        try {
 
-//             if(Employee.isEmpty()){
+            var employee = this.employeeService.getEmployeeById(id);
+
+            if(employee.isEmpty()){
                 
-//                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                     new GetEmployeeByIdDto(null, "Admnistrador não encontrado")  
-//                 );
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                );
 
-//             }
-//             else{
+            }
 
-//                 Employee.get().setPassword(null);
+            var employeeResponseDto = new GetEmployeeByIdDto(
+                employee, 
+                employee.get().getLab().getLabId(),
+                null
+            ); 
+
+            employee.get().setPassword(null);
+            employee.get().setLab(null);
             
-//             }
-
-//             return ResponseEntity.status(HttpStatus.OK).body(
-//                 new GetEmployeeByIdDto(Employee, null)  
-//             );
             
-//         } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+
+                employeeResponseDto  
             
-//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-//                 new GetEmployeeByIdDto(null, e.getMessage())  
-//             );
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetEmployeeByIdDto(null, null, e.getMessage())  
+            );
 
 
-//         }
+        }
 
         
         
-//     }
+    }
 
-//     @PostMapping("/auth/login")
-//     public ResponseEntity<LogInEmployeeResponseDto> logIn(
-//         @RequestBody @Valid LogInEmployeeRequestDto logInEmployeeDto
-//     ){
+    @PostMapping("/auth/login")
+    public ResponseEntity<LogInResponseDto> logIn(
+        @RequestBody @Valid LogInRequestDto logInEmployeeDto
+    ){
 
-//         try {
+        try {
 
-//             var Employee = this.EmployeeService.getEmployeeByEmail(
-//                 logInEmployeeDto.email()
-//             );
+            var employee = this.employeeService.getEmployeeByEmail(
+                logInEmployeeDto.email()
+            );
             
-//             if(Employee.isEmpty()){
+            if(employee.isEmpty()){
 
-//                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-//                     new LogInEmployeeResponseDto(null, "Employeeistrador não existe")  
-//                 );
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new LogInResponseDto(null, "Funcionario não existe")  
+                );
 
-//             }
+            }
 
-//             if(Employee.get().getPassword() != Encrypter.encrypt(logInEmployeeDto.password())){
+            var passwordVerify = BCrypt.verifyer().verify(logInEmployeeDto.password().toCharArray(), employee.get().getPassword());
+            if(!passwordVerify.verified){
+                
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new LogInResponseDto(null, "Senha está incorreta")  
+                );
 
-//                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-//                     new LogInEmployeeResponseDto(null, "Senha está incorreta")  
-//                 );
+            }
 
-//             }
+            IAccount account = new Employee(
+                employee.get().getId(),
+                employee.get().getName(),
+                employee.get().getEmail(),
+                employee.get().getContact(),
+                employee.get().getCreatedAt(),
+                employee.get().isActive(),
+                employee.get().getJob(),
+                employee.get().getRole(),
+                employee.get().getLab()
+            );
 
-//             IAccount account = new Employee(
-//                 Employee.get().getId(),
-//                 Employee.get().getName(),
-//                 Employee.get().getEmail(),
-//                 Employee.get().getContact(),
-//                 Employee.get().getCreatedAt(),
-//                 Employee.get().isActive(),
-//                 Employee.get().getRole(),
-//                 Employee.get().getInstitution()
-//             );
-
-//             var token = this.authService.generateToken(account);
-//             return ResponseEntity.status(HttpStatus.OK).body(
-//                 new LogInEmployeeResponseDto(token, null)  
-//             );
+            var token = this.authService.generateToken(account);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new LogInResponseDto(token, null)  
+            );
             
-//         } catch (Exception e) {
+        } catch (Exception e) {
             
-//             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-//                 new LogInEmployeeResponseDto(null, e.getMessage())  
-//             );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new LogInResponseDto(null, e.getMessage())  
+            );
             
-//         } 
+        } 
         
-
-
-        
-//     }
+    }
    
-// }
+}

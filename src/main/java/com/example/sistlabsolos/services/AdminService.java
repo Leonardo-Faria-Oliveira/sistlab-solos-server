@@ -44,7 +44,8 @@ public class AdminService extends AdminAbstract {
         );
 
         var alreadyBeenInserted = this.adminRepository.findByEmail(email);
-        if(alreadyBeenInserted == null){
+        System.out.println(alreadyBeenInserted);
+        if(alreadyBeenInserted.isEmpty()){
 
             return this.adminRepository.save(admin);
 

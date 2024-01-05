@@ -46,7 +46,7 @@ public class EmployeeService extends EmployeeAbstract {
         );
 
         var alreadyBeenInserted = this.employeeRepository.findByEmail(email);
-        if(alreadyBeenInserted == null){
+        if(alreadyBeenInserted.isEmpty()){
 
             return this.employeeRepository.save(Employee);
 

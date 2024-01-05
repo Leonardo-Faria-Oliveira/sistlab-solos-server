@@ -16,8 +16,8 @@ import com.example.sistlabsolos.dtos.admin.CreateAdminRequestDto;
 import com.example.sistlabsolos.dtos.admin.CreateAdminResponseDto;
 import com.example.sistlabsolos.dtos.admin.GetAdminByIdDto;
 import com.example.sistlabsolos.dtos.admin.GetAdminsDto;
-import com.example.sistlabsolos.dtos.admin.LogInAdminRequestDto;
-import com.example.sistlabsolos.dtos.admin.LogInAdminResponseDto;
+import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
+import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
 import com.example.sistlabsolos.interfaces.account.IAccount;
 import com.example.sistlabsolos.models.Admin;
 import com.example.sistlabsolos.models.Institution;
@@ -28,6 +28,7 @@ import com.example.sistlabsolos.services.InstitutionService;
 import com.example.sistlabsolos.services.RoleService;
 import com.example.sistlabsolos.utils.Encrypter;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.validation.Valid;
 
 @RestController
@@ -176,8 +177,8 @@ public class AdminController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<LogInAdminResponseDto> logIn(
-        @RequestBody @Valid LogInAdminRequestDto logInAdminDto
+    public ResponseEntity<LogInResponseDto> logIn(
+        @RequestBody @Valid LogInRequestDto logInAdminDto
     ){
 
         try {
@@ -189,15 +190,24 @@ public class AdminController {
             if(admin.isEmpty()){
 
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new LogInAdminResponseDto(null, "Administrador não existe")  
+                    new LogInResponseDto(null, "Administrador não existe")  
                 );
 
             }
 
-            if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
+            // System.out.println(admin.get().getPassword() +" - "+ Encrypter.encrypt(logInAdminDto.password()));
+            // if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
 
+            //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+            //         new LogInResponseDto(null, "Senha está incorreta")  
+            //     );
+
+            // }
+            var passwordVerify = BCrypt.verifyer().verify(logInAdminDto.password().toCharArray(), admin.get().getPassword());
+            if(!passwordVerify.verified){
+                
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new LogInAdminResponseDto(null, "Senha está incorreta")  
+                    new LogInResponseDto(null, "Senha está incorreta")  
                 );
 
             }
@@ -215,13 +225,13 @@ public class AdminController {
 
             var token = this.authService.generateToken(account);
             return ResponseEntity.status(HttpStatus.OK).body(
-                new LogInAdminResponseDto(token, null)  
+                new LogInResponseDto(token, null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new LogInAdminResponseDto(null, e.getMessage())  
+                new LogInResponseDto(null, e.getMessage())  
             );
             
         } 

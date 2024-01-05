@@ -2,6 +2,7 @@ package com.example.sistlabsolos.controllers;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import com.example.sistlabsolos.dtos.lab.CreateLabResponseDto;
 import com.example.sistlabsolos.dtos.lab.GetLabByIdDto;
 import com.example.sistlabsolos.dtos.lab.GetLabsDto;
 import com.example.sistlabsolos.models.Address;
+import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.models.Subscription;
 import com.example.sistlabsolos.services.LabService;
@@ -40,7 +42,7 @@ public class LabController {
     @Autowired
     PricingService pricingService;
 
-    @PostMapping()
+    @PostMapping("/create")
       public ResponseEntity<CreateLabResponseDto> createLab(
         @RequestBody @Valid CreateLabRequestDto createLabDto) throws SQLException{
         
@@ -116,8 +118,16 @@ public class LabController {
 
         try {
 
+            var labs = this.labService.getLabs();
+
+            for (Lab lab : labs) {
+
+                lab.setEmployeeList(null);
+
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                 new GetLabsDto(this.labService.getLabs(), null)
+                 new GetLabsDto(labs, null)
             );
             
         } catch (Exception e) {
@@ -136,15 +146,20 @@ public class LabController {
 
         try {
 
-            var Lab = this.labService.getLabById(id);
+            var lab = this.labService.getLabById(id);
 
-            if(Lab.isEmpty()){
+            if(lab.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetLabByIdDto(null, "Instituição não encontrada")
+                    new GetLabByIdDto(null, "Laboratorio não encontrada")
                 );
             }
+
+            for (Employee employee : lab.get().getEmployeeList()){
+                employee.setLab(null);
+            } 
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetLabByIdDto(Lab, null)
+                new GetLabByIdDto(lab, null)
             );
             
         } catch (Exception e) {

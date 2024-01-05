@@ -37,6 +37,13 @@ public class Employee extends Account implements Serializable{
         this.lab = lab;
     }
 
+    public Employee() {
+        super("", "", "", "", LocalDateTime.now(), true);
+        this.job = "";
+        this.role = new Role();
+        this.lab = new Lab();
+    }
+
     public Employee(UUID id, @NotBlank String name, 
     @NotBlank @UniqueElements String email,
     @NotBlank @UniqueElements String password, 
@@ -51,6 +58,22 @@ public class Employee extends Account implements Serializable{
         this.role = role;
         this.lab = lab;
     }
+
+
+    public Employee(UUID id, @NotBlank String name, 
+    @NotBlank @UniqueElements String email,
+    String contact, 
+    LocalDateTime createdAt, 
+    boolean active,
+    String job,
+    Role role,
+    Lab lab) {
+        super(id, name, email, contact, createdAt, active);
+        this.job = job;
+        this.role = role;
+        this.lab = lab;
+    }
+
 
     public String getJob() {
         return job;
