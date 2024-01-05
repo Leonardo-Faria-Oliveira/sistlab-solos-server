@@ -9,4 +9,7 @@ import com.example.sistlabsolos.models.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
+
+    Client findByName(String name);
+
 }

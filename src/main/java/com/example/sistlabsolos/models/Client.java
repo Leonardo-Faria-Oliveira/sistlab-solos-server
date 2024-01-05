@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "clietes")
+@Table(name = "clientes")
 public class Client implements Serializable {
     
     @Serial 
@@ -39,9 +41,20 @@ public class Client implements Serializable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lab.labId")
     private Lab lab;
+
+    public Client() {
+
+        this.name = "";
+        this.city = "";
+        this.contact = "";
+        this.createdAt = LocalDateTime.now();
+        this.lab = new Lab();
+        
+    }
 
     public Client(UUID id, @NotBlank String name, @NotBlank String city, String contact, LocalDateTime createdAt,
             Lab lab) {
