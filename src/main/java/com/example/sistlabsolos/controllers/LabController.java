@@ -1,10 +1,12 @@
 package com.example.sistlabsolos.controllers;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import com.example.sistlabsolos.dtos.lab.GetLabByIdDto;
 import com.example.sistlabsolos.dtos.lab.GetLabsDto;
 import com.example.sistlabsolos.models.Address;
 import com.example.sistlabsolos.models.Lab;
+import com.example.sistlabsolos.models.Subscription;
 import com.example.sistlabsolos.services.LabService;
 import com.example.sistlabsolos.services.PricingService;
 import com.example.sistlabsolos.services.SubscriptionService;
@@ -24,6 +27,7 @@ import com.example.sistlabsolos.services.SubscriptionService;
 import jakarta.validation.Valid;
 
 @RestController
+@EnableTransactionManagement
 @RequestMapping("/v1/lab")
 public class LabController {
 
@@ -38,8 +42,9 @@ public class LabController {
 
     @PostMapping()
       public ResponseEntity<CreateLabResponseDto> createLab(
-        @RequestBody @Valid CreateLabRequestDto createLabDto){
-        // try {
+        @RequestBody @Valid CreateLabRequestDto createLabDto) throws SQLException{
+        
+        try {
 
             var now = LocalDateTime.now();
             var pricing = this.pricingService.getPricingByName(createLabDto.pricingName());
@@ -47,7 +52,7 @@ public class LabController {
             if(pricing == null){
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new CreateLabResponseDto(null, null, "Plano de seviço não encontrada")
+                    new CreateLabResponseDto(null, "Plano de seviço não encontrada")
                 );
 
             }
@@ -71,52 +76,38 @@ public class LabController {
                 createLabDto.contact(),
                 now,
                 true,
-                ad
+                ad,
+                new Subscription(
+                    0, 
+                    0,
+                    now,
+                    true,
+                    true, 
+                    pricing,
+                    new Lab()
+                )
             );
             if(res == null){
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateLabResponseDto(null,
-                     null,
-                     "Lab já existe"));
+                    new CreateLabResponseDto(null,"Lab já existe"));
             
             }
        
-            var subscription = this.subscriptionService.create(
-                0, 
-                0,
-                 now,
-                true,
-                 true, 
-                pricing,
-                res
-            );
-
-            if(subscription == null){
-
-                return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new CreateLabResponseDto(
-                        res,
-                        subscription,
-                        "Laboratório já possui uma assinatura"
-                    )
-                );
-
-            }
+      
             
             return ResponseEntity.status(HttpStatus.CREATED).body(
                 new CreateLabResponseDto(
                     res,
-                    subscription,
                     null
                 )
             );
 
             
-        // } catch (Exception e) {
-        //     // System.out.println(e);
-        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateLabResponseDto(null, null, e.getMessage()));
-        // }
+        } catch (Exception e) {
+            // System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateLabResponseDto(null, e.getMessage()));
+        }
         
     }
 
@@ -126,7 +117,7 @@ public class LabController {
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetLabsDto(this.labService.getLabs(), null)
+                 new GetLabsDto(this.labService.getLabs(), null)
             );
             
         } catch (Exception e) {

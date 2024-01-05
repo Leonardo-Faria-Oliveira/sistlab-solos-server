@@ -4,10 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Value;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,11 +16,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "assinaturas")
-public class Subscription{
+public class Subscription implements Serializable{
     
     @Serial 
     private static final long serialVersionUID = 1L;
@@ -49,9 +47,18 @@ public class Subscription{
     @JoinColumn(name = "pricing.pricingId")
     private Pricing pricing;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lab.labId")
     private Lab lab;
+
+    public Lab getLab() {
+        return lab;
+    }
+
+    public void setLab(Lab lab) {
+        this.lab = lab;
+    }
 
     public Subscription() {
         this.usage = 0;

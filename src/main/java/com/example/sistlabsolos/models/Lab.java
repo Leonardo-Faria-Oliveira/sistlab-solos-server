@@ -11,6 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,10 +59,10 @@ public class Lab implements Serializable{
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.LAZY)
     private Address address;
 
-    @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "lab", fetch = FetchType.EAGER, orphanRemoval = false)
     private List<Subscription> subscriptionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "lab", fetch = FetchType.EAGER, orphanRemoval = false)
     private List<Employee> employeeList = new ArrayList<>();
 
     public List<Employee> getEmployeeList() {
