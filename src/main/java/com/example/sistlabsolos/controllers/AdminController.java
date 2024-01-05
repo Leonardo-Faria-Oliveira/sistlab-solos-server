@@ -18,7 +18,6 @@ import com.example.sistlabsolos.dtos.admin.GetAdminByIdDto;
 import com.example.sistlabsolos.dtos.admin.GetAdminsDto;
 import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
-import com.example.sistlabsolos.interfaces.account.IAccount;
 import com.example.sistlabsolos.models.Admin;
 import com.example.sistlabsolos.models.Institution;
 import com.example.sistlabsolos.models.Role;
@@ -48,19 +47,9 @@ public class AdminController {
     AuthService authService;
     
     @PostMapping()
-      public ResponseEntity<?> createAdmin(@RequestBody @Valid CreateAdminRequestDto createAdminDto) throws BadRequestException{
+      public ResponseEntity<CreateAdminResponseDto> createAdmin(@RequestBody @Valid CreateAdminRequestDto createAdminDto) throws BadRequestException{
         
         try {
-
-            Role role = this.roleService.getRoleByName(createAdminDto.roleName());
-
-            if(role == null){
-                
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateAdminResponseDto(null, "Role não existe")
-                );
-                
-            }
 
             Institution institution = this.institutionService.getInstitutionByName(createAdminDto.institutionName());
     
@@ -79,7 +68,7 @@ public class AdminController {
                 createAdminDto.contact(),
                 LocalDateTime.now(),
                 true,
-                role,
+                new Role("admin"),
                 institution
             
             );
@@ -108,9 +97,8 @@ public class AdminController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getAdmins(){
+    public ResponseEntity<GetAdminsDto> getAdmins(){
 
-        // System.out.println("new GetAdminsDto(admins, null)");
         try {
 
             var admins = this.adminService.getAdmins();
@@ -195,14 +183,6 @@ public class AdminController {
 
             }
 
-            // System.out.println(admin.get().getPassword() +" - "+ Encrypter.encrypt(logInAdminDto.password()));
-            // if(admin.get().getPassword() != Encrypter.encrypt(logInAdminDto.password())){
-
-            //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-            //         new LogInResponseDto(null, "Senha está incorreta")  
-            //     );
-
-            // }
             var passwordVerify = BCrypt.verifyer().verify(logInAdminDto.password().toCharArray(), admin.get().getPassword());
             if(!passwordVerify.verified){
                 
@@ -212,18 +192,7 @@ public class AdminController {
 
             }
 
-            IAccount account = new Admin(
-                admin.get().getId(),
-                admin.get().getName(),
-                admin.get().getEmail(),
-                admin.get().getContact(),
-                admin.get().getCreatedAt(),
-                admin.get().isActive(),
-                admin.get().getRole(),
-                admin.get().getInstitution()
-            );
-
-            var token = this.authService.generateToken(account);
+            var token = this.authService.generateToken(admin.get().getRole().getName());
             return ResponseEntity.status(HttpStatus.OK).body(
                 new LogInResponseDto(token, null)  
             );

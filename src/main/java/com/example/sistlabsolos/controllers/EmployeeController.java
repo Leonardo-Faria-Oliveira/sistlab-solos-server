@@ -18,7 +18,6 @@ import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
-import com.example.sistlabsolos.interfaces.account.IAccount;
 import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.models.Role;
@@ -47,7 +46,7 @@ public class EmployeeController {
     @Autowired
     AuthService authService;
     
-    @PostMapping("/create")
+    @PostMapping()
       public ResponseEntity<CreateEmployeeResponseDto> createEmployee(
         @RequestBody @Valid CreateEmployeeRequestDto createEmployeeDto) throws BadRequestException{
         
@@ -91,6 +90,8 @@ public class EmployeeController {
                 );
                 
             }
+
+            res.setLab(null);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
                 new CreateEmployeeResponseDto(res, null)
@@ -215,19 +216,7 @@ public class EmployeeController {
 
             }
 
-            IAccount account = new Employee(
-                employee.get().getId(),
-                employee.get().getName(),
-                employee.get().getEmail(),
-                employee.get().getContact(),
-                employee.get().getCreatedAt(),
-                employee.get().isActive(),
-                employee.get().getJob(),
-                employee.get().getRole(),
-                employee.get().getLab()
-            );
-
-            var token = this.authService.generateToken(account);
+            var token = this.authService.generateToken(employee.get().getRole().getName());
             return ResponseEntity.status(HttpStatus.OK).body(
                 new LogInResponseDto(token, null)  
             );

@@ -1,6 +1,7 @@
 package com.example.sistlabsolos.dtos.lab;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateLabRequestDto (
@@ -25,12 +26,27 @@ public record CreateLabRequestDto (
 
     @NotNull(message = "Plano de serviço é necessário")
     String pricingName,
+
+    @NotBlank(message = "nome do funcionário é necessario") 
+    String employeeName,
+
+    @NotBlank(message = "email do funcionário é necessario") 
+    @Email
+    String employeeEmail, 
+
+    @NotBlank(message = "senha é necessario") 
+    String password, 
+
+    @NotBlank(message = "cargo do funcionário é necessario") 
+    String employeeJob,
     
     Integer zipCode,
 
     String contact,
 
-    String markUrl
+    String markUrl,
+
+    String employeeContact
 
 ) {
     

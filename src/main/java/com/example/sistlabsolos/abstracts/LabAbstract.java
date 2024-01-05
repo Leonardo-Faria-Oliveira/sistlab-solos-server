@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import com.example.sistlabsolos.models.Address;
+import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.models.Subscription;
 
@@ -22,7 +23,8 @@ public abstract class LabAbstract {
         LocalDateTime createdAt,
         boolean active,
         Address address,
-        Subscription subscription
+        Subscription subscription,
+        Employee employee
     ) throws SQLException;
     public abstract List<Lab> getLabs();
     public abstract Optional<Lab> getLabById(UUID labId);

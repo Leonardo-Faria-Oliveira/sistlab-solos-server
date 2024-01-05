@@ -2,6 +2,7 @@ package com.example.sistlabsolos.controllers;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
 import com.example.sistlabsolos.dtos.lab.CreateLabRequestDto;
 import com.example.sistlabsolos.dtos.lab.CreateLabResponseDto;
 import com.example.sistlabsolos.dtos.lab.GetLabByIdDto;
@@ -20,9 +23,11 @@ import com.example.sistlabsolos.dtos.lab.GetLabsDto;
 import com.example.sistlabsolos.models.Address;
 import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
+import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.models.Subscription;
 import com.example.sistlabsolos.services.LabService;
 import com.example.sistlabsolos.services.PricingService;
+import com.example.sistlabsolos.services.RoleService;
 import com.example.sistlabsolos.services.SubscriptionService;
 
 import jakarta.validation.Valid;
@@ -41,11 +46,24 @@ public class LabController {
     @Autowired
     PricingService pricingService;
 
+    @Autowired
+    RoleService roleService;
+
     @PostMapping("/create")
       public ResponseEntity<CreateLabResponseDto> createLab(
         @RequestBody @Valid CreateLabRequestDto createLabDto) throws SQLException{
         
         try {
+
+            Role role = this.roleService.getRoleByName("labAdminEmployee");
+
+            if(role == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateLabResponseDto(null, "Role não existe")
+                );
+                
+            }
 
             var now = LocalDateTime.now();
             var pricing = this.pricingService.getPricingByName(createLabDto.pricingName());
@@ -85,6 +103,17 @@ public class LabController {
                     true,
                     true, 
                     pricing,
+                    new Lab()
+                ),
+                new Employee(
+                    createLabDto.employeeName(),
+                    createLabDto.employeeEmail(),
+                    createLabDto.password(),
+                    createLabDto.employeeContact(),
+                    now,
+                    true,
+                    createLabDto.employeeJob(),
+                    role,
                     new Lab()
                 )
             );

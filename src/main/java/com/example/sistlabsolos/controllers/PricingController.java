@@ -41,7 +41,7 @@ public class PricingController {
             true
             );
             if(res == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreatePricingResponseDto(null, "Instituição já existe"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreatePricingResponseDto(null, "Plano de serviço já existe"));
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(new CreatePricingResponseDto(res, null));
 
@@ -78,15 +78,15 @@ public class PricingController {
 
         try {
 
-            var Pricing = this.pricingService.getPricingById(id);
+            var pricing = this.pricingService.getPricingById(id);
 
-            if(Pricing.isEmpty()){
+            if(pricing.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetPricingByIdDto(null, "Instituição não encontrada")
+                    new GetPricingByIdDto(null, "Plano de serviço não encontrada")
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetPricingByIdDto(Pricing, null)
+                new GetPricingByIdDto(pricing, null)
             );
             
         } catch (Exception e) {

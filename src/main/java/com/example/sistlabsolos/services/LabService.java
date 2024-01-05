@@ -14,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.LabAbstract;
 import com.example.sistlabsolos.models.Address;
+import com.example.sistlabsolos.models.Employee;
 import com.example.sistlabsolos.models.Lab;
+import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.models.Subscription;
+import com.example.sistlabsolos.repositories.EmployeeRepository;
 import com.example.sistlabsolos.repositories.LabRepository;
 import com.example.sistlabsolos.repositories.SubscriptionRepository;
 
@@ -31,10 +34,12 @@ public class LabService extends LabAbstract {
     @Autowired
     SubscriptionRepository subscriptionRepository;
 
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     @Transactional(
-        readOnly = true,
-        isolation = Isolation.READ_COMMITTED,
-        propagation = Propagation.REQUIRED,
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
         rollbackFor = {SQLException.class}
     )
     public Lab create(
@@ -45,38 +50,40 @@ public class LabService extends LabAbstract {
         LocalDateTime createdAt,
         boolean active,
         Address address,
-        Subscription subscription
+        Subscription subscription,
+        Employee employee
     ) throws SQLException{
 
-        try {
+   
 
-            var lab = new Lab(
-                name,
-                email,
-                markUrl,
-                contact,
-                createdAt,
-                active,
-                address
-            );
+        var lab = new Lab(
+            name,
+            email,
+            markUrl,
+            contact,
+            createdAt,
+            active,
+            address
+        );
 
-            var alreadyBeenInserted = this.labRepository.findByName(name);
-            
-            if(alreadyBeenInserted == null){
+        var alreadyBeenInserted = this.labRepository.findByName(name);
+        
+        if(alreadyBeenInserted == null){
 
-                subscription.setLab(lab);
-                this.subscriptionRepository.save(subscription);
-                return this.labRepository.save(lab);
+            var newLab = this.labRepository.save(lab);
 
-            }
-            return null;
-            
-        } catch (Exception e) {
-            
-            throw new SQLException("Throwing exception for demoing rollback");
-            
+            subscription.setLab(newLab);
+            this.subscriptionRepository.save(subscription);
+
+            employee.setLab(newLab);
+            this.employeeRepository.save(employee);
+
+            return newLab;
+
         }
-
+        
+        return null;
+            
         
         
     

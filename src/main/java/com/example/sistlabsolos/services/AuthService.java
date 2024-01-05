@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.example.sistlabsolos.interfaces.account.IAccount;
 
 @Service
 public class AuthService  {
@@ -15,14 +14,14 @@ public class AuthService  {
     @Value("${api.security.secret}")
     private String secret;
 
-    public String generateToken(IAccount account) throws Exception{
+    public String generateToken(String roleName) throws Exception{
 
         try {
 
             Algorithm alg = Algorithm.HMAC256(this.secret);
             String token = JWT.create()
             .withIssuer("sistlabsolos")
-            .withSubject(account.getEmail())
+            .withSubject(roleName)
             .withExpiresAt(LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.of("-03:00")))
             .sign(alg);
             return token;
