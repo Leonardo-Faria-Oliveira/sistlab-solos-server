@@ -230,5 +230,52 @@ public class EmployeeController {
         } 
         
     }
+
+    @GetMapping("/access/{email}")
+    public ResponseEntity<GetEmployeeByIdDto> getEmployeeByEmail(
+        @PathVariable(value = "email") String email
+    ){
+
+        try {
+
+            var employee = this.employeeService.getEmployeeByEmail(email);
+
+            if(employee.isEmpty()){
+                
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                );
+
+            }
+
+            var employeeResponseDto = new GetEmployeeByIdDto(
+                employee, 
+                employee.get().getLab().getLabId(),
+                null
+            ); 
+
+            employee.get().setPassword(null);
+            employee.get().setLab(null);
+            
+            
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+
+                employeeResponseDto  
+            
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetEmployeeByIdDto(null, null, e.getMessage())  
+            );
+
+
+        }
+
+        
+        
+    }
    
 }

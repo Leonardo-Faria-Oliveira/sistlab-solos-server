@@ -170,7 +170,6 @@ public class AdminController {
     ){
 
         try {
-
             var admin = this.adminService.getAdminByEmail(
                 logInAdminDto.email()
             );
@@ -205,9 +204,46 @@ public class AdminController {
             
         } 
         
-
-
-        
     }
    
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<GetAdminByIdDto> getAdminByEmail(
+        @PathVariable(value = "email") String email
+    ){
+
+        try {
+
+            var admin = this.adminService.getAdminByEmail(email);
+
+            if(admin.isEmpty()){
+                
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetAdminByIdDto(null, "Admnistrador não encontrado")  
+                );
+
+            }
+            else{
+
+                admin.get().setPassword(null);
+            
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetAdminByIdDto(admin, null)  
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetAdminByIdDto(null, e.getMessage())  
+            );
+
+
+        }
+
+        
+        
+    }
+
 }

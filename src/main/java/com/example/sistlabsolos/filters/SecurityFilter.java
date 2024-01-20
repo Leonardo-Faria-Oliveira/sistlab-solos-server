@@ -27,88 +27,95 @@ public class SecurityFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
         
         var servLetPath = request.getServletPath();
+        
 
         if(servLetPath.contains("/auth/login") || servLetPath.contains("/create")){
             filterChain.doFilter(request, response);
         }
-        try {
+        else{
 
-            var token = this.recoveryToken(request);
+            try {
 
-            if(token != null){
-
-                var subject = authService.validateToken(token);
-                var role = this.roleService.getRoleByName(subject);
-
-                if(role == null){
-
-                    response.sendError(401, "Usuário sem permissão");
-
-                }
-                else if(role.getName().equals("admin")){
-            
-                   
-                    if(this.verifyAdminPath(servLetPath)){
-
-                        filterChain.doFilter(request, response);
-
-                    }else{
-
+                var token = this.recoveryToken(request);
+    
+                if(token != null){
+    
+                    var subject = authService.validateToken(token);
+                    var role = this.roleService.getRoleByName(subject);
+                    
+                    if(role == null){
+    
                         response.sendError(401, "Usuário sem permissão");
-
+    
                     }
-
-                }
-
-                else if(role.getName().equals("labAdminEmployee")){
-
-                    if(this.verifyLabAdminEmployeePath(servLetPath)){
-
-                        filterChain.doFilter(request, response);
-
-                    }else{
-
-                        response.sendError(401, "Usuário sem permissão");
-
+                    else if(role.getName().equals("admin")){
+                
+                       
+                        if(this.verifyAdminPath(servLetPath)){
+    
+                            filterChain.doFilter(request, response);
+    
+                        }else{
+    
+                            response.sendError(401, "Usuário sem permissão");
+    
+                        }
+    
                     }
+    
+                    else if(role.getName().equals("labAdminEmployee")){
 
-                }
-
-                else if(role.getName().equals("employee")){
-
-                    if(this.verifyEmployeePath(servLetPath)){
-
-                        filterChain.doFilter(request, response);
-
-                    }else{
-
-                        response.sendError(401, "Usuário sem permissão");
-
+                        if(this.verifyLabAdminEmployeePath(servLetPath)){
+    
+                            filterChain.doFilter(request, response);
+    
+                        }else{
+    
+                            response.sendError(401, "Usuário sem permissão");
+    
+                        }
+    
                     }
-
+    
+                    else if(role.getName().equals("employee")){
+    
+                        if(this.verifyEmployeePath(servLetPath)){
+    
+                            filterChain.doFilter(request, response);
+    
+                        }else{
+    
+                            response.sendError(401, "Usuário sem permissão");
+    
+                        }
+    
+                    }
+                    else{
+    
+                       response.sendError(401, "Usuário sem permissão");
+    
+                    }
+                    
+              
+    
                 }
+    
                 else{
-
-                   response.sendError(401, "Usuário sem permissão");
-
+    
+                    response.sendError(401, "Usuário sem permissão");
+                
                 }
                 
-          
-
-            }
-
-            else{
-
+            } catch (Exception e) {
+                
+                System.out.println("e.getMessage()");
+                System.out.println(e.getMessage());
                 response.sendError(401, "Usuário sem permissão");
-            
+    
             }
-            
-        } catch (Exception e) {
-            
-            System.out.println("e.getMessage()");
-            System.out.println(e.getMessage());
 
         }
+        
 
     }
 
@@ -123,18 +130,15 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     public boolean verifyAdminPath(String path){
 
-        if(path.equals("/v1/institution") ||
-        path.equals("/v1/institution/{id}") ||
+        if(path.contains("/v1/institution") ||
         path.equals("/v1/institutions") ||
-        path.equals("/v1/role/") ||
-        path.equals("/v1/role/{id}") ||
+        path.contains("/v1/role/") ||
         path.equals("/v1/roles") ||
-        path.equals("/v1/admin/") || 
-        path.equals("/v1/admin/{id}") ||
+        path.contains("/v1/admin") || 
+        path.contains("/v1/admin/email") ||
         path.equals("/v1/admins") ||
         path.equals("/v1/labs/") || 
-        path.equals("/v1/pricing/") ||
-        path.equals("/v1/pricing/{id}") ||
+        path.contains("/v1/pricing") ||
         path.equals("/v1/pricings"))
             return true;
 
@@ -144,16 +148,14 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     public boolean verifyLabAdminEmployeePath(String path){
 
-        if(path.equals("/v1/employee") ||
-        path.equals("/v1/employee/{id}") ||
+        if(path.contains("/v1/employee") ||
         path.equals("/v1/employees") ||
-        path.equals("/v1/subscription/") ||
-        path.equals("/v1/subscription/{id}") ||
-        path.equals("/v1/client/") || 
-        path.equals("/v1/client/{id}") ||
+        path.contains("/v1/employee/email") ||
+        path.contains("/v1/subscription") ||
+        path.contains("/v1/client") || 
         path.equals("/v1/clients") ||
-        path.equals("/v1/lab/{id}") || 
-        path.equals("/v1/pricing/{id}") ||
+        path.contains("/v1/lab") || 
+        path.contains("/v1/pricing") ||
         path.equals("/v1/pricings"))
             return true;
 
@@ -163,9 +165,9 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     public boolean verifyEmployeePath(String path){
 
-        if(path.equals("/v1/employee/{id}") ||
-        path.equals("/v1/client/") || 
-        path.equals("/v1/client/{id}") ||
+        if(path.contains("/v1/employee") ||
+        path.contains("/v1/employee/email") ||
+        path.contains("/v1/client") || 
         path.equals("/v1/clients"))
             return true;
 

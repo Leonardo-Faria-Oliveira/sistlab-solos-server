@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
+
     @Bean
     WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -16,9 +17,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
-                .allowedHeaders("*")
-                .allowCredentials(false)
-                .maxAge(3600);
+                .allowedHeaders("*");
             }
         };
     }
