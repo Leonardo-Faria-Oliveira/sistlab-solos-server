@@ -1,6 +1,12 @@
 package com.example.sistlabsolos.filters;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,8 +18,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
+// @Component
 public class SecurityFilter extends OncePerRequestFilter{
+
 
     @Autowired
     AuthService authService;
@@ -21,13 +28,14 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Autowired
     RoleService roleService;
 
+    private final Map<String, String> headers = new HashMap<>();
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         
         var servLetPath = request.getServletPath();
-        
 
         if(servLetPath.contains("/auth/login") || servLetPath.contains("/create")){
             filterChain.doFilter(request, response);
@@ -36,27 +44,28 @@ public class SecurityFilter extends OncePerRequestFilter{
 
             try {
 
-                var token = this.recoveryToken(request);
-    
+                String token = this.recoveryToken(request);
+                
+                // System.out.println(token);
                 if(token != null){
     
-                    var subject = authService.validateToken(token);
+                    var subject = authService.validateToken(token.toString());
                     var role = this.roleService.getRoleByName(subject);
                     
                     if(role == null){
-    
+                       
                         response.sendError(401, "Usuário sem permissão");
     
                     }
                     else if(role.getName().equals("admin")){
-                
+                        System.out.println(token);
                        
                         if(this.verifyAdminPath(servLetPath)){
-    
+                           
                             filterChain.doFilter(request, response);
     
                         }else{
-    
+                           
                             response.sendError(401, "Usuário sem permissão");
     
                         }
@@ -108,7 +117,7 @@ public class SecurityFilter extends OncePerRequestFilter{
                 
             } catch (Exception e) {
                 
-                System.out.println("e.getMessage()");
+                // System.out.println("token");
                 System.out.println(e.getMessage());
                 response.sendError(401, "Usuário sem permissão");
     
@@ -120,16 +129,16 @@ public class SecurityFilter extends OncePerRequestFilter{
     }
 
     private String recoveryToken(HttpServletRequest request) {
-      
-        var authHeader = request.getHeader("Authorization");
+        
+        String authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
-
-        return authHeader.replace("Bearer", "");
+        // System.out.println(authHeader);
+        return authHeader.replace("Bearer ", "");
         
     }
 
     public boolean verifyAdminPath(String path){
-
+        // System.out.println("estou q");
         if(path.contains("/v1/institution") ||
         path.equals("/v1/institutions") ||
         path.contains("/v1/role/") ||

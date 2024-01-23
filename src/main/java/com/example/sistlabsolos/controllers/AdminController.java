@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.sistlabsolos.dtos.admin.CreateAdminRequestDto;
 import com.example.sistlabsolos.dtos.admin.CreateAdminResponseDto;
+import com.example.sistlabsolos.dtos.admin.GetAdminByEmailDto;
 import com.example.sistlabsolos.dtos.admin.GetAdminByIdDto;
 import com.example.sistlabsolos.dtos.admin.GetAdminsDto;
 import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
@@ -208,7 +209,7 @@ public class AdminController {
    
 
     @GetMapping("email/{email}")
-    public ResponseEntity<GetAdminByIdDto> getAdminByEmail(
+    public ResponseEntity<GetAdminByEmailDto> getAdminByEmail(
         @PathVariable(value = "email") String email
     ){
 
@@ -219,7 +220,7 @@ public class AdminController {
             if(admin.isEmpty()){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetAdminByIdDto(null, "Admnistrador não encontrado")  
+                    new GetAdminByEmailDto(null, "Admnistrador não encontrado")  
                 );
 
             }
@@ -230,13 +231,13 @@ public class AdminController {
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetAdminByIdDto(admin, null)  
+                new GetAdminByEmailDto(admin, null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetAdminByIdDto(null, e.getMessage())  
+                new GetAdminByEmailDto(null, e.getMessage())  
             );
 
 

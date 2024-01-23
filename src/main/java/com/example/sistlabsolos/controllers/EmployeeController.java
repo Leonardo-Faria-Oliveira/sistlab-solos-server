@@ -16,6 +16,7 @@ import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
+import com.example.sistlabsolos.dtos.employee.GetEmployeeByEmailDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
 import com.example.sistlabsolos.models.Employee;
@@ -232,7 +233,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/access/{email}")
-    public ResponseEntity<GetEmployeeByIdDto> getEmployeeByEmail(
+    public ResponseEntity<GetEmployeeByEmailDto> getEmployeeByEmail(
         @PathVariable(value = "email") String email
     ){
 
@@ -243,32 +244,22 @@ public class EmployeeController {
             if(employee.isEmpty()){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                    new GetEmployeeByEmailDto(null, "Funcionario não encontrado")  
                 );
 
             }
 
-            var employeeResponseDto = new GetEmployeeByIdDto(
-                employee, 
-                employee.get().getLab().getLabId(),
-                null
-            ); 
-
             employee.get().setPassword(null);
             employee.get().setLab(null);
             
-            
-
-            return ResponseEntity.status(HttpStatus.OK).body(
-
-                employeeResponseDto  
-            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetEmployeeByEmailDto(employee, null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByIdDto(null, null, e.getMessage())  
+                new GetEmployeeByEmailDto(null, e.getMessage())  
             );
 
 
