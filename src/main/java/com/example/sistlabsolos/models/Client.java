@@ -32,6 +32,9 @@ public class Client implements Serializable {
 
     @NotBlank
     private String name;
+    
+    @NotBlank
+    private String email;
 
     @NotBlank
     private String city;

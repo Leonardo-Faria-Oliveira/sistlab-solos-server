@@ -45,6 +45,13 @@ public class Lab implements Serializable{
 
     private String contact;
 
+    private String header1;
+
+    private String header2;
+
+    private String header3;
+
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -71,8 +78,6 @@ public class Lab implements Serializable{
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Client> clientList = new ArrayList<>();
 
-
-
     public Lab(@NotBlank String name, @NotBlank @UniqueElements String email, String markUrl, String contact,
             LocalDateTime createdAt, boolean active, @NotBlank Address address) {
         this.name = name;
@@ -96,6 +101,33 @@ public class Lab implements Serializable{
         this.active = active;
         this.address = address;
      
+    }
+
+    public Lab(
+        UUID labId,
+        @NotBlank String name,
+        @NotBlank @UniqueElements String email, 
+        String markUrl,
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active, 
+        @NotBlank Address address,
+        String header1,
+        String header2,
+        String header3
+        ) {
+    this.labId = labId;
+    this.name = name;
+    this.email = email;
+    this.markUrl = markUrl;
+    this.contact = contact;
+    this.createdAt = createdAt;
+    this.active = active;
+    this.address = address;
+    this.header1 = header1;
+    this.header2 = header2;
+    this.header3 = header3;
+
     }
 
     public Lab() {
@@ -183,6 +215,30 @@ public class Lab implements Serializable{
 
     public void setClientList(List<Client> clientList) {
         this.clientList = clientList;
+    }
+
+    public String getHeader1() {
+        return header1;
+    }
+
+    public void setHeader1(String header1) {
+        this.header1 = header1;
+    }
+
+    public String getHeader2() {
+        return header2;
+    }
+
+    public void setHeader2(String header2) {
+        this.header2 = header2;
+    }
+
+    public String getHeader3() {
+        return header3;
+    }
+
+    public void setHeader3(String header3) {
+        this.header3 = header3;
     }
 
 }

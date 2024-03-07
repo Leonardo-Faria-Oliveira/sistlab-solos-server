@@ -1,12 +1,6 @@
 package com.example.sistlabsolos.filters;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,7 +22,6 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Autowired
     RoleService roleService;
 
-    private final Map<String, String> headers = new HashMap<>();
 
 
     @Override
@@ -85,8 +78,36 @@ public class SecurityFilter extends OncePerRequestFilter{
                         }
     
                     }
+
+                    else if(role.getName().equals("labAdminTechnical")){
+
+                        if(this.verifyLabAdminEmployeePath(servLetPath)){
+    
+                            filterChain.doFilter(request, response);
+    
+                        }else{
+    
+                            response.sendError(401, "Usuário sem permissão");
+    
+                        }
+    
+                    }
     
                     else if(role.getName().equals("employee")){
+    
+                        if(this.verifyEmployeePath(servLetPath)){
+    
+                            filterChain.doFilter(request, response);
+    
+                        }else{
+    
+                            response.sendError(401, "Usuário sem permissão");
+    
+                        }
+    
+                    }
+
+                    else if(role.getName().equals("tecnicalResponsible")){
     
                         if(this.verifyEmployeePath(servLetPath)){
     
@@ -146,7 +167,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         path.contains("/v1/admin") || 
         path.contains("/v1/admin/email") ||
         path.equals("/v1/admins") ||
-        path.equals("/v1/labs/") || 
+        path.equals("/v1/lab/") || 
         path.contains("/v1/pricing") ||
         path.equals("/v1/pricings"))
             return true;
@@ -159,11 +180,12 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         if(path.contains("/v1/employee") ||
         path.equals("/v1/employees") ||
+        path.contains("/v1/technical") ||
+        path.equals("/v1/technical/access") ||
         path.contains("/v1/employee/email") ||
         path.contains("/v1/subscription") ||
         path.contains("/v1/client") || 
         path.equals("/v1/clients") ||
-        path.contains("/v1/lab") || 
         path.contains("/v1/pricing") ||
         path.equals("/v1/pricings"))
             return true;
@@ -171,6 +193,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         return false;
 
     }
+
 
     public boolean verifyEmployeePath(String path){
 

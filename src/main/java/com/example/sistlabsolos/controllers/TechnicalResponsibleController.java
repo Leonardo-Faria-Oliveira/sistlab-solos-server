@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
-import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
-import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
-import com.example.sistlabsolos.dtos.employee.GetEmployeeByEmailDto;
-import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
-import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
-import com.example.sistlabsolos.models.Employee;
+import com.example.sistlabsolos.dtos.technicalResponsible.CreateTechnicalResponsibleRequestDto;
+import com.example.sistlabsolos.dtos.technicalResponsible.CreateTechnicalResponsibleResponseDto;
+import com.example.sistlabsolos.dtos.technicalResponsible.GetTechnicalResponsibleByEmailDto;
+import com.example.sistlabsolos.dtos.technicalResponsible.GetTechnicalResponsibleByIdDto;
+import com.example.sistlabsolos.dtos.technicalResponsible.GetTechnicalsResponsibleDto;
+import com.example.sistlabsolos.models.TechnicalResponsible;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.models.Role;
-import com.example.sistlabsolos.services.EmployeeService;
+import com.example.sistlabsolos.services.TechnicalResponsibleService;
 import com.example.sistlabsolos.services.AuthService;
 import com.example.sistlabsolos.services.LabService;
 import com.example.sistlabsolos.services.RoleService;
@@ -32,11 +32,11 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/v1/employee")
-public class EmployeeController {
+@RequestMapping("/v1/technical")
+public class TechnicalResponsibleController {
 
     @Autowired
-    EmployeeService employeeService;
+    TechnicalResponsibleService technicalResponsibleService;
 
     @Autowired
     RoleService roleService;
@@ -48,46 +48,47 @@ public class EmployeeController {
     AuthService authService;
     
     @PostMapping()
-      public ResponseEntity<CreateEmployeeResponseDto> createEmployee(
-        @RequestBody @Valid CreateEmployeeRequestDto createEmployeeDto) throws BadRequestException{
+      public ResponseEntity<CreateTechnicalResponsibleResponseDto> createTechnicalResponsible(
+        @RequestBody @Valid CreateTechnicalResponsibleRequestDto createTechnicalResponsibleDto) throws BadRequestException{
         
         try {
 
-            Role role = this.roleService.getRoleByName(createEmployeeDto.roleName());
+            Role role = this.roleService.getRoleByName(createTechnicalResponsibleDto.roleName());
 
             if(role == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Role não existe")
+                    new CreateTechnicalResponsibleResponseDto(null, "Role não existe")
                 );
                 
             }
 
-            Lab lab = this.labService.getLabByName(createEmployeeDto.labName());
+            Lab lab = this.labService.getLabByName(createTechnicalResponsibleDto.labName());
     
             if(lab == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Laboratorio não existe")
+                    new CreateTechnicalResponsibleResponseDto(null, "Laboratorio não existe")
                 );
                 
             }
             
-            Employee res = this.employeeService.create(
-                createEmployeeDto.name(),
-                createEmployeeDto.email(),
-                Encrypter.encrypt(createEmployeeDto.password()),
-                createEmployeeDto.contact(),
+            TechnicalResponsible res = this.technicalResponsibleService.create(
+                createTechnicalResponsibleDto.name(),
+                createTechnicalResponsibleDto.email(),
+                Encrypter.encrypt(createTechnicalResponsibleDto.password()),
+                createTechnicalResponsibleDto.contact(),
                 LocalDateTime.now(),
                 true,
-                createEmployeeDto.job(),
+                createTechnicalResponsibleDto.job(),
                 role,
-                lab
+                lab,
+                createTechnicalResponsibleDto.crea()
             );
             if(res == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Funcionário já existe")
+                    new CreateTechnicalResponsibleResponseDto(null, "Funcionário já existe")
                 );
                 
             }
@@ -95,13 +96,13 @@ public class EmployeeController {
             res.setLab(null);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
-                new CreateEmployeeResponseDto(res, null)
+                new CreateTechnicalResponsibleResponseDto(res, null)
             );
             
         } catch (Exception e) {
                       
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new CreateEmployeeResponseDto(null, e.getMessage())
+                new CreateTechnicalResponsibleResponseDto(null, e.getMessage())
             );
 
         }
@@ -111,29 +112,29 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    public ResponseEntity<GetEmployeesDto> getEmployees(){
+    public ResponseEntity<GetTechnicalsResponsibleDto> getTechnicalsResponsible(){
 
         
         try {
 
-            var employees = this.employeeService.getEmployees();
+            var technicalResponsibles = this.technicalResponsibleService.getTechnicalResponsibles();
         
-            for (Employee employee : employees) {
+            for (TechnicalResponsible TechnicalResponsible : technicalResponsibles) {
 
-                employee.setPassword(null);
-                employee.setLab(null);
+                TechnicalResponsible.setPassword(null);
+                TechnicalResponsible.setLab(null);
             
             }
 
         
             return ResponseEntity.ok(
-                new GetEmployeesDto(employees, null)
+                new GetTechnicalsResponsibleDto(technicalResponsibles, null)
             );
 
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new GetEmployeesDto(null, e.getMessage())
+                new GetTechnicalsResponsibleDto(null, e.getMessage())
             );
             
         }
@@ -143,43 +144,43 @@ public class EmployeeController {
 
 
     @GetMapping("{id}")
-    public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
+    public ResponseEntity<GetTechnicalResponsibleByIdDto> getTechnicalResponsibleById(
         @PathVariable(value = "id") UUID id
     ){
 
         try {
 
-            var employee = this.employeeService.getEmployeeById(id);
+            var technicalResponsible = this.technicalResponsibleService.getTechnicalResponsibleById(id);
 
-            if(employee.isEmpty()){
+            if(technicalResponsible.isEmpty()){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                    new GetTechnicalResponsibleByIdDto(null, null, "Funcionario não encontrado")  
                 );
 
             }
 
-            var employeeResponseDto = new GetEmployeeByIdDto(
-                employee, 
-                employee.get().getLab().getLabId(),
+            var technicalResponsibleResponseDto = new GetTechnicalResponsibleByIdDto(
+                technicalResponsible, 
+                technicalResponsible.get().getLab().getLabId(),
                 null
             ); 
 
-            employee.get().setPassword(null);
-            employee.get().setLab(null);
+            technicalResponsible.get().setPassword(null);
+            technicalResponsible.get().setLab(null);
             
             
 
             return ResponseEntity.status(HttpStatus.OK).body(
 
-                employeeResponseDto  
+                technicalResponsibleResponseDto  
             
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByIdDto(null, null, e.getMessage())  
+                new GetTechnicalResponsibleByIdDto(null, null, e.getMessage())  
             );
 
 
@@ -191,16 +192,16 @@ public class EmployeeController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<LogInResponseDto> logIn(
-        @RequestBody @Valid LogInRequestDto logInEmployeeDto
+        @RequestBody @Valid LogInRequestDto logInTechnicalResponsibleDto
     ){
 
         try {
 
-            var employee = this.employeeService.getEmployeeByEmail(
-                logInEmployeeDto.email()
+            var technicalResponsible = this.technicalResponsibleService.getTechnicalResponsibleByEmail(
+                logInTechnicalResponsibleDto.email()
             );
             
-            if(employee.isEmpty()){
+            if(technicalResponsible.isEmpty()){
 
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                     new LogInResponseDto(null, "Funcionario não existe")  
@@ -208,7 +209,7 @@ public class EmployeeController {
 
             }
 
-            var passwordVerify = BCrypt.verifyer().verify(logInEmployeeDto.password().toCharArray(), employee.get().getPassword());
+            var passwordVerify = BCrypt.verifyer().verify(logInTechnicalResponsibleDto.password().toCharArray(), technicalResponsible.get().getPassword());
             if(!passwordVerify.verified){
                 
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
@@ -217,7 +218,7 @@ public class EmployeeController {
 
             }
 
-            var token = this.authService.generateToken(employee.get().getRole().getName());
+            var token = this.authService.generateToken(technicalResponsible.get().getRole().getName());
             return ResponseEntity.status(HttpStatus.OK).body(
                 new LogInResponseDto(token, null)  
             );
@@ -233,7 +234,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<GetEmployeeByEmailDto> getEmployeeByEmail(
+    public ResponseEntity<GetTechnicalResponsibleByEmailDto> getTechnicalResponsibleByEmail(
         @PathVariable(value = "email") String email
     ){
 
@@ -241,26 +242,26 @@ public class EmployeeController {
 
         try {
 
-            var employee = this.employeeService.getEmployeeByEmail(email);
-            if(employee.isEmpty()){
+            var technicalResponsible = this.technicalResponsibleService.getTechnicalResponsibleByEmail(email);
+            if(technicalResponsible.isEmpty()){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetEmployeeByEmailDto(null, "Funcionario não encontrado")  
+                    new GetTechnicalResponsibleByEmailDto(null, "Funcionario não encontrado")  
                 );
 
             }
 
-            employee.get().setPassword(null);
-            employee.get().setLab(null);
+            technicalResponsible.get().setPassword(null);
+            technicalResponsible.get().setLab(null);
             
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByEmailDto(employee, null)  
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetTechnicalResponsibleByEmailDto(technicalResponsible, null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByEmailDto(null, e.getMessage())  
+                new GetTechnicalResponsibleByEmailDto(null, e.getMessage())  
             );
 
 
