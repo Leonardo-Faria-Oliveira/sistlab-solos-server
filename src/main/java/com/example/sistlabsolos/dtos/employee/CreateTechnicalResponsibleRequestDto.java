@@ -1,13 +1,9 @@
-package com.example.sistlabsolos.dtos.technicalResponsible;
+package com.example.sistlabsolos.dtos.employee;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreateTechnicalResponsibleRequestDto(
-
-    @NotBlank(message = "Crea é necessario") 
-    String crea,
-
     @NotBlank(message = "nome é necessario") 
     String name,
 
@@ -26,7 +22,11 @@ public record CreateTechnicalResponsibleRequestDto(
 
     @NotBlank(message = "cargo do funcionário é necessario") 
     String job,
+
+    @NotBlank(message = "CREA do funcionário é necessario") 
+    String crea,
     
     String contact
 ) {
-} 
+    
+}

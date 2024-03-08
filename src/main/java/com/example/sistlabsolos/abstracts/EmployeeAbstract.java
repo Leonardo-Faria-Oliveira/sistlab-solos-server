@@ -25,6 +25,18 @@ public abstract class EmployeeAbstract {
         Role role,
         Lab lab
     );
+    public abstract Employee createTechnicalResponsible(
+        String name, 
+        String email,
+        String password,
+        String contact,
+        LocalDateTime createdAt,
+        boolean active,
+        String job,
+        String crea,
+        Role role,
+        Lab lab
+    );
     public abstract List<Employee> getEmployees();
     public abstract Optional<Employee> getEmployeeById(UUID employeeId);
     public abstract Optional<Employee> getEmployeeByEmail(String email);

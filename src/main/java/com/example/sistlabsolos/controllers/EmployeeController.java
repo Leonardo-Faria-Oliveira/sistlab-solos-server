@@ -16,6 +16,7 @@ import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
+import com.example.sistlabsolos.dtos.employee.CreateTechnicalResponsibleRequestDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByEmailDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
@@ -108,6 +109,70 @@ public class EmployeeController {
 
         
 
+    }
+
+    @PostMapping("technical")
+      public ResponseEntity<CreateEmployeeResponseDto> createTechnicalResponsible(
+        @RequestBody @Valid CreateTechnicalResponsibleRequestDto createTechnicalResponsibleDto) throws BadRequestException{
+        
+        try {
+
+            Role role = this.roleService.getRoleByName(createTechnicalResponsibleDto.roleName());
+
+            if(role == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Role não existe")
+                );
+                
+            }
+
+            Lab lab = this.labService.getLabByName(createTechnicalResponsibleDto.labName());
+    
+            if(lab == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Laboratorio não existe")
+                );
+                
+            }
+            
+            Employee res = this.employeeService.createTechnicalResponsible(
+                createTechnicalResponsibleDto.name(),
+                createTechnicalResponsibleDto.email(),
+                Encrypter.encrypt(createTechnicalResponsibleDto.password()),
+                createTechnicalResponsibleDto.contact(),
+                LocalDateTime.now(),
+                true,
+                createTechnicalResponsibleDto.job(),
+                createTechnicalResponsibleDto.crea(),
+                role,
+                lab
+                
+            );
+            if(res == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Funcionário já existe")
+                );
+                
+            }
+
+            res.setLab(null);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateEmployeeResponseDto(res, null)
+            );
+            
+        } catch (Exception e) {
+                      
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateEmployeeResponseDto(null, e.getMessage())
+            );
+
+        }
+
+    
     }
 
     @GetMapping()
@@ -253,7 +318,7 @@ public class EmployeeController {
             employee.get().setPassword(null);
             employee.get().setLab(null);
             
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            return ResponseEntity.status(HttpStatus.OK).body(
                 new GetEmployeeByEmailDto(employee, null)  
             );
             

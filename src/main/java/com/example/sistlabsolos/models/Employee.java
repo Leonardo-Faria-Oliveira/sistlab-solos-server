@@ -8,20 +8,19 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "funcionarios")
 public class Employee extends Account implements Serializable{
 
     @NotBlank
     private String job;
+  
+    private String crea;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role.roleId")
@@ -36,6 +35,17 @@ public class Employee extends Account implements Serializable{
             @NotBlank String job, Role role, Lab lab) {
         super(name, email, password, contact, createdAt, active);
         this.job = job;
+        this.role = role;
+        this.lab = lab;
+    }
+
+    public Employee(@NotBlank String name, @NotBlank @UniqueElements String email,
+            @NotBlank @UniqueElements String password, String contact, LocalDateTime createdAt, boolean active,
+            @NotBlank String job, String crea, Role role, Lab lab) {
+                
+        super(name, email, password, contact, createdAt, active);
+        this.job = job;
+        this.crea = crea;
         this.role = role;
         this.lab = lab;
     }
@@ -100,6 +110,14 @@ public class Employee extends Account implements Serializable{
 
     public void setLab(Lab lab) {
         this.lab = lab;
+    }
+
+    public String getCrea() {
+        return crea;
+    }
+
+    public void setCrea(String crea) {
+        this.crea = crea;
     }
 
 }
