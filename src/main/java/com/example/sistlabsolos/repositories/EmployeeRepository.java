@@ -1,5 +1,6 @@
 package com.example.sistlabsolos.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import com.example.sistlabsolos.models.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
-
+    public List<Employee> findByOrderByCreatedAtEmployeeDesc();
     Optional<Employee> findByEmail(String email);
 
 }

@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+
 import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
@@ -226,7 +229,7 @@ public class EmployeeController {
 
             var employeeResponseDto = new GetEmployeeByIdDto(
                 employee, 
-                employee.get().getLab().getLabId(),
+                employee.get().getLab().getName(),
                 null
             ); 
 
@@ -250,8 +253,6 @@ public class EmployeeController {
 
         }
 
-        
-        
     }
 
     @PostMapping("/auth/login")
@@ -302,7 +303,6 @@ public class EmployeeController {
         @PathVariable(value = "email") String email
     ){
 
-        System.out.println(email);
 
         try {
 
@@ -310,29 +310,77 @@ public class EmployeeController {
             if(employee.isEmpty()){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetEmployeeByEmailDto(null, "Funcionario não encontrado")  
+                    new GetEmployeeByEmailDto(null, null, "Funcionario não encontrado")  
                 );
 
             }
+
+            var labName = employee.get().getLab().getName();
 
             employee.get().setPassword(null);
             employee.get().setLab(null);
             
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetEmployeeByEmailDto(employee, null)  
+                new GetEmployeeByEmailDto(
+                    employee, 
+                    labName,
+                    null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByEmailDto(null, e.getMessage())  
+                new GetEmployeeByEmailDto(
+                null,
+                null,
+                e.getMessage())  
             );
 
 
         }
 
-        
-        
+    }
+
+    @PatchMapping("/access/{email}")
+    public ResponseEntity<GetEmployeeByIdDto> firstAccessEmployeeUpdate(
+        @PathVariable(value = "email") String email,
+        @RequestBody @Valid String password
+    ){
+
+        try {
+
+            var employee = this.employeeService.firstAccessEmployeeUpdate(email, password);
+            if(employee.isEmpty()){
+                
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                );
+
+            }
+
+            var labName = employee.get().getLab().getName();
+
+            employee.get().setPassword(null);
+            employee.get().setLab(null);
+            
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetEmployeeByIdDto(
+                    employee, 
+                    labName,
+                    null)  
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new GetEmployeeByIdDto(
+                null,
+                null,
+                e.getMessage())  
+            );
+
+        }
+
     }
    
 }

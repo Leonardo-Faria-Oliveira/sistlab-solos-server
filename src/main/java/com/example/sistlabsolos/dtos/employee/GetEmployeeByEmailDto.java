@@ -6,5 +6,6 @@ import com.example.sistlabsolos.models.Employee;
 
 public record GetEmployeeByEmailDto(
     Optional<Employee> account,
+    String labName,
     String errorMessage
 ) {}

@@ -33,7 +33,7 @@ public class EmployeeService extends EmployeeAbstract {
         Lab lab
     ){
 
-        var Employee = new Employee(
+        var employee = new Employee(
             name, 
             email,
             password,
@@ -48,7 +48,7 @@ public class EmployeeService extends EmployeeAbstract {
         var alreadyBeenInserted = this.employeeRepository.findByEmail(email);
         if(alreadyBeenInserted.isEmpty()){
 
-            return this.employeeRepository.save(Employee);
+            return this.employeeRepository.save(employee);
 
         }
         
@@ -60,7 +60,7 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public List<Employee> getEmployees() {
 
-        return this.employeeRepository.findAll();
+        return this.employeeRepository.findByOrderByCreatedAtEmployeeDesc();
 
     }
 
@@ -81,9 +81,8 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public Employee createTechnicalResponsible(String name, String email, String password, String contact,
             LocalDateTime createdAt, boolean active, String job, String crea, Role role, Lab lab) {
-      
-                
-                var Employee = new Employee(
+          
+        var employee = new Employee(
             name, 
             email,
             password,
@@ -99,11 +98,24 @@ public class EmployeeService extends EmployeeAbstract {
         var alreadyBeenInserted = this.employeeRepository.findByEmail(email);
         if(alreadyBeenInserted.isEmpty()){
 
-            return this.employeeRepository.save(Employee);
+            return this.employeeRepository.save(employee);
 
         }
         
         return null;
+    }
+
+    @Override
+    public Optional<Employee> firstAccessEmployeeUpdate(String email, String password) {
+       
+        var employee = this.employeeRepository.findByEmail(email);
+
+        employee.get().setPassword(password);
+
+        this.employeeRepository.save(employee.get());
+
+        return employee;
+
     }
 
    
