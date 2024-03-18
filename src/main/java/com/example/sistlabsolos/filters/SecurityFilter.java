@@ -30,7 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         
         var servLetPath = request.getServletPath();
 
-        if(servLetPath.contains("/auth/login") || servLetPath.contains("/create")){
+        if(servLetPath.contains("/first") || servLetPath.contains("/auth/login") || servLetPath.contains("/create")){
             filterChain.doFilter(request, response);
         }
         else{

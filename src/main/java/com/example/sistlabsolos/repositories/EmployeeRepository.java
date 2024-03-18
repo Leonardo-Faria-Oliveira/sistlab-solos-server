@@ -11,7 +11,7 @@ import com.example.sistlabsolos.models.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
-    public List<Employee> findByOrderByCreatedAtEmployeeDesc();
+    public List<Employee> findByOrderByCreatedAtDesc();
     Optional<Employee> findByEmail(String email);
 
 }

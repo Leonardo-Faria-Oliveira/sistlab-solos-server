@@ -341,7 +341,7 @@ public class EmployeeController {
 
     }
 
-    @PatchMapping("/access/{email}")
+    @PatchMapping("/first-access/{email}")
     public ResponseEntity<GetEmployeeByIdDto> firstAccessEmployeeUpdate(
         @PathVariable(value = "email") String email,
         @RequestBody @Valid String password
@@ -350,7 +350,7 @@ public class EmployeeController {
         try {
 
             var employee = this.employeeService.firstAccessEmployeeUpdate(email, password);
-            if(employee.isEmpty()){
+            if(employee == null){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  

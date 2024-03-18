@@ -60,7 +60,7 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public List<Employee> getEmployees() {
 
-        return this.employeeRepository.findByOrderByCreatedAtEmployeeDesc();
+        return this.employeeRepository.findByOrderByCreatedAtDesc();
 
     }
 
@@ -110,8 +110,12 @@ public class EmployeeService extends EmployeeAbstract {
        
         var employee = this.employeeRepository.findByEmail(email);
 
-        employee.get().setPassword(password);
+        if(employee.isEmpty()){
+            return null;
+        }
 
+        employee.get().setPassword(password);
+        
         this.employeeRepository.save(employee.get());
 
         return employee;
