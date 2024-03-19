@@ -106,17 +106,14 @@ public class EmployeeService extends EmployeeAbstract {
     }
 
     @Override
-    public Optional<Employee> firstAccessEmployeeUpdate(String email, String password) {
+    public Employee firstAccessEmployeeUpdate(Employee employee, String password) {
        
-        var employee = this.employeeRepository.findByEmail(email);
+       
 
-        if(employee.isEmpty()){
-            return null;
-        }
-
-        employee.get().setPassword(password);
+        employee.setPassword(password);
+        employee.setActive(true);
         
-        this.employeeRepository.save(employee.get());
+        this.employeeRepository.save(employee);
 
         return employee;
 

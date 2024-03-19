@@ -40,5 +40,5 @@ public abstract class EmployeeAbstract {
     public abstract List<Employee> getEmployees();
     public abstract Optional<Employee> getEmployeeById(UUID employeeId);
     public abstract Optional<Employee> getEmployeeByEmail(String email);
-    public abstract Optional<Employee> firstAccessEmployeeUpdate(String email, String password);
+    public abstract Employee firstAccessEmployeeUpdate(Employee employee, String password);
 }

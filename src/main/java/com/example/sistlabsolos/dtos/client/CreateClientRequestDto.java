@@ -9,6 +9,9 @@ public record CreateClientRequestDto(
     @NotBlank(message = "nome é necessario")
     String name,
 
+    @NotBlank(message = "email é necessario")
+    String email,
+
     @NotBlank(message = "cidade é necessario")
     String city,
 

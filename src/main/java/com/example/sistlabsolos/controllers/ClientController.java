@@ -49,11 +49,13 @@ public class ClientController {
 
             Client res = this.clientService.create(
             createClientDto.name(),
+            createClientDto.email(),
             createClientDto.city(),
             createClientDto.contact(),
             LocalDateTime.now(),
             lab
             );
+
             
             if(res == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateClientResponseDto(null, "Cliente já existe"));

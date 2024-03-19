@@ -14,6 +14,7 @@ import com.example.sistlabsolos.models.Lab;
 public abstract class ClientAbstract {
     public abstract Client create(
         String name,
+        String email,
         String city,
         String contact,
         LocalDateTime createdAt,

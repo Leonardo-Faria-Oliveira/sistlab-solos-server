@@ -83,7 +83,7 @@ public class EmployeeController {
                 Encrypter.encrypt(createEmployeeDto.password()),
                 createEmployeeDto.contact(),
                 LocalDateTime.now(),
-                true,
+                false,
                 createEmployeeDto.job(),
                 role,
                 lab
@@ -146,7 +146,7 @@ public class EmployeeController {
                 Encrypter.encrypt(createTechnicalResponsibleDto.password()),
                 createTechnicalResponsibleDto.contact(),
                 LocalDateTime.now(),
-                true,
+                false,
                 createTechnicalResponsibleDto.job(),
                 createTechnicalResponsibleDto.crea(),
                 role,
@@ -274,6 +274,14 @@ public class EmployeeController {
 
             }
 
+            if(!employee.get().isActive()){
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new LogInResponseDto(null, "Funcionario não existe")  
+                );
+
+            }
+
             var passwordVerify = BCrypt.verifyer().verify(logInEmployeeDto.password().toCharArray(), employee.get().getPassword());
             if(!passwordVerify.verified){
                 
@@ -342,39 +350,43 @@ public class EmployeeController {
     }
 
     @PatchMapping("/first-access/{email}")
-    public ResponseEntity<GetEmployeeByIdDto> firstAccessEmployeeUpdate(
+    public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
         @PathVariable(value = "email") String email,
         @RequestBody @Valid String password
     ){
 
         try {
 
-            var employee = this.employeeService.firstAccessEmployeeUpdate(email, password);
+            var employee = this.employeeService.getEmployeeByEmail(email);
             if(employee == null){
                 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new GetEmployeeByIdDto(null, null, "Funcionario não encontrado")  
+                    new CreateEmployeeResponseDto(null, "Funcionario não encontrado")  
                 );
 
             }
 
-            var labName = employee.get().getLab().getName();
+            if(employee.get().isActive()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Funcionario já teve o primeiro acesso")  
+                );
+            }
 
-            employee.get().setPassword(null);
-            employee.get().setLab(null);
+            var newEmployee = this.employeeService.firstAccessEmployeeUpdate(employee.get(), Encrypter.encrypt(password));
+
+            newEmployee.setPassword(null);
+            newEmployee.setLab(null);
             
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetEmployeeByIdDto(
-                    employee, 
-                    labName,
+                new CreateEmployeeResponseDto(
+                    newEmployee, 
                     null)  
             );
             
         } catch (Exception e) {
             
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new GetEmployeeByIdDto(
-                null,
+                new CreateEmployeeResponseDto(
                 null,
                 e.getMessage())  
             );

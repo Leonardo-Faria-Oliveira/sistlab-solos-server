@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.sistlabsolos.abstracts.ClientAbstract;
 import com.example.sistlabsolos.models.Client;
 import com.example.sistlabsolos.models.Lab;
@@ -22,26 +21,28 @@ public class ClientService extends ClientAbstract {
 
     public Client create(
         String name,
+        String email,
         String city,
         String contact,
         LocalDateTime createdAt,
         Lab lab
     ){
 
-        var Client = new Client(
+        var client = new Client(
             name,
+            email,
             city,
             contact,
             createdAt,
             lab
         );
 
-        var alreadyBeenInserted = this.clientRepository.findByName(name);
+        var alreadyBeenInserted = this.clientRepository.findByEmail(email);
 
         if(alreadyBeenInserted == null){
-            return this.clientRepository.save(Client);
-
+            return this.clientRepository.save(client);
         }
+
         return null;
         
     
@@ -50,7 +51,7 @@ public class ClientService extends ClientAbstract {
     @Override
     public List<Client> getClients() {
 
-        return this.clientRepository.findAll();
+        return this.clientRepository.findByOrderByCreatedAtDesc();
 
     }
 

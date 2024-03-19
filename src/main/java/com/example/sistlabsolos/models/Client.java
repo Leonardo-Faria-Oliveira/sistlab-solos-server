@@ -49,17 +49,19 @@ public class Client implements Serializable {
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
+
     public Client() {
 
         this.name = "";
         this.city = "";
         this.contact = "";
+        this.email = "";
         this.createdAt = LocalDateTime.now();
         this.lab = new Lab();
         
     }
 
-    public Client(UUID id, @NotBlank String name, @NotBlank String city, String contact, LocalDateTime createdAt,
+    public Client(UUID id, @NotBlank String name, @NotBlank String email, @NotBlank String city, String contact, LocalDateTime createdAt,
             Lab lab) {
         this.id = id;
         this.name = name;
@@ -67,14 +69,17 @@ public class Client implements Serializable {
         this.contact = contact;
         this.createdAt = createdAt;
         this.lab = lab;
+        this.email = email;
     }
 
-    public Client(@NotBlank String name, @NotBlank String city, String contact, LocalDateTime createdAt, Lab lab) {
+ 
+    public Client(@NotBlank String name, @NotBlank String email, @NotBlank String city, String contact, LocalDateTime createdAt, Lab lab) {
         this.name = name;
         this.city = city;
         this.contact = contact;
         this.createdAt = createdAt;
         this.lab = lab;
+        this.email = email;
     }
 
     public static long getSerialversionuid() {
@@ -127,6 +132,14 @@ public class Client implements Serializable {
 
     public void setLab(Lab lab) {
         this.lab = lab;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
