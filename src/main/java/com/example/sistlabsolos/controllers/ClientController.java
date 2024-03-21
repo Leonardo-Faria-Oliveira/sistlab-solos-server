@@ -88,6 +88,172 @@ public class ClientController {
 
     }
 
+    @GetMapping("name/desc")
+    public ResponseEntity<GetClientsDto> getClientsByNameDesc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByNameDesc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
+    @GetMapping("name/asc")
+    public ResponseEntity<GetClientsDto> getClientsByNameAsc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByNameAsc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
+    @GetMapping("city/desc")
+    public ResponseEntity<GetClientsDto> getClientsByCityDesc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByCityDesc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
+    @GetMapping("city/asc")
+    public ResponseEntity<GetClientsDto> getClientsByCityAsc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByCityAsc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
+    @GetMapping("search/name/{name}")
+    public ResponseEntity<GetClientsDto> getClientsByNameSearch(
+        @PathVariable(value = "name") String name
+    ){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByNameSearch(name), null)
+            );
+            
+        } catch (Exception e) {
+            
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new GetClientsDto(null, e.getMessage())
+                );
+            
+        }
+
+    }
+
+    @GetMapping("search/city/{city}")
+    public ResponseEntity<GetClientsDto> getClientsByCitySearch(
+        @PathVariable(value = "city") String city
+    ){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByCitySearch(city), null)
+            );
+            
+        } catch (Exception e) {
+            
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new GetClientsDto(null, e.getMessage())
+                );
+            
+        }
+           
+    }
+
+    @GetMapping("email/asc")
+    public ResponseEntity<GetClientsDto> getClientsByEmailAsc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByEmailAsc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
+    
+    @GetMapping("search/email/{email}")
+    public ResponseEntity<GetClientsDto> getClientsByEmailSearch(
+        @PathVariable(value = "email") String email
+    ){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByEmailSearch(email), null)
+            );
+            
+        } catch (Exception e) {
+            
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new GetClientsDto(null, e.getMessage())
+                );
+            
+        }
+           
+    }
+
+    @GetMapping("email/desc")
+    public ResponseEntity<GetClientsDto> getClientsByEmailDesc(){
+
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new GetClientsDto(this.clientService.getClientsByEmailDesc(), null)
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GetClientsDto(null, e.getMessage()));
+            
+        }
+
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<GetClientByIdDto> getClientById(
         @PathVariable(value = "id") UUID id

@@ -210,6 +210,294 @@ public class EmployeeController {
     }
 
 
+    @GetMapping("name/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByNameDesc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByNameDesc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("name/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByNameAsc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByNameAsc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("email/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailDesc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByEmailDesc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("email/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailAsc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByEmailAsc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("job/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByJobDesc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByJobDesc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("job/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByJobAsc(){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByJobAsc();
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("search/name/{name}")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByNameSearch(
+        @PathVariable(value = "name") String name
+    ){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByNameSearch(name);
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    
+    @GetMapping("search/email/{email}")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailSearch(
+        @PathVariable(value = "email") String email
+    ){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByNameSearch(email);
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    
+    @GetMapping("search/job/{job}")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByJobSearch(
+        @PathVariable(value = "job") String job
+    ){
+
+        
+        try {
+
+            var employees = this.employeeService.getEmployeesByNameSearch(job);
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+
     @GetMapping("{id}")
     public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
         @PathVariable(value = "id") UUID id

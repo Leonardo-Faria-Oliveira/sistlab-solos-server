@@ -63,6 +63,9 @@ public class EmployeeService extends EmployeeAbstract {
         return this.employeeRepository.findByOrderByCreatedAtDesc();
 
     }
+    
+
+
 
     @Override
     public Optional<Employee> getEmployeeById(UUID EmployeeId){
@@ -117,6 +120,69 @@ public class EmployeeService extends EmployeeAbstract {
 
         return employee;
 
+    }
+
+    @Override
+    public List<Employee> getEmployeesByNameDesc() {
+
+        return this.employeeRepository.findByOrderByNameDesc();
+        
+    }
+
+    @Override
+    public List<Employee> getEmployeesByNameAsc() {
+
+        return this.employeeRepository.findByOrderByNameAsc();
+
+    }
+
+    @Override
+    public List<Employee> getEmployeesByNameSearch(String name) {
+
+        return this.employeeRepository.findTop3ByNameContainingIgnoreCase(name);
+    
+    }
+
+    @Override
+    public List<Employee> getEmployeesByEmailDesc() {
+
+        return this.employeeRepository.findByOrderByEmailDesc();
+
+    }
+
+    @Override
+    public List<Employee> getEmployeesByEmailAsc() {
+
+        return this.employeeRepository.findByOrderByEmailAsc();
+
+    }
+
+    @Override
+    public List<Employee> getEmployeesByEmailSearch(String email) {
+        
+        return this.employeeRepository.findTop3ByEmailContainingIgnoreCase(email);
+    
+    }
+
+    @Override
+    public List<Employee> getEmployeesByJobDesc() {
+        
+        return this.employeeRepository.findByOrderByJobDesc();
+        
+    }
+
+    @Override
+    public List<Employee> getEmployeesByJobAsc() {
+                
+        return this.employeeRepository.findByOrderByJobAsc();
+        
+    }
+
+    @Override
+    public List<Employee> getEmployeesByJobSearch(String job) {
+        
+        return this.employeeRepository.findTop3ByJobContainingIgnoreCase(job);
+    
     }
 
    
