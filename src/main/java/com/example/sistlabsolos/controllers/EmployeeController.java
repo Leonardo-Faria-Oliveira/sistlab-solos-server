@@ -621,5 +621,42 @@ public class EmployeeController {
         }
 
     }
+
+    
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
+        @PathVariable(value = "id") UUID id,    
+    @RequestBody @Valid boolean status
+    ){
+
+        try {
+
+            var employee = this.employeeService.setEmployeeStatus(id, status);
+            if(employee == null){
+                
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new CreateEmployeeResponseDto(null, "Funcionario não encontrado")  
+                );
+
+            }
+
+            employee.setPassword(null);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new CreateEmployeeResponseDto(
+                    employee, 
+                    null)  
+            );
+            
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateEmployeeResponseDto(
+                null,
+                e.getMessage())  
+            );
+
+        }
+
+    }
    
 }

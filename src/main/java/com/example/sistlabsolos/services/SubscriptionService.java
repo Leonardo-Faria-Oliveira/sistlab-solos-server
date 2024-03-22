@@ -71,8 +71,19 @@ public class SubscriptionService extends SubscriptionAbstract {
 
     @Override
     public Subscription update(UUID id, Subscription obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        
+        var updatedSubscription = this.subscriptionRepository.findById(id);
+
+        if(updatedSubscription.isEmpty()){
+            return null;
+        }
+        
+        updatedSubscription.get().setPricing(obj.getPricing());
+    
+        this.subscriptionRepository.save(updatedSubscription.get());
+
+        return updatedSubscription.get();
+        
     }
 
 

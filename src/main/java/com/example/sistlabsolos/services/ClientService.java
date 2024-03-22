@@ -123,8 +123,22 @@ public class ClientService extends ClientAbstract {
 
     @Override
     public Client update(UUID id, Client obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+       
+        var updatedClient = this.clientRepository.findById(id);
+
+        if(updatedClient.isEmpty()){
+            return null;
+        }
+        
+        updatedClient.get().setName(obj.getName());
+        updatedClient.get().setEmail(obj.getEmail());
+        updatedClient.get().setContact(obj.getContact());
+        updatedClient.get().setCity(obj.getCity());
+    
+        this.clientRepository.save(updatedClient.get());
+
+        return updatedClient.get();
+        
     }
 
 

@@ -63,8 +63,19 @@ public class RoleService extends RoleAbstract {
 
     @Override
     public Role update(UUID id, Role obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+       
+        var updatedRole = this.roleRepository.findById(id);
+
+        if(updatedRole.isEmpty()){
+            return null;
+        }
+        
+        updatedRole.get().setName(obj.getName());
+    
+        this.roleRepository.save(updatedRole.get());
+
+        return updatedRole.get();
+        
     }
 
    

@@ -60,8 +60,22 @@ public class PricingService extends PricingAbstract {
 
     @Override
     public Pricing update(UUID id, Pricing obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        
+        var updatedPricing = this.pricingRepository.findById(id);
+
+        if(updatedPricing.isEmpty()){
+            return null;
+        }
+        
+        updatedPricing.get().setName(obj.getName());
+        updatedPricing.get().setDescription(obj.getDescription());
+        updatedPricing.get().setReportsLimit(obj.getReportsLimit());
+        updatedPricing.get().setValue(obj.getValue());
+    
+        this.pricingRepository.save(updatedPricing.get());
+
+        return updatedPricing.get();
+        
     }
 
 }

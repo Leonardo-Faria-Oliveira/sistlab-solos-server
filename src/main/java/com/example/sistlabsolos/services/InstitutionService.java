@@ -63,8 +63,20 @@ public class InstitutionService extends InstitutionAbstract {
 
     @Override
     public Institution update(UUID id, Institution obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        
+        var updatedInstitution = this.institutionRepository.findById(id);
+
+        if(updatedInstitution.isEmpty()){
+            return null;
+        }
+        
+        updatedInstitution.get().setName(obj.getName());
+        updatedInstitution.get().setCode(obj.getCode());
+    
+        this.institutionRepository.save(updatedInstitution.get());
+
+        return updatedInstitution.get();
+
     }
 
    

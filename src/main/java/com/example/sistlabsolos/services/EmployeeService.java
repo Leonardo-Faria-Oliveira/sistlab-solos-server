@@ -140,8 +140,40 @@ public class EmployeeService extends EmployeeAbstract {
 
     @Override
     public Employee update(UUID id, Employee obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+       
+        var updatedEmployee = this.employeeRepository.findById(id);
+
+        if(updatedEmployee.isEmpty()){
+            return null;
+        }
+        
+        updatedEmployee.get().setName(obj.getName());
+        updatedEmployee.get().setEmail(obj.getEmail());
+        updatedEmployee.get().setContact(obj.getContact());
+        updatedEmployee.get().setCrea(obj.getCrea());
+        updatedEmployee.get().setJob(obj.getJob());
+        updatedEmployee.get().setPassword(obj.getPassword());
+    
+        this.employeeRepository.save(updatedEmployee.get());
+
+        return updatedEmployee.get();
+        
+    }
+
+    @Override
+    public Employee setEmployeeStatus(UUID id, boolean status) {
+       
+        var employee = this.employeeRepository.findById(id);
+        if(employee.isEmpty()){
+            return null;
+        }
+
+        employee.get().setActive(status);
+
+        this.employeeRepository.save(employee.get());
+
+        return employee.get();
+
     }
 
 

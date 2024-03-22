@@ -22,4 +22,5 @@ public abstract class EmployeeAbstract implements IDAO<Employee> {
     public abstract Optional<Employee> getEmployeeById(UUID employeeId);
     public abstract Optional<Employee> getEmployeeByEmail(String email);
     public abstract Employee firstAccessEmployeeUpdate(Employee employee, String password);
+    public abstract Employee setEmployeeStatus(UUID id, boolean status);
 }

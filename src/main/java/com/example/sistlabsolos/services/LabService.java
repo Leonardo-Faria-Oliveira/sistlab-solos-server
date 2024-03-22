@@ -78,8 +78,26 @@ public class LabService extends LabAbstract {
 
     @Override
     public Lab update(UUID id, Lab obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+       
+        var updatedLab = this.labRepository.findById(id);
+
+        if(updatedLab.isEmpty()){
+            return null;
+        }
+        
+        updatedLab.get().setName(obj.getName());
+        updatedLab.get().setEmail(obj.getEmail());
+        updatedLab.get().setContact(obj.getContact());
+        updatedLab.get().setAddress(obj.getAddress());
+        updatedLab.get().setMarkUrl(obj.getMarkUrl());
+        updatedLab.get().setHeader1(obj.getHeader1());
+        updatedLab.get().setHeader2(obj.getHeader2());
+        updatedLab.get().setHeader3(obj.getHeader3());
+    
+        this.labRepository.save(updatedLab.get());
+
+        return updatedLab.get();
+        
     }
 
    
