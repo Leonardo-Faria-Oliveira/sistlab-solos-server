@@ -1,17 +1,17 @@
 package com.example.sistlabsolos.services;
 
-import java.time.LocalDateTime;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.AdminAbstract;
 import com.example.sistlabsolos.models.Admin;
-import com.example.sistlabsolos.models.Institution;
-import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.repositories.AdminRepository;
 
 
@@ -21,29 +21,15 @@ public class AdminService extends AdminAbstract {
     @Autowired
     AdminRepository adminRepository;
 
-    public Admin create(
-        String name, 
-        String email,
-        String password,
-        String contact,
-        LocalDateTime createdAt,
-        boolean active,
-        Role role,
-        Institution institution
-    ){
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
+        rollbackFor = {SQLException.class}
+    )
+    public Admin create(Admin admin) throws SQLException{
 
-        var admin = new Admin(
-            name, 
-            email,
-            password,
-            contact,
-            createdAt,
-            active,
-            role,
-            institution
-        );
-
-        var alreadyBeenInserted = this.adminRepository.findByEmail(email);
+        var alreadyBeenInserted = this.adminRepository.findByEmail(admin.getEmail());
         System.out.println(alreadyBeenInserted);
         if(alreadyBeenInserted.isEmpty()){
 
@@ -57,7 +43,7 @@ public class AdminService extends AdminAbstract {
     }
 
     @Override
-    public List<Admin> getAdmins() {
+    public List<Admin> list() {
 
         return this.adminRepository.findAll();
 
@@ -75,6 +61,26 @@ public class AdminService extends AdminAbstract {
         
         return this.adminRepository.findByEmail(email);
 
+    }
+
+    @Override
+    public Admin update(UUID id, Admin obj) {
+        
+        var updatedAdmin = this.adminRepository.findById(id);
+
+        if(updatedAdmin.isEmpty()){
+            return null;
+        }
+        
+        updatedAdmin.get().setName(obj.getName());
+        updatedAdmin.get().setEmail(obj.getEmail());
+        updatedAdmin.get().setPassword(obj.getPassword());
+        updatedAdmin.get().setContact(obj.getContact());
+    
+        this.adminRepository.save(updatedAdmin.get());
+
+        return updatedAdmin.get();
+        
     }
 
    

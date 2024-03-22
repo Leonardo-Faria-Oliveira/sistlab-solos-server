@@ -18,7 +18,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "clientes")
 public class Client implements Serializable {
@@ -61,8 +65,16 @@ public class Client implements Serializable {
         
     }
 
-    public Client(UUID id, @NotBlank String name, @NotBlank String email, @NotBlank String city, String contact, LocalDateTime createdAt,
-            Lab lab) {
+    public Client(
+        UUID id, 
+        @NotBlank String name, 
+        @NotBlank String email, 
+        @NotBlank String city, 
+        String contact, 
+        LocalDateTime createdAt,
+        Lab lab
+    ) {
+
         this.id = id;
         this.name = name;
         this.city = city;
@@ -70,76 +82,30 @@ public class Client implements Serializable {
         this.createdAt = createdAt;
         this.lab = lab;
         this.email = email;
+    
     }
 
  
-    public Client(@NotBlank String name, @NotBlank String email, @NotBlank String city, String contact, LocalDateTime createdAt, Lab lab) {
+    public Client(
+        @NotBlank String name, 
+        @NotBlank String email, 
+        @NotBlank String city, 
+        String contact, 
+        LocalDateTime createdAt, 
+        Lab lab
+    ) {
+
         this.name = name;
         this.city = city;
         this.contact = contact;
         this.createdAt = createdAt;
         this.lab = lab;
         this.email = email;
+    
     }
 
     public static long getSerialversionuid() {
         return serialVersionUID;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Lab getLab() {
-        return lab;
-    }
-
-    public void setLab(Lab lab) {
-        this.lab = lab;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
 }

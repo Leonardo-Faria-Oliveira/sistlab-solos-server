@@ -32,13 +32,16 @@ public class RoleController {
         try {
             
             Role res = this.roleService.create(
-            createRoleDto.name()
+                new Role(
+                    createRoleDto.name()
+                )
+            );
 
-        );
-        if(res == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateRoleResponseDto(null, "Role já existe"));
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(new CreateRoleResponseDto(res, null));
+            if(res == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateRoleResponseDto(null, "Role já existe"));
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateRoleResponseDto(res, null));
 
 
         } catch (Exception e) {
@@ -54,7 +57,7 @@ public class RoleController {
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetRolesDto(this.roleService.getRoles(), null)
+                new GetRolesDto(this.roleService.list(), null)
             );
             
         } catch (Exception e) {

@@ -1,10 +1,14 @@
 package com.example.sistlabsolos.services;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.sistlabsolos.abstracts.RoleAbstract;
 import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.repositories.RoleRepository;
@@ -16,25 +20,27 @@ public class RoleService extends RoleAbstract {
     @Autowired
     RoleRepository roleRepository;
 
-    public Role create(String name){
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
+        rollbackFor = {SQLException.class}
+    )
+    public Role create(Role role) throws SQLException{
 
-        var Role = new Role(
-            name
-        );
-
-        var alreadyBeenInserted = this.roleRepository.findByName(name);
+        var alreadyBeenInserted = this.roleRepository.findByName(role.getName());
 
         if(alreadyBeenInserted == null){
-            return this.roleRepository.save(Role);
+            return this.roleRepository.save(role);
 
         }
+
         return null;
         
-    
     }
 
     @Override
-    public List<Role> getRoles() {
+    public List<Role> list() {
 
         return this.roleRepository.findAll();
 
@@ -53,6 +59,12 @@ public class RoleService extends RoleAbstract {
         return this.roleRepository.findByName(name);
         
         
+    }
+
+    @Override
+    public Role update(UUID id, Role obj) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
    

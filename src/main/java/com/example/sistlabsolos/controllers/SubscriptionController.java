@@ -41,7 +41,6 @@ public class SubscriptionController {
         try {
 
             var pricing = this.pricingService.getPricingByName(createSubscriptionDto.pricingName());
-            
             if(pricing == null){
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -51,7 +50,6 @@ public class SubscriptionController {
             }
 
             var lab = this.labService.getLabByName(createSubscriptionDto.labName());
-
             if(lab == null){
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -61,25 +59,36 @@ public class SubscriptionController {
             }
 
             Subscription res = this.subscriptionService.create(
-                0,
-                0,
-                LocalDateTime.now(),
-                true,
-                true,
-                pricing,
-                new Lab()
+                new Subscription(
+                    0,
+                    0,
+                    LocalDateTime.now(),
+                    true,
+                    true,
+                    pricing,
+                    new Lab()
+                )
             );
 
             if(res == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateSubscriptionResponseDto(null, "Lab já possui assinatura"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateSubscriptionResponseDto(
+                        null, "Lab já possui assinatura"
+                    )
+                );
             }
             
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateSubscriptionResponseDto(res, null));
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateSubscriptionResponseDto(res, null)
+            );
 
             
         } catch (Exception e) {
             // System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateSubscriptionResponseDto(null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateSubscriptionResponseDto(null, e.getMessage())
+            );
+
         }
         
     }
@@ -90,7 +99,7 @@ public class SubscriptionController {
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetSubscriptionsDto(this.subscriptionService.getSubscriptions(), null)
+                new GetSubscriptionsDto(this.subscriptionService.list(), null)
             );
             
         } catch (Exception e) {
@@ -128,8 +137,6 @@ public class SubscriptionController {
             
         }
 
-
-        
     }
 
     @GetMapping("/lab/{labId}")

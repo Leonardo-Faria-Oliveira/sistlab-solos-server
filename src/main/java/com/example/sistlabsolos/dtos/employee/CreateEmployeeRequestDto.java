@@ -22,6 +22,8 @@ public record CreateEmployeeRequestDto(
 
     @NotBlank(message = "cargo do funcionário é necessario") 
     String job,
+
+    String crea,
     
     String contact
 ) {

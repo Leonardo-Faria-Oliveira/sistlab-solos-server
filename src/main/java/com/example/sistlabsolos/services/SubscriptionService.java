@@ -1,16 +1,17 @@
 package com.example.sistlabsolos.services;
 
-import java.time.LocalDateTime;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.SubscriptionAbstract;
 import com.example.sistlabsolos.models.Lab;
-import com.example.sistlabsolos.models.Pricing;
 import com.example.sistlabsolos.models.Subscription;
 import com.example.sistlabsolos.repositories.LabRepository;
 import com.example.sistlabsolos.repositories.SubscriptionRepository;
@@ -25,27 +26,17 @@ public class SubscriptionService extends SubscriptionAbstract {
     @Autowired
     LabRepository labRepository;
 
-    public Subscription create(
-        Integer usage,
-        Integer lateDays,
-        LocalDateTime createdAt,
-        boolean isPaid,
-        boolean active,
-        Pricing pricing,
-        Lab lab
-    ){
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
+        rollbackFor = {SQLException.class}
+    )
+    public Subscription create(Subscription subscription) throws SQLException{
 
-        var subscription = new Subscription(
-            usage,
-            lateDays,
-            createdAt,
-            isPaid,
-            active,
-            pricing,
-            lab
+        var labAlreadyHasSubscription = this.labRepository.findByName(
+            subscription.getLab().getName()
         );
-
-        var labAlreadyHasSubscription = this.labRepository.findByName(lab.getName());
 
         if(labAlreadyHasSubscription.getSubscriptionList().isEmpty()){
             
@@ -53,13 +44,12 @@ public class SubscriptionService extends SubscriptionAbstract {
 
         }
         
-        return null;
-        
+        return null; 
     
     }
 
     @Override
-    public List<Subscription> getSubscriptions() {
+    public List<Subscription> list() {
 
         return this.subscriptionRepository.findAll();
 
@@ -77,6 +67,12 @@ public class SubscriptionService extends SubscriptionAbstract {
        
         return this.subscriptionRepository.findSubscriptionsByLab(lab);
 
+    }
+
+    @Override
+    public Subscription update(UUID id, Subscription obj) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
 

@@ -1,14 +1,16 @@
 package com.example.sistlabsolos.services;
 
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.sistlabsolos.abstracts.ClientAbstract;
 import com.example.sistlabsolos.models.Client;
-import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.repositories.ClientRepository;
 
 
@@ -18,37 +20,25 @@ public class ClientService extends ClientAbstract {
     @Autowired
     ClientRepository clientRepository;
 
-    public Client create(
-        String name,
-        String email,
-        String city,
-        String contact,
-        LocalDateTime createdAt,
-        Lab lab
-    ){
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
+        rollbackFor = {SQLException.class}
+    )
+    public Client create(Client client) throws SQLException{
 
-        var client = new Client(
-            name,
-            email,
-            city,
-            contact,
-            createdAt,
-            lab
-        );
-
-        var alreadyBeenInserted = this.clientRepository.findByEmail(email);
-
+        var alreadyBeenInserted = this.clientRepository.findByEmail(client.getEmail());
         if(alreadyBeenInserted == null){
             return this.clientRepository.save(client);
         }
 
         return null;
         
-    
     }
 
     @Override
-    public List<Client> getClients() {
+    public List<Client> list() {
 
         return this.clientRepository.findByOrderByCreatedAtDesc();
 
@@ -130,6 +120,13 @@ public class ClientService extends ClientAbstract {
         return this.clientRepository.findTop3ByEmailContainingIgnoreCase(email);
         
     }
+
+    @Override
+    public Client update(UUID id, Client obj) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
 
    
 

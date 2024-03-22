@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.sistlabsolos.dtos.pricing.CreatePricingRequestDto;
 import com.example.sistlabsolos.dtos.pricing.CreatePricingResponseDto;
 import com.example.sistlabsolos.dtos.pricing.GetPricingByIdDto;
@@ -31,18 +30,22 @@ public class PricingController {
       public ResponseEntity<CreatePricingResponseDto> createPricing(@RequestBody @Valid CreatePricingRequestDto createPricingDto){
         try {
 
-            Pricing res = this.pricingService.create(
-            createPricingDto.name(),
-            createPricingDto.description(),
-            createPricingDto.value(),
-            createPricingDto.reportsLimit(),
-            createPricingDto.employeesLimit(),
-            LocalDateTime.now(),
-            true
+            Pricing res = this.pricingService.create( 
+                new Pricing(
+                    createPricingDto.name(),
+                    createPricingDto.description(),
+                    createPricingDto.value(),
+                    createPricingDto.reportsLimit(),
+                    createPricingDto.employeesLimit(),
+                    LocalDateTime.now(),
+                    true
+                )
             );
+
             if(res == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreatePricingResponseDto(null, "Plano de serviço já existe"));
             }
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new CreatePricingResponseDto(res, null));
 
             
@@ -59,7 +62,7 @@ public class PricingController {
         try {
             
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetPricingsDto(this.pricingService.getPricings(), null)
+                new GetPricingsDto(this.pricingService.list(), null)
             );
             
         } catch (Exception e) {

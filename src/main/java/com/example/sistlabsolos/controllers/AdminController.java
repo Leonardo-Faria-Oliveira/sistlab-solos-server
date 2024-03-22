@@ -62,16 +62,16 @@ public class AdminController {
                 
             }
             
-            Admin res = this.adminService.create(
-                createAdminDto.name(),
-                createAdminDto.email(),
-                Encrypter.encrypt(createAdminDto.password()),
-                createAdminDto.contact(),
-                LocalDateTime.now(),
-                true,
-                new Role("admin"),
-                institution
-            
+            Admin res = this.adminService.create(new Admin(
+                    createAdminDto.name(),
+                    createAdminDto.email(),
+                    Encrypter.encrypt(createAdminDto.password()),
+                    createAdminDto.contact(),
+                    LocalDateTime.now(),
+                    true,
+                    new Role("admin"),
+                    institution
+                )
             );
             if(res == null){
                 
@@ -102,7 +102,7 @@ public class AdminController {
 
         try {
 
-            var admins = this.adminService.getAdmins();
+            var admins = this.adminService.list();
         
             for (Admin admin : admins) {
 

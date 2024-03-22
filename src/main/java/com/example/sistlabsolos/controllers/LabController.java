@@ -53,7 +53,6 @@ public class LabController {
         try {
 
             Role role = this.roleService.getRoleByName("labAdminEmployee");
-
             if(role == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -63,8 +62,8 @@ public class LabController {
             }
 
             var now = LocalDateTime.now();
+
             var pricing = this.pricingService.getPricingByName(createLabDto.pricingName());
-            
             if(pricing == null){
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -73,67 +72,72 @@ public class LabController {
 
             }
 
-            var ad = new Address(
-                    createLabDto.city(),
-                    createLabDto.state(),
-                    createLabDto.country(),
-                    createLabDto.number(),
-                    createLabDto.zipCode(),
-                    now
-                );
-            
-                System.out.println(ad.getNumber());
-            
+            var address = new Address(
+                createLabDto.city(),
+                createLabDto.state(),
+                createLabDto.country(),
+                createLabDto.number(),
+                createLabDto.zipCode(),
+                now
+            );
 
-            Lab res = this.labService.create(
-                createLabDto.name(),
-                createLabDto.email(),
-                createLabDto.markUrl(),
-                createLabDto.contact(),
+            var subscription = new Subscription(
+                0, 
+                0,
                 now,
                 true,
-                ad,
-                new Subscription(
-                    0, 
-                    0,
+                true, 
+                pricing,
+                new Lab()
+            );
+            
+            var employee = new Employee(
+                createLabDto.employeeName(),
+                createLabDto.employeeEmail(),
+                createLabDto.password(),
+                createLabDto.employeeContact(),
+                now,
+                true,
+                createLabDto.employeeJob(),
+                role,
+                new Lab()
+            );
+            
+            Lab newLab = this.labService.create(
+                new Lab(
+                    createLabDto.name(),
+                    createLabDto.email(),
+                    createLabDto.markUrl(),
+                    createLabDto.contact(),
                     now,
                     true,
-                    true, 
-                    pricing,
-                    new Lab()
-                ),
-                new Employee(
-                    createLabDto.employeeName(),
-                    createLabDto.employeeEmail(),
-                    createLabDto.password(),
-                    createLabDto.employeeContact(),
-                    now,
-                    true,
-                    createLabDto.employeeJob(),
-                    role,
-                    new Lab()
+                    address,
+                    subscription,
+                    employee
                 )
             );
-            if(res == null){
+
+            if(newLab == null){
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new CreateLabResponseDto(null,"Lab já existe"));
             
             }
        
-      
-            
             return ResponseEntity.status(HttpStatus.CREATED).body(
                 new CreateLabResponseDto(
-                    res,
+                    newLab,
                     null
                 )
             );
 
             
         } catch (Exception e) {
-            // System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateLabResponseDto(null, e.getMessage()));
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateLabResponseDto(null, e.getMessage())
+            );
+
         }
         
     }
@@ -143,7 +147,7 @@ public class LabController {
 
         try {
 
-            var labs = this.labService.getLabs();
+            var labs = this.labService.list();
 
             for (Lab lab : labs) {
 

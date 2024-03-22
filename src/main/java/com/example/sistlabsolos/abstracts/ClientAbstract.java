@@ -1,24 +1,15 @@
 package com.example.sistlabsolos.abstracts;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
+
+import com.example.sistlabsolos.interfaces.IDAO;
 import com.example.sistlabsolos.models.Client;
-import com.example.sistlabsolos.models.Lab;
 
 @Repository
-public abstract class ClientAbstract {
-    public abstract Client create(
-        String name,
-        String email,
-        String city,
-        String contact,
-        LocalDateTime createdAt,
-        Lab lab
-    );
-    public abstract List<Client> getClients();
+public abstract class ClientAbstract implements IDAO<Client> {
     public abstract List<Client> getClientsByNameDesc();
     public abstract List<Client> getClientsByNameAsc();
     public abstract List<Client> getClientsByCityAsc();

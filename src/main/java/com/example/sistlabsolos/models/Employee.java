@@ -11,10 +11,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "funcionarios")
+@Table(
+    name = "funcionarios",
+    uniqueConstraints = @UniqueConstraint(columnNames={"crea"})
+)
 public class Employee extends Account implements Serializable{
 
     @NotBlank
@@ -30,94 +38,106 @@ public class Employee extends Account implements Serializable{
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
-    public Employee(@NotBlank String name, @NotBlank @UniqueElements String email,
-            @NotBlank @UniqueElements String password, String contact, LocalDateTime createdAt, boolean active,
-            @NotBlank String job, Role role, Lab lab) {
+    public Employee(
+        @NotBlank String name, 
+        @NotBlank @UniqueElements String email,
+        @NotBlank @UniqueElements String password, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        @NotBlank String job, 
+        Role role, 
+        Lab lab
+    ) {
+
         super(name, email, password, contact, createdAt, active);
         this.job = job;
         this.role = role;
         this.lab = lab;
+    
     }
 
-    public Employee(@NotBlank String name, @NotBlank @UniqueElements String email,
-            @NotBlank @UniqueElements String password, String contact, LocalDateTime createdAt, boolean active,
-            @NotBlank String job, String crea, Role role, Lab lab) {
+    public Employee(
+        @NotBlank String name, 
+        @NotBlank @UniqueElements String email,
+        @NotBlank @UniqueElements String password, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        @NotBlank String job, 
+        String crea, 
+        Role role, 
+        Lab lab
+    ) {
                 
         super(name, email, password, contact, createdAt, active);
         this.job = job;
         this.crea = crea;
         this.role = role;
         this.lab = lab;
+
     }
 
     public Employee() {
-        super("", "", "", "", LocalDateTime.now(), true);
+
+        super(
+            "", 
+            "", 
+            "", 
+            "", 
+            LocalDateTime.now(), 
+            true
+        );
         this.job = "";
         this.role = new Role();
         this.lab = new Lab();
+
     }
 
-    public Employee(UUID id, @NotBlank String name, 
-    @NotBlank @UniqueElements String email,
-    @NotBlank @UniqueElements String password, 
-    String contact, 
-    LocalDateTime createdAt, 
-    boolean active,
-    String job,
-    Role role,
-    Lab lab) {
+    public Employee(
+        UUID id, 
+        @NotBlank String name, 
+        @NotBlank @UniqueElements String email,
+        @NotBlank @UniqueElements String password, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        String job,
+        Role role,
+        Lab lab
+    ) {
+
         super(id, name, email, password, contact, createdAt, active);
         this.job = job;
         this.role = role;
         this.lab = lab;
+
     }
 
+    public Employee(
+        UUID id, 
+        @NotBlank String name, 
+        @NotBlank @UniqueElements String email,
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        String job,
+        Role role,
+        Lab lab
+    ) {
 
-    public Employee(UUID id, @NotBlank String name, 
-    @NotBlank @UniqueElements String email,
-    String contact, 
-    LocalDateTime createdAt, 
-    boolean active,
-    String job,
-    Role role,
-    Lab lab) {
-        super(id, name, email, contact, createdAt, active);
+        super(
+            id, 
+            name, 
+            email, 
+            contact, 
+            createdAt, 
+            active
+        );
         this.job = job;
         this.role = role;
         this.lab = lab;
-    }
 
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Lab getLab() {
-        return lab;
-    }
-
-    public void setLab(Lab lab) {
-        this.lab = lab;
-    }
-
-    public String getCrea() {
-        return crea;
-    }
-
-    public void setCrea(String crea) {
-        this.crea = crea;
     }
 
 }

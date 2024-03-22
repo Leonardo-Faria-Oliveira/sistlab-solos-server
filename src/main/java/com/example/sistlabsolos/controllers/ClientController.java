@@ -38,34 +38,46 @@ public class ClientController {
         try {
 
             Lab lab = this.labService.getLabByName(createClientDto.labName());
-    
             if(lab == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateClientResponseDto(null, "Laboratorio não existe")
+                    new CreateClientResponseDto(
+                        null, "Laboratorio não existe"
+                    )
                 );
                 
             }
 
             Client res = this.clientService.create(
-            createClientDto.name(),
-            createClientDto.email(),
-            createClientDto.city(),
-            createClientDto.contact(),
-            LocalDateTime.now(),
-            lab
+                new Client(
+                    createClientDto.name(),
+                    createClientDto.email(),
+                    createClientDto.city(),
+                    createClientDto.contact(),
+                    LocalDateTime.now(),
+                    lab
+                )
             );
-
             
             if(res == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateClientResponseDto(null, "Cliente já existe"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateClientResponseDto(
+                        null, "Cliente já existe"
+                    )
+                );
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateClientResponseDto(res, null));
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateClientResponseDto(res, null)
+            );
 
             
         } catch (Exception e) {
             // System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateClientResponseDto(null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateClientResponseDto(null, e.getMessage())
+            );
+
         }
         
     }
@@ -76,7 +88,7 @@ public class ClientController {
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClients(), null)
+                new GetClientsDto(this.clientService.list(), null)
             );
             
         } catch (Exception e) {

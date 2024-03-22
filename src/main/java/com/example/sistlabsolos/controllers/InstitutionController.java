@@ -31,18 +31,37 @@ public class InstitutionController {
         try {
 
             Institution res = this.institutionService.create(
-            createInstitutionDto.name(),
-            CreateCodeInstitution.createCode(createInstitutionDto.name()).toString()
+                new Institution(
+                    createInstitutionDto.name(),
+                    CreateCodeInstitution.createCode(
+                        createInstitutionDto.name()
+                    ).toString()
+                )
             );
+
             if(res == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CreateInstitutionResponseDto(null, "Instituição já existe"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateInstitutionResponseDto(
+                        null, "Instituição já existe"
+                    )
+                );
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CreateInstitutionResponseDto(res, null));
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                new CreateInstitutionResponseDto(
+                    res, null
+                )
+            );
 
             
         } catch (Exception e) {
-            // System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CreateInstitutionResponseDto(null, e.getMessage()));
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new CreateInstitutionResponseDto(
+                    null, e.getMessage()
+                )
+            );
+
         }
         
     }
@@ -53,7 +72,7 @@ public class InstitutionController {
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetInstitutionsDto(this.institutionService.getInstitutions(), null)
+                new GetInstitutionsDto(this.institutionService.list(), null)
             );
             
         } catch (Exception e) {

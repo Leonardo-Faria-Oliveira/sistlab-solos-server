@@ -20,7 +20,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "permissoes",  
 uniqueConstraints = @UniqueConstraint(columnNames={"name"}),
@@ -34,14 +38,6 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID roleId;
 
-    public UUID getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
-    }
-
     @NotBlank
     private String name;
 
@@ -49,25 +45,28 @@ public class Role implements Serializable {
     private List<Admin> adminList = new ArrayList<>();
 
     public Role() {
+
         this.name = "";
+    
     }
 
-    public Role(UUID roleId, @UniqueElements String name) {
+    public Role(
+        UUID roleId, 
+        @UniqueElements String name
+    ) {
+
         this.roleId = roleId;
         this.name = name;
+    
     }
 
     
-    public Role(@UniqueElements String name) {
-        this.name = name;
-    }
+    public Role(
+        @UniqueElements String name
+    ) {
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+    
     }
 
 }

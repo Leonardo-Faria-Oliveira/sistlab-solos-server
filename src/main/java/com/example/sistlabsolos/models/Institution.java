@@ -18,8 +18,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "instituicoes",  
 uniqueConstraints = @UniqueConstraint(columnNames={"name", "code"}),
@@ -43,47 +46,32 @@ public class Institution implements Serializable{
     private List<Admin> adminList = new ArrayList<>();
     
     public Institution() {
+
         this.name = "";
         this.code = "";
+    
     }
 
-    public Institution( @UniqueElements String name,
-            @UniqueElements String code) {
+    public Institution( 
+        @UniqueElements String name,
+        @UniqueElements String code
+    ) {
+
         this.name = name;
         this.code = code;
+    
     }
 
-    public Institution(UUID institutionId, @UniqueElements String name, @UniqueElements String code) {
+    public Institution(
+        UUID institutionId, 
+        @UniqueElements String name, 
+        @UniqueElements String code
+    ) {
+
         this.institutionId = institutionId;
         this.name = name;
         this.code = code;
-    }
-
-    public UUID getIdInstitution() {
-        return institutionId;
-    }
-
-    public void setIdInstitution(UUID institutionId) {
-        this.institutionId = institutionId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     
-    public String getCode() {
-        return code;
     }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    
 
 }

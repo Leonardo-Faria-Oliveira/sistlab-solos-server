@@ -13,7 +13,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "enderecos")
 public class Address implements Serializable {
@@ -47,25 +51,48 @@ public class Address implements Serializable {
     private Lab lab;
 
 
-    public Address(@NotNull String city, @NotNull String state, @NotNull String country, @NotNull Integer number,
-            Integer zipCode, LocalDateTime createdAt) {
+    public Address(
+        @NotNull String city, 
+        @NotNull String state, 
+        @NotNull String country, 
+        @NotNull Integer number,
+        Integer zipCode, 
+        LocalDateTime createdAt
+    ) {
+
         this.city = city;
         this.state = state;
         this.country = country;
         this.number = number;
         this.zipCode = zipCode;
         this.createdAt = createdAt;
+    
     }
 
-    public Address(@NotNull String city, @NotNull String state, @NotNull String country, @NotNull Integer number) {
+    public Address(
+        @NotNull String city, 
+        @NotNull String state,
+        @NotNull String country, 
+        @NotNull Integer number
+    ) {
+
         this.city = city;
         this.state = state;
         this.country = country;
         this.number = number;
+    
     }
 
-    public Address(UUID id, @NotNull String city, @NotNull String state, @NotNull String country,
-            @NotNull Integer number, Integer zipCode, LocalDateTime createdAt) {
+    public Address(
+        UUID id, 
+        @NotNull String city, 
+        @NotNull String state, 
+        @NotNull String country,
+        @NotNull Integer number, 
+        Integer zipCode, 
+        LocalDateTime createdAt
+    ) {
+
         this.id = id;
         this.city = city;
         this.state = state;
@@ -73,66 +100,11 @@ public class Address implements Serializable {
         this.number = number;
         this.zipCode = zipCode;
         this.createdAt = createdAt;
+    
     }
 
     public static long getSerialversionuid() {
         return serialVersionUID;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Integer getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(Integer zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
 }

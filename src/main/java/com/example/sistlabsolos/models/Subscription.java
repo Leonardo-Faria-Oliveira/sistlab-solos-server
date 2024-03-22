@@ -16,7 +16,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "assinaturas")
 public class Subscription implements Serializable{
@@ -52,15 +56,8 @@ public class Subscription implements Serializable{
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
-    public Lab getLab() {
-        return lab;
-    }
-
-    public void setLab(Lab lab) {
-        this.lab = lab;
-    }
-
     public Subscription() {
+
         this.usage = 0;
         this.lateDays = 0;
         this.createdAt = LocalDateTime.now();
@@ -68,15 +65,19 @@ public class Subscription implements Serializable{
         this.active = true;
         this.pricing = new Pricing();
         this.lab = new Lab();
+    
     }
 
-    public Subscription(Integer usage, 
-    @NotBlank Integer lateDays, 
-    LocalDateTime createdAt, 
-    boolean iPaid,
-    boolean active, 
-    Pricing pricing,
-    Lab lab) {
+    public Subscription(
+        Integer usage, 
+        @NotBlank Integer lateDays, 
+        LocalDateTime createdAt, 
+        boolean iPaid,
+        boolean active, 
+        Pricing pricing,
+        Lab lab
+    ) {
+
         this.usage = usage;
         this.lateDays = lateDays;
         this.createdAt = createdAt;
@@ -84,16 +85,20 @@ public class Subscription implements Serializable{
         this.active = active;
         this.pricing = pricing;
         this.lab = lab;
+    
     }
 
-    public Subscription(UUID subscriptionId, 
-    Integer usage, 
-    @NotBlank Integer lateDays, 
-    LocalDateTime createdAt,    
-    boolean iPaid, 
-    boolean active, 
-    Pricing pricing,
-    Lab lab) {
+    public Subscription(
+        UUID subscriptionId, 
+        Integer usage, 
+        @NotBlank Integer lateDays, 
+        LocalDateTime createdAt,    
+        boolean iPaid, 
+        boolean active, 
+        Pricing pricing,
+        Lab lab
+    ) {
+
         this.subscriptionId = subscriptionId;
         this.usage = usage;
         this.lateDays = lateDays;
@@ -102,65 +107,12 @@ public class Subscription implements Serializable{
         this.active = active;
         this.pricing = pricing;
         this.lab = lab;
+    
     }
 
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
 
-    public UUID getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    public void setSubscriptionId(UUID subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
-    public Integer getUsage() {
-        return usage;
-    }
-
-    public void setUsage(Integer usage) {
-        this.usage = usage;
-    }
-
-    public Integer getLateDays() {
-        return lateDays;
-    }
-
-    public void setLateDays(Integer lateDays) {
-        this.lateDays = lateDays;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setIsPaid(boolean iPaid) {
-        this.isPaid = iPaid;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Pricing getPricing() {
-        return pricing;
-    }
-
-    public void setPricing(Pricing pricing) {
-        this.pricing = pricing;
-    }
+    
 }

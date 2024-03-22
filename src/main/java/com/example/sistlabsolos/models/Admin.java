@@ -12,7 +12,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "administradores", 
 uniqueConstraints = @UniqueConstraint(columnNames={"name", "email", "contact"}),
@@ -29,66 +33,93 @@ public class Admin extends Account {
     @JoinColumn(name = "institution.institutionId")
     private Institution institution;
 
-    public Admin(UUID id, 
-    @NotBlank String name,
-    @NotBlank @UniqueElements String email, 
-    @NotBlank @UniqueElements String password, 
-    String contact, 
-    LocalDateTime createdAt, 
-    boolean active,
-    Role role, 
-    Institution institution) {
-        super(id, name, email, password, contact, createdAt, active);
+    public Admin(
+        UUID id, 
+        @NotBlank String name,
+        @NotBlank @UniqueElements String email, 
+        @NotBlank @UniqueElements String password, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        Role role, 
+        Institution institution
+    ) {
+
+        super(
+            id, 
+            name, 
+            email, 
+            password, 
+            contact, 
+            createdAt, 
+            active
+        );
         this.role = role;
         this.institution = institution;
+    
     }
 
-    public Admin(UUID id, 
-    @NotBlank String name,
-    @NotBlank @UniqueElements String email, 
-    String contact, 
-    LocalDateTime createdAt, 
-    boolean active,
-    Role role, 
-    Institution institution) {
-        super(id, name, email, contact, createdAt, active);
+    public Admin(
+        UUID id, 
+        @NotBlank String name,
+        @NotBlank @UniqueElements String email, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        Role role, 
+        Institution institution
+    ) {
+
+        super(
+            id, 
+            name, 
+            email, 
+            contact,
+            createdAt, 
+            active
+        );
         this.role = role;
         this.institution = institution;
+    
     }
 
-    public Admin(@NotBlank String name,
-    @NotBlank @UniqueElements String email, 
-    @NotBlank @UniqueElements String password, 
-    String contact, 
-    LocalDateTime createdAt, 
-    boolean active,
-    Role role, 
-    Institution institution) {
-        super(name, email, password, contact, createdAt, active);
+    public Admin(
+        @NotBlank String name,
+        @NotBlank @UniqueElements String email, 
+        @NotBlank @UniqueElements String password, 
+        String contact, 
+        LocalDateTime createdAt, 
+        boolean active,
+        Role role, 
+        Institution institution
+    ) {
+
+        super(
+            name, 
+            email, 
+            password, 
+            contact, 
+            createdAt, 
+            active
+        );
         this.role = role;
         this.institution = institution;
+    
     }
 
     public Admin() {
-        super("", "", "", "", LocalDateTime.now(), true);
+
+        super(
+            "",
+            "", 
+            "", 
+            "", 
+            LocalDateTime.now(), 
+            true
+        );
         this.role = new Role();
         this.institution = new Institution();
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
+    
     }
 
 

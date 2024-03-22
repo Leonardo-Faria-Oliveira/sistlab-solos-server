@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import com.example.sistlabsolos.dtos.auth.LogInRequestDto;
 import com.example.sistlabsolos.dtos.auth.LogInResponseDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeRequestDto;
 import com.example.sistlabsolos.dtos.employee.CreateEmployeeResponseDto;
-import com.example.sistlabsolos.dtos.employee.CreateTechnicalResponsibleRequestDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByEmailDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeeByIdDto;
 import com.example.sistlabsolos.dtos.employee.GetEmployeesDto;
@@ -67,6 +64,14 @@ public class EmployeeController {
                 
             }
 
+            if(role.getName().contains("echnical") && createEmployeeDto.crea() == null){
+                
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CreateEmployeeResponseDto(null, "Crea é obrigatorio")
+                );
+                
+            }
+
             Lab lab = this.labService.getLabByName(createEmployeeDto.labName());
     
             if(lab == null){
@@ -77,7 +82,7 @@ public class EmployeeController {
                 
             }
             
-            Employee res = this.employeeService.create(
+            Employee res = this.employeeService.create(new Employee(
                 createEmployeeDto.name(),
                 createEmployeeDto.email(),
                 Encrypter.encrypt(createEmployeeDto.password()),
@@ -87,7 +92,9 @@ public class EmployeeController {
                 createEmployeeDto.job(),
                 role,
                 lab
-            );
+            ));
+
+            
             if(res == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -112,70 +119,6 @@ public class EmployeeController {
 
         
 
-    }
-
-    @PostMapping("technical")
-      public ResponseEntity<CreateEmployeeResponseDto> createTechnicalResponsible(
-        @RequestBody @Valid CreateTechnicalResponsibleRequestDto createTechnicalResponsibleDto) throws BadRequestException{
-        
-        try {
-
-            Role role = this.roleService.getRoleByName(createTechnicalResponsibleDto.roleName());
-
-            if(role == null){
-                
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Role não existe")
-                );
-                
-            }
-
-            Lab lab = this.labService.getLabByName(createTechnicalResponsibleDto.labName());
-    
-            if(lab == null){
-                
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Laboratorio não existe")
-                );
-                
-            }
-            
-            Employee res = this.employeeService.createTechnicalResponsible(
-                createTechnicalResponsibleDto.name(),
-                createTechnicalResponsibleDto.email(),
-                Encrypter.encrypt(createTechnicalResponsibleDto.password()),
-                createTechnicalResponsibleDto.contact(),
-                LocalDateTime.now(),
-                false,
-                createTechnicalResponsibleDto.job(),
-                createTechnicalResponsibleDto.crea(),
-                role,
-                lab
-                
-            );
-            if(res == null){
-                
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CreateEmployeeResponseDto(null, "Funcionário já existe")
-                );
-                
-            }
-
-            res.setLab(null);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                new CreateEmployeeResponseDto(res, null)
-            );
-            
-        } catch (Exception e) {
-                      
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new CreateEmployeeResponseDto(null, e.getMessage())
-            );
-
-        }
-
-    
     }
 
     @GetMapping()
@@ -184,15 +127,13 @@ public class EmployeeController {
         
         try {
 
-            var employees = this.employeeService.getEmployees();
-        
+            var employees = this.employeeService.list();
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
             
             }
-
         
             return ResponseEntity.ok(
                 new GetEmployeesDto(employees, null)
@@ -217,14 +158,12 @@ public class EmployeeController {
         try {
 
             var employees = this.employeeService.getEmployeesByNameDesc();
-        
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
             
             }
-
         
             return ResponseEntity.ok(
                 new GetEmployeesDto(employees, null)

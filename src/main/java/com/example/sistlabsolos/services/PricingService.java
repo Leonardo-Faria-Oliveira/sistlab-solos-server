@@ -1,17 +1,18 @@
 package com.example.sistlabsolos.services;
 
-import java.time.LocalDateTime;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.PricingAbstract;
 import com.example.sistlabsolos.models.Pricing;
 import com.example.sistlabsolos.repositories.PricingRepository;
-
 
 @Service
 public class PricingService extends PricingAbstract {
@@ -19,39 +20,25 @@ public class PricingService extends PricingAbstract {
     @Autowired
     PricingRepository pricingRepository;
 
-    public Pricing create(
-        String name, 
-        String description,
-        Double value,
-        Integer reportsLimit,
-        Integer employeesLimit,
-        LocalDateTime createdAt,
-        boolean active
-    ){
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.SUPPORTS,
+        rollbackFor = {SQLException.class}
+    )
+    public Pricing create(Pricing pricing) throws SQLException{
 
-        var pricing = new Pricing(
-            name, 
-            description,
-            value,
-            reportsLimit,
-            employeesLimit,
-            createdAt,
-            active
-        );
-
-        var alreadyBeenInserted = this.pricingRepository.findByName(name);
-
+        var alreadyBeenInserted = this.pricingRepository.findByName(pricing.getName());
         if(alreadyBeenInserted == null){
             return this.pricingRepository.save(pricing);
 
         }
         return null;
         
-    
     }
 
     @Override
-    public List<Pricing> getPricings() {
+    public List<Pricing> list() {
 
         return this.pricingRepository.findAll();
 
@@ -71,6 +58,10 @@ public class PricingService extends PricingAbstract {
         
     }
 
-   
+    @Override
+    public Pricing update(UUID id, Pricing obj) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
 
 }
