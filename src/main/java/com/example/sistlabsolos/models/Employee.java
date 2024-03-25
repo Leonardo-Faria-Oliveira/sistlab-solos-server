@@ -2,6 +2,8 @@ package com.example.sistlabsolos.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.validator.constraints.UniqueElements;
@@ -10,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -37,6 +40,9 @@ public class Employee extends Account implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lab.labId")
     private Lab lab;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, orphanRemoval = false)
+    private List<ChemicalPhysicalReport> chemicalPhysicalReportList = new ArrayList<>();
 
     public Employee(
         @NotBlank String name, 
