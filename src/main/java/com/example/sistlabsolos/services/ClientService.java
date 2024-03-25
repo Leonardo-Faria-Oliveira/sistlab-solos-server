@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.ClientAbstract;
 import com.example.sistlabsolos.models.Client;
+import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.repositories.ClientRepository;
 
 
@@ -44,6 +45,12 @@ public class ClientService extends ClientAbstract {
 
     }
     
+    @Override
+    public List<Client> getClientByLab(Lab lab){
+        
+        return this.clientRepository.findByLabOrderByCreatedAtDesc(lab);
+     
+    }
 
     @Override
     public Optional<Client> getClientById(UUID clientId){
@@ -60,64 +67,64 @@ public class ClientService extends ClientAbstract {
     }
 
     @Override
-    public List<Client> getClientsByNameDesc() {
+    public List<Client> getClientsByNameDesc(Lab lab) {
         
-        return this.clientRepository.findByOrderByNameDesc();
-        
-    }
-
-    @Override
-    public List<Client> getClientsByNameAsc() {
-        
-        return this.clientRepository.findByOrderByNameAsc();
+        return this.clientRepository.findByLabOrderByNameDesc(lab);
         
     }
 
     @Override
-    public List<Client> getClientsByCityAsc() {
-
-        return this.clientRepository.findByOrderByCityAsc();
+    public List<Client> getClientsByNameAsc(Lab lab) {
+        
+        return this.clientRepository.findByLabOrderByNameAsc(lab);
         
     }
 
     @Override
-    public List<Client> getClientsByCityDesc() {
+    public List<Client> getClientsByCityAsc(Lab lab) {
 
-        return this.clientRepository.findByOrderByCityDesc();
+        return this.clientRepository.findByLabOrderByCityAsc(lab);
         
     }
 
     @Override
-    public List<Client> getClientsByNameSearch(String name) {
+    public List<Client> getClientsByCityDesc(Lab lab) {
 
-        return this.clientRepository.findTop3ByNameContainingIgnoreCase(name);
+        return this.clientRepository.findByLabOrderByCityDesc(lab);
         
     }
 
     @Override
-    public List<Client> getClientsByCitySearch(String city) {
+    public List<Client> getClientsByNameSearch(Lab lab, String name) {
 
-        return this.clientRepository.findTop3ByCityContainingIgnoreCase(city);
+        return this.clientRepository.findTop3ByLabAndNameContainingIgnoreCase(lab, name);
         
     }
 
     @Override
-    public List<Client> getClientsByEmailAsc() {
+    public List<Client> getClientsByCitySearch(Lab lab, String city) {
 
-        return this.clientRepository.findByOrderByEmailAsc();
+        return this.clientRepository.findTop3ByLabAndCityContainingIgnoreCase(lab, city);
         
     }
 
     @Override
-    public List<Client> getClientsByEmailDesc() {
+    public List<Client> getClientsByEmailAsc(Lab lab) {
+
+        return this.clientRepository.findByLabOrderByEmailAsc(lab);
+        
+    }
+
+    @Override
+    public List<Client> getClientsByEmailDesc(Lab lab) {
   
-        return this.clientRepository.findByOrderByEmailDesc();
+        return this.clientRepository.findByLabOrderByEmailDesc(lab);
         
     }
 
     @Override
-    public List<Client> getClientsByEmailSearch(String email) {
-        return this.clientRepository.findTop3ByEmailContainingIgnoreCase(email);
+    public List<Client> getClientsByEmailSearch(Lab lab, String email) {
+        return this.clientRepository.findTop3ByLabAndEmailContainingIgnoreCase(lab, email);
         
     }
 

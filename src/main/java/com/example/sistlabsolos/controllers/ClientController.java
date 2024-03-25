@@ -82,13 +82,23 @@ public class ClientController {
         
     }
 
-    @GetMapping()
-    public ResponseEntity<GetClientsDto> getClients(){
+    @GetMapping("{labName}")
+    public ResponseEntity<GetClientsDto> getClients(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.list(), null)
+                new GetClientsDto(this.clientService.getClientByLab(lab), null)
             );
             
         } catch (Exception e) {
@@ -100,13 +110,23 @@ public class ClientController {
 
     }
 
-    @GetMapping("name/desc")
-    public ResponseEntity<GetClientsDto> getClientsByNameDesc(){
+    @GetMapping("{labName}/name/desc")
+    public ResponseEntity<GetClientsDto> getClientsByNameDesc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameDesc(), null)
+                new GetClientsDto(this.clientService.getClientsByNameDesc(lab), null)
             );
             
         } catch (Exception e) {
@@ -117,13 +137,23 @@ public class ClientController {
 
     }
 
-    @GetMapping("name/asc")
-    public ResponseEntity<GetClientsDto> getClientsByNameAsc(){
+    @GetMapping("{labName}/name/asc")
+    public ResponseEntity<GetClientsDto> getClientsByNameAsc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameAsc(), null)
+                new GetClientsDto(this.clientService.getClientsByNameAsc(lab), null)
             );
             
         } catch (Exception e) {
@@ -134,13 +164,23 @@ public class ClientController {
 
     }
 
-    @GetMapping("city/desc")
-    public ResponseEntity<GetClientsDto> getClientsByCityDesc(){
+    @GetMapping("{labName}/city/desc")
+    public ResponseEntity<GetClientsDto> getClientsByCityDesc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCityDesc(), null)
+                new GetClientsDto(this.clientService.getClientsByCityDesc(lab), null)
             );
             
         } catch (Exception e) {
@@ -151,13 +191,23 @@ public class ClientController {
 
     }
 
-    @GetMapping("city/asc")
-    public ResponseEntity<GetClientsDto> getClientsByCityAsc(){
+    @GetMapping("{labName}/city/asc")
+    public ResponseEntity<GetClientsDto> getClientsByCityAsc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCityAsc(), null)
+                new GetClientsDto(this.clientService.getClientsByCityAsc(lab), null)
             );
             
         } catch (Exception e) {
@@ -168,15 +218,24 @@ public class ClientController {
 
     }
 
-    @GetMapping("search/name/{name}")
+    @GetMapping("{labName}/search/name/{name}")
     public ResponseEntity<GetClientsDto> getClientsByNameSearch(
+        @PathVariable(value = "labName") String labName,
         @PathVariable(value = "name") String name
     ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameSearch(name), null)
+                new GetClientsDto(this.clientService.getClientsByNameSearch(lab, name), null)
             );
             
         } catch (Exception e) {
@@ -189,15 +248,24 @@ public class ClientController {
 
     }
 
-    @GetMapping("search/city/{city}")
+    @GetMapping("{labName}/search/city/{city}")
     public ResponseEntity<GetClientsDto> getClientsByCitySearch(
+        @PathVariable(value = "labName") String labName,
         @PathVariable(value = "city") String city
     ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCitySearch(city), null)
+                new GetClientsDto(this.clientService.getClientsByCitySearch(lab, city), null)
             );
             
         } catch (Exception e) {
@@ -210,13 +278,23 @@ public class ClientController {
            
     }
 
-    @GetMapping("email/asc")
-    public ResponseEntity<GetClientsDto> getClientsByEmailAsc(){
+    @GetMapping("{labName}/email/asc")
+    public ResponseEntity<GetClientsDto> getClientsByEmailAsc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailAsc(), null)
+                new GetClientsDto(this.clientService.getClientsByEmailAsc(lab), null)
             );
             
         } catch (Exception e) {
@@ -228,15 +306,24 @@ public class ClientController {
     }
 
     
-    @GetMapping("search/email/{email}")
+    @GetMapping("{labName}/search/email/{email}")
     public ResponseEntity<GetClientsDto> getClientsByEmailSearch(
+        @PathVariable(value = "labName") String labName,
         @PathVariable(value = "email") String email
     ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailSearch(email), null)
+                new GetClientsDto(this.clientService.getClientsByEmailSearch(lab, email), null)
             );
             
         } catch (Exception e) {
@@ -249,13 +336,23 @@ public class ClientController {
            
     }
 
-    @GetMapping("email/desc")
-    public ResponseEntity<GetClientsDto> getClientsByEmailDesc(){
+    @GetMapping("{labName}/email/desc")
+    public ResponseEntity<GetClientsDto> getClientsByEmailDesc(
+        @PathVariable(value = "labName") String labName
+    ){
 
         try {
 
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetClientsDto(null, "Laboratorio não encontrado")
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailDesc(), null)
+                new GetClientsDto(this.clientService.getClientsByEmailDesc(lab), null)
             );
             
         } catch (Exception e) {
