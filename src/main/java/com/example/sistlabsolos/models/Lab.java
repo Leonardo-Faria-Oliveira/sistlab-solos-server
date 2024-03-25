@@ -71,6 +71,9 @@ public class Lab implements Serializable{
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Client> clientList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<ChemicalPhysicalReport> chemicalPhysicalReportList = new ArrayList<>();
+
     public Lab(
         @NotBlank String name, 
         @NotBlank @UniqueElements String email, 

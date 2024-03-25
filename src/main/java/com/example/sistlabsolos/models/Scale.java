@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,9 @@ public class Scale implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @NotBlank
+    private String propertyName;
 
     @NotNull
     private Double higher;
@@ -56,9 +60,10 @@ public class Scale implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Scale(@NotNull Double higher, @NotNull Double high, @NotNull Double medium, @NotNull Double low,
+    public Scale(@NotBlank String propertyName, @NotNull Double higher, @NotNull Double high, @NotNull Double medium, @NotNull Double low,
     @NotNull Double lower, LocalDateTime createdAt) {
         
+        this.propertyName = propertyName;
         this.higher = higher;
         this.high = high;
         this.medium = medium;

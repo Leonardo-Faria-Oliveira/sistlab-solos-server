@@ -100,7 +100,7 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public List<Employee> getEmployeesByNameSearch(Lab lab, String name) {
 
-        return this.employeeRepository.findTop3ByLabAndByNameContainingIgnoreCase(lab, name);
+        return this.employeeRepository.findTop3ByLabAndNameContainingIgnoreCase(lab, name);
     
     }
 
@@ -121,7 +121,7 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public List<Employee> getEmployeesByEmailSearch(Lab lab, String email) {
         
-        return this.employeeRepository.findTop3ByLabAndByEmailContainingIgnoreCase(lab, email);
+        return this.employeeRepository.findTop3ByLabAndEmailContainingIgnoreCase(lab, email);
     
     }
 
@@ -142,7 +142,7 @@ public class EmployeeService extends EmployeeAbstract {
     @Override
     public List<Employee> getEmployeesByJobSearch(Lab lab, String job) {
         
-        return this.employeeRepository.findTop3ByLabAndByJobContainingIgnoreCase(lab, job);
+        return this.employeeRepository.findTop3ByLabAndJobContainingIgnoreCase(lab, job);
     
     }
 

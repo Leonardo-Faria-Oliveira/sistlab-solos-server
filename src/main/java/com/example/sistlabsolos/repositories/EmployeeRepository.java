@@ -16,13 +16,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     public List<Employee> findByLabOrderByCreatedAtDesc(Lab lab);
     public List<Employee> findByLabOrderByNameDesc(Lab lab);
     public List<Employee> findByLabOrderByNameAsc(Lab lab);
-    public List<Employee> findTop3ByLabAndByNameContainingIgnoreCase(Lab lab, String name);
+    public List<Employee> findTop3ByLabAndNameContainingIgnoreCase(Lab lab, String name);
     public List<Employee> findByLabOrderByEmailDesc(Lab lab);
     public List<Employee> findByLabOrderByEmailAsc(Lab lab);
-    public List<Employee> findTop3ByLabAndByEmailContainingIgnoreCase(Lab lab, String email);
+    public List<Employee> findTop3ByLabAndEmailContainingIgnoreCase(Lab lab, String email);
     public List<Employee> findByLabOrderByJobDesc(Lab lab);
     public List<Employee> findByLabOrderByJobAsc(Lab lab);
-    public List<Employee> findTop3ByLabAndByJobContainingIgnoreCase(Lab lab, String job);
+    public List<Employee> findTop3ByLabAndJobContainingIgnoreCase(Lab lab, String job);
     Optional<Employee> findByEmail(String email);
 
 }

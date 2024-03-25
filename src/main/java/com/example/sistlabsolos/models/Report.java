@@ -32,6 +32,9 @@ public class Report implements Serializable {
     private String landName;
 
     @NotBlank
+    private String city;
+
+    @NotBlank
     private String field;
 
     @NotNull

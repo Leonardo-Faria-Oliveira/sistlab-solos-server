@@ -161,6 +161,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         if(path.contains("/v1/institution") ||
         path.equals("/v1/institutions") ||
         path.contains("/v1/role/") ||
+        path.contains("/v1/scale/") ||
         path.equals("/v1/roles") ||
         path.contains("/v1/admin") || 
         path.contains("/v1/admin/email") ||
@@ -179,6 +180,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         if(path.contains("/v1/employee") ||
         path.equals("/v1/employees") ||
         path.contains("/v1/technical") ||
+        path.contains("propertyName") ||
         path.equals("/v1/technical/access") ||
         path.contains("/v1/employee/email") ||
         path.contains("/v1/subscription") ||
@@ -197,6 +199,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         if(path.contains("/v1/employee") ||
         path.contains("/v1/employee/email") ||
+        path.contains("propertyName") ||
         path.contains("/v1/client") || 
         path.equals("/v1/clients"))
             return true;

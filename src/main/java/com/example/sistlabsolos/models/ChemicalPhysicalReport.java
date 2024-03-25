@@ -49,6 +49,10 @@ public class ChemicalPhysicalReport extends Report {
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lab.labId")
+    private Lab lab;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee.id", insertable=false, updatable=false)
     private Employee technicalResponsible;
 
