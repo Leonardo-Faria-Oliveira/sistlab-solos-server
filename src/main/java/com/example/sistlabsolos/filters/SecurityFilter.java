@@ -20,8 +20,6 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Autowired
     RoleService roleService;
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -160,6 +158,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         // System.out.println("estou q");
         if(path.contains("/v1/institution") ||
         path.equals("/v1/institutions") ||
+        path.contains("/v1/phosphorValue") ||
         path.contains("/v1/role/") ||
         path.contains("/v1/scale/") ||
         path.equals("/v1/roles") ||
@@ -180,6 +179,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         if(path.contains("/v1/employee") ||
         path.equals("/v1/employees") ||
         path.contains("/v1/technical") ||
+        path.contains("/v1/phosphorValue/lab") ||
         path.contains("propertyName") ||
         path.equals("/v1/technical/access") ||
         path.contains("/v1/employee/email") ||

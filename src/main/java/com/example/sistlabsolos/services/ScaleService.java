@@ -52,6 +52,8 @@ public class ScaleService extends ScaleAbstract  {
         scale.get().setLow(obj.getLow());
         scale.get().setLower(obj.getLower());
 
+        this.scaleRepository.save(scale.get());
+
         return scale.get();
         
     }

@@ -62,6 +62,9 @@ public class Lab implements Serializable{
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.LAZY)
     private Address address;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.EAGER)
+    private List<PhosphorValue> phosphorValueList;
+
     @OneToMany(mappedBy = "lab", fetch = FetchType.EAGER, orphanRemoval = false)
     private List<Subscription> subscriptionList = new ArrayList<>();
 

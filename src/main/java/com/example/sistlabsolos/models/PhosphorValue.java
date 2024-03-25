@@ -7,11 +7,15 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -62,13 +66,19 @@ public class PhosphorValue implements Serializable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "chemicalPhysicalReport.reportId")
     private ChemicalPhysicalReport chemicalPhysicalReport;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lab.labId")
+    private Lab lab;
+
     public PhosphorValue(UUID id, @NotBlank Double x1, @NotBlank Double x2, @NotNull Double x3, @NotNull Double x4,
             @NotNull Double x5, @NotBlank Double y1, @NotBlank Double y2, @NotNull Double y3, @NotNull Double y4,
-            @NotNull Double y5, @NotNull Double absorbanceValue, LocalDateTime createdAt) {
+            @NotNull Double y5, @NotNull Double absorbanceValue, LocalDateTime createdAt, Lab lab) {
         this.id = id;
         this.x1 = x1;
         this.x2 = x2;
@@ -80,13 +90,14 @@ public class PhosphorValue implements Serializable {
         this.y3 = y3;
         this.y4 = y4;
         this.y5 = y5;
+        this.lab = lab;
         this.absorbanceValue = absorbanceValue;
         this.createdAt = createdAt;
     }
 
     public PhosphorValue(@NotBlank Double x1, @NotBlank Double x2, @NotNull Double x3, @NotNull Double x4,
     @NotNull Double x5, @NotBlank Double y1, @NotBlank Double y2, @NotNull Double y3, @NotNull Double y4,
-    @NotNull Double y5, @NotNull Double absorbanceValue, LocalDateTime createdAt) {
+    @NotNull Double y5, LocalDateTime createdAt, Lab lab) {
     
         this.x1 = x1;
         this.x2 = x2;
@@ -98,7 +109,7 @@ public class PhosphorValue implements Serializable {
         this.y3 = y3;
         this.y4 = y4;
         this.y5 = y5;
-        this.absorbanceValue = absorbanceValue;
+        this.lab = lab;
         this.createdAt = createdAt;
 
     }
@@ -140,6 +151,7 @@ public class PhosphorValue implements Serializable {
         this.y3 = 0.0;
         this.y4 = 0.0;
         this.y5 = 0.0;
+        this.lab = new Lab();
         this.absorbanceValue = 0.0;
 
     }
