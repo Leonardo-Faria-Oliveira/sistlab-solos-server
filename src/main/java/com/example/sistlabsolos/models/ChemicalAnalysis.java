@@ -4,11 +4,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +26,7 @@ public class ChemicalAnalysis implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private UUID id;
 
     @NotNull
@@ -52,13 +53,15 @@ public class ChemicalAnalysis implements Serializable {
     @NotNull
     private Double phosphorAbsorbance;
 
-    @OneToOne
-    @JoinColumn(name = "chemicalPhysicalReport.reportId")
+    @NotNull
+    private Double potencialAcidity;
+
+    @OneToOne(mappedBy = "chemicalAnalysis")
     private ChemicalPhysicalReport chemicalPhysicalReport;
 
     public ChemicalAnalysis(@NotNull UUID id, @NotNull Double ph, @NotNull Double sulfur, @NotNull Double potassium,
             @NotNull Double calcium, @NotNull Double magnesium, @NotNull Double aluminum,
-            @NotNull Double sodium, @NotNull Double phosphorAbsorbance) {
+            @NotNull Double sodium, @NotNull Double phosphorAbsorbance, @NotNull Double potencialAcidity) {
         
         this.id = id;
         this.ph = ph;
@@ -69,11 +72,12 @@ public class ChemicalAnalysis implements Serializable {
         this.aluminum = aluminum;
         this.sodium = sodium;
         this.phosphorAbsorbance = phosphorAbsorbance;
+        this.potencialAcidity = potencialAcidity;
     }
 
     public ChemicalAnalysis(@NotNull Double ph, @NotNull Double sulfur, @NotNull Double potassium,
     @NotNull Double calcium, @NotNull Double magnesium, @NotNull Double aluminum,
-    @NotNull Double sodium, @NotNull Double phosphorAbsorbance) {
+    @NotNull Double sodium, @NotNull Double phosphorAbsorbance, @NotNull Double potencialAcidity) {
         this.ph = ph;
         this.sulfur = sulfur;
         this.potassium = potassium;
@@ -82,6 +86,7 @@ public class ChemicalAnalysis implements Serializable {
         this.aluminum = aluminum;
         this.sodium = sodium;
         this.phosphorAbsorbance = phosphorAbsorbance;
+        this.potencialAcidity = potencialAcidity;
     }
 
     public ChemicalAnalysis() {
@@ -94,6 +99,7 @@ public class ChemicalAnalysis implements Serializable {
         this.aluminum = 0.0;
         this.sodium = 0.0;
         this.phosphorAbsorbance = 0.0;
+        this.potencialAcidity= 0.0;
 
     }
 

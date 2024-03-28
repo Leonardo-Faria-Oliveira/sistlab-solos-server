@@ -4,11 +4,11 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +26,7 @@ public class Micronutrients implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private UUID id;
 
     @NotNull
@@ -43,8 +44,7 @@ public class Micronutrients implements Serializable{
     @NotNull
     private Double zinc;
 
-    @OneToOne
-    @JoinColumn(name = "chemicalPhysicalReport.reportId")
+    @OneToOne(mappedBy = "micronutrients")
     private ChemicalPhysicalReport chemicalPhysicalReport;
 
     public Micronutrients(UUID id, @NotNull Double boron, @NotNull Double copper, @NotNull Double iron,

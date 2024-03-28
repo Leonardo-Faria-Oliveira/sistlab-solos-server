@@ -363,7 +363,7 @@ public class ClientController {
 
     }
 
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<GetClientByIdDto> getClientById(
         @PathVariable(value = "id") UUID id
     ){

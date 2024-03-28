@@ -53,10 +53,11 @@ public class Report implements Serializable {
     }
 
     public Report(@NotBlank String landName, @NotBlank String field, @NotNull Double depth,
-    LocalDateTime createdAt) {
+    LocalDateTime createdAt,String city) {
 
         this.landName = landName;
         this.field = field;
+        this.city = city;
         this.depth = depth;
         this.createdAt = createdAt;
         

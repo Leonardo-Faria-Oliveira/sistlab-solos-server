@@ -5,9 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.hibernate.validator.constraints.UniqueElements;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -41,8 +39,8 @@ public class Employee extends Account implements Serializable{
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, orphanRemoval = false)
-    private List<ChemicalPhysicalReport> chemicalPhysicalReportList = new ArrayList<>();
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<Employee_Reports> reportsList = new ArrayList<>();
 
     public Employee(
         @NotBlank String name, 
@@ -97,6 +95,7 @@ public class Employee extends Account implements Serializable{
         this.job = "";
         this.role = new Role();
         this.lab = new Lab();
+        this.reportsList.add(null);
 
     }
 
