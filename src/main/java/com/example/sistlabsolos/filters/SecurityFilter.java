@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// @Component
+@Component
 public class SecurityFilter extends OncePerRequestFilter{
 
     @Autowired
@@ -180,6 +180,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         path.equals("/v1/employees") ||
         path.contains("/v1/technical") ||
         path.contains("/v1/phosphorValue/lab") ||
+        path.contains("report") ||
         path.contains("propertyName") ||
         path.equals("/v1/technical/access") ||
         path.contains("/v1/employee/email") ||
@@ -199,6 +200,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         if(path.contains("/v1/employee") ||
         path.contains("/v1/employee/email") ||
+        (path.contains("report") && path.contains("employee")) ||
         path.contains("propertyName") ||
         path.contains("/v1/client") || 
         path.equals("/v1/clients"))
