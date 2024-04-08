@@ -142,6 +142,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
         
@@ -182,6 +183,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
         
@@ -222,6 +224,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -263,6 +266,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -304,6 +308,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -345,6 +350,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -386,6 +392,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -428,6 +435,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -471,6 +479,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -514,6 +523,7 @@ public class EmployeeController {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -534,7 +544,7 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
         @PathVariable(value = "id") UUID id
     ){
@@ -651,6 +661,7 @@ public class EmployeeController {
 
             employee.get().setPassword(null);
             employee.get().setLab(null);
+            employee.get().setReportsList(null);
             
             return ResponseEntity.status(HttpStatus.OK).body(
                 new GetEmployeeByEmailDto(

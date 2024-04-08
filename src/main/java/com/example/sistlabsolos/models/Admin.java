@@ -23,12 +23,10 @@ uniqueConstraints = @UniqueConstraint(columnNames={"name", "email", "contact"}),
 indexes = @Index(columnList = "name"))
 public class Admin extends Account {
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role.roleId")
     private Role role;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution.institutionId")
     private Institution institution;

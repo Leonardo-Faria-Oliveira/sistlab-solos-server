@@ -97,8 +97,15 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientByLab(lab);
+            for(Client client : clientList){
+
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientByLab(lab), null)
+                new GetClientsDto(clientList, null)
             );
             
         } catch (Exception e) {
@@ -125,8 +132,15 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByNameDesc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameDesc(lab), null)
+                new GetClientsDto(clientList, null)
             );
             
         } catch (Exception e) {
@@ -152,8 +166,15 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByNameAsc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameAsc(lab), null)
+                new GetClientsDto(clientList, null)
             );
             
         } catch (Exception e) {
@@ -179,9 +200,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByCityDesc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCityDesc(lab), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -206,9 +235,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByCityAsc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCityAsc(lab), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -234,9 +271,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByNameSearch(lab, name);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByNameSearch(lab, name), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -264,9 +309,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByCitySearch(lab, city);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByCitySearch(lab, city), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -293,9 +346,18 @@ public class ClientController {
                 );
             }
 
+            
+            var clientList = this.clientService.getClientsByEmailAsc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailAsc(lab), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -322,9 +384,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByEmailSearch(lab, email);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailSearch(lab, email), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             
@@ -351,9 +421,17 @@ public class ClientController {
                 );
             }
 
+            var clientList = this.clientService.getClientsByEmailDesc(lab);
+            for(Client client : clientList){
+                
+                client.setChemicalPhysicalReportList(null);
+            
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(
-                new GetClientsDto(this.clientService.getClientsByEmailDesc(lab), null)
+                new GetClientsDto(clientList, null)
             );
+
             
         } catch (Exception e) {
             

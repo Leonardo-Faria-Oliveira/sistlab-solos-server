@@ -107,6 +107,7 @@ public class AdminController {
             for (Admin admin : admins) {
 
                 admin.setPassword(null);
+                
             
             }
 
@@ -224,11 +225,13 @@ public class AdminController {
                 );
 
             }
-            else{
 
-                admin.get().setPassword(null);
-            
-            }
+           
+            admin.get().setPassword(null);
+            admin.get().setInstitution(null);
+            admin.get().setRole(null);
+
+            admin.get().setRole(new Role("admin"));
 
             return ResponseEntity.status(HttpStatus.OK).body(
                 new GetAdminByEmailDto(admin, null)  
