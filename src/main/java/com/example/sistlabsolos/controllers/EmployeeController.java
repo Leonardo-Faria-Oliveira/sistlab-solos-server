@@ -123,7 +123,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}")
     public ResponseEntity<GetEmployeesDto> getEmployees(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -164,7 +164,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/name/desc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByNameDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -204,7 +204,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/name/asc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByNameAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -246,7 +246,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/email/desc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByEmailDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -288,7 +288,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/email/asc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByEmailAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -330,7 +330,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/job/desc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByJobDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -372,7 +372,7 @@ public class EmployeeController {
 
     @GetMapping("{labName}/job/asc")
     public ResponseEntity<GetEmployeesDto> getEmployeesByJobAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         
@@ -414,8 +414,8 @@ public class EmployeeController {
 
     @GetMapping("{labName}/search/name/{name}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByNameSearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "name") String name
+        @PathVariable String labName,
+        @PathVariable String name
     ){
 
         
@@ -458,8 +458,8 @@ public class EmployeeController {
     
     @GetMapping("{labName}/search/email/{email}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByEmailSearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "email") String email
+        @PathVariable String labName,
+        @PathVariable String email
     ){
 
         
@@ -502,8 +502,8 @@ public class EmployeeController {
     
     @GetMapping("{labName}/search/job/{job}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByJobSearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "job") String job
+        @PathVariable String labName,
+        @PathVariable String job
     ){
 
         
@@ -546,7 +546,7 @@ public class EmployeeController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -642,7 +642,7 @@ public class EmployeeController {
 
     @GetMapping("/email/{email}")
     public ResponseEntity<GetEmployeeByEmailDto> getEmployeeByEmail(
-        @PathVariable(value = "email") String email
+        @PathVariable String email
     ){
 
 
@@ -686,7 +686,7 @@ public class EmployeeController {
 
     @PatchMapping("/first-access/{email}")
     public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
-        @PathVariable(value = "email") String email,
+        @PathVariable String email,
         @RequestBody @Valid String password
     ){
 
@@ -733,7 +733,7 @@ public class EmployeeController {
     
     @PatchMapping("/status/{id}")
     public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
-        @PathVariable(value = "id") UUID id,    
+        @PathVariable UUID id,    
     @RequestBody @Valid boolean status
     ){
 

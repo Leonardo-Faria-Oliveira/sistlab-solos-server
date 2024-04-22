@@ -51,7 +51,7 @@ public class ChemicalPhysicalReportController {
 
     @PostMapping("client/{clientId}/report/chemical_physical")
       public ResponseEntity<CreateChemicalPhysicalReportResponseDto> createChemicalPhysicalReport(
-        @PathVariable(value = "clientId") UUID clientId,  
+        @PathVariable UUID clientId,  
       @RequestBody @Valid CreateChemicalPhysicalReportRequestDto createChemicalPhysicalReportDto){
         
         try {
@@ -168,7 +168,9 @@ public class ChemicalPhysicalReportController {
                     technicalResponsible.get(),
                     client.get(),
                     lab,
-                    micronutrients
+                    micronutrients,
+                    createChemicalPhysicalReportDto.lat(),
+                    createChemicalPhysicalReportDto.lng()
                 )
             );
             
@@ -201,7 +203,7 @@ public class ChemicalPhysicalReportController {
 
     @GetMapping("lab/{labName}/reports")
     public ResponseEntity<GetChemicalPhysicalReportsDto> getChemicalPhysicalReports(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -259,8 +261,8 @@ public class ChemicalPhysicalReportController {
     
     @GetMapping("lab/{labName}/report/{reportId}")
     public ResponseEntity<GetChemicalPhysicalReportByIdDto> getChemicalPhysicalReportsByNameDesc(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "reportId") UUID reportId
+        @PathVariable String labName,
+        @PathVariable UUID reportId
     ){
 
         try {
@@ -316,7 +318,7 @@ public class ChemicalPhysicalReportController {
 
     @GetMapping("{labName}/landname/asc")
     public ResponseEntity<GetChemicalPhysicalReportsDto> getChemicalPhysicalReportsByNameAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {

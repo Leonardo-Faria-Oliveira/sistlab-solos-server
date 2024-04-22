@@ -29,12 +29,13 @@ public class PhosphorValueController {
     @Autowired
     LabService labService;
 
-    @PostMapping()
+    @PostMapping("lab/{labName}/create")
       public ResponseEntity<CreatePhosphorValueResponseDto> createPhosphorValue(
+        @PathVariable String labName,
         @RequestBody @Valid CreatePhosphorValueRequestDto createPhosphorValueDto){
         try {
 
-            Lab lab = this.labService.getLabByName(createPhosphorValueDto.labName());
+            Lab lab = this.labService.getLabByName(labName);
             if(lab == null){
                 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -57,7 +58,8 @@ public class PhosphorValueController {
                 createPhosphorValueDto.Y4(),
                 createPhosphorValueDto.Y5(),
                 LocalDateTime.now(),
-                lab
+                lab,
+                createPhosphorValueDto.absorbanceValue()
             );
 
             var phosphorAbsorbance = this.phosphorValueService.calculatePhosphorAbsorbance(
@@ -77,7 +79,8 @@ public class PhosphorValueController {
                     )
                 );
             }
-
+            res.setChemicalPhysicalReportsList(null);
+            res.setLab(null);
             return ResponseEntity.status(HttpStatus.CREATED).body(
                 new CreatePhosphorValueResponseDto(res, null)
             );
@@ -95,7 +98,7 @@ public class PhosphorValueController {
 
     @GetMapping("lab/{labName}")
     public ResponseEntity<GetLastPhosphorValueDto> getLastPhosphorValue(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try 

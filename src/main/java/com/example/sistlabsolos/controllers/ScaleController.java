@@ -87,7 +87,7 @@ public class ScaleController {
 
     @GetMapping("/propertyName/{propertyName}")
     public ResponseEntity<GetScaleByIdDto> getScaleByPropertyName(
-        @PathVariable(value = "propertyName") String propertyName
+        @PathVariable String propertyName
     ){
 
         try {
@@ -115,7 +115,7 @@ public class ScaleController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetScaleByIdDto> getScaleById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {

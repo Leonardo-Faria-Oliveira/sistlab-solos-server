@@ -76,7 +76,7 @@ public class PricingController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetPricingByIdDto> getPricingById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {

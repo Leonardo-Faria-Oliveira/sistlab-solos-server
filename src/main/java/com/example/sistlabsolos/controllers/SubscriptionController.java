@@ -113,7 +113,7 @@ public class SubscriptionController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetSubscriptionByIdDto> getSubscriptionById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -141,7 +141,7 @@ public class SubscriptionController {
 
     @GetMapping("/lab/{labId}")
     public ResponseEntity<GetSubscriptionsDto> getSubscriptionsByLabId(
-        @PathVariable(value = "labId") UUID labId
+        @PathVariable UUID labId
     ){
 
         var lab = this.labService.getLabById(labId);

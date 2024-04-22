@@ -84,7 +84,7 @@ public class ClientController {
 
     @GetMapping("{labName}")
     public ResponseEntity<GetClientsDto> getClients(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -119,7 +119,7 @@ public class ClientController {
 
     @GetMapping("{labName}/name/desc")
     public ResponseEntity<GetClientsDto> getClientsByNameDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -153,7 +153,7 @@ public class ClientController {
 
     @GetMapping("{labName}/name/asc")
     public ResponseEntity<GetClientsDto> getClientsByNameAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -187,7 +187,7 @@ public class ClientController {
 
     @GetMapping("{labName}/city/desc")
     public ResponseEntity<GetClientsDto> getClientsByCityDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -222,7 +222,7 @@ public class ClientController {
 
     @GetMapping("{labName}/city/asc")
     public ResponseEntity<GetClientsDto> getClientsByCityAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -257,8 +257,8 @@ public class ClientController {
 
     @GetMapping("{labName}/search/name/{name}")
     public ResponseEntity<GetClientsDto> getClientsByNameSearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "name") String name
+        @PathVariable String labName,
+        @PathVariable String name
     ){
 
         try {
@@ -295,8 +295,8 @@ public class ClientController {
 
     @GetMapping("{labName}/search/city/{city}")
     public ResponseEntity<GetClientsDto> getClientsByCitySearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "city") String city
+        @PathVariable String labName,
+        @PathVariable String city
     ){
 
         try {
@@ -333,7 +333,7 @@ public class ClientController {
 
     @GetMapping("{labName}/email/asc")
     public ResponseEntity<GetClientsDto> getClientsByEmailAsc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -370,8 +370,8 @@ public class ClientController {
     
     @GetMapping("{labName}/search/email/{email}")
     public ResponseEntity<GetClientsDto> getClientsByEmailSearch(
-        @PathVariable(value = "labName") String labName,
-        @PathVariable(value = "email") String email
+        @PathVariable String labName,
+        @PathVariable String email
     ){
 
         try {
@@ -408,7 +408,7 @@ public class ClientController {
 
     @GetMapping("{labName}/email/desc")
     public ResponseEntity<GetClientsDto> getClientsByEmailDesc(
-        @PathVariable(value = "labName") String labName
+        @PathVariable String labName
     ){
 
         try {
@@ -443,7 +443,7 @@ public class ClientController {
 
     @GetMapping("id/{id}")
     public ResponseEntity<GetClientByIdDto> getClientById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {

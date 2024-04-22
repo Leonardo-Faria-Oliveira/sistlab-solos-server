@@ -129,7 +129,7 @@ public class AdminController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetAdminByIdDto> getAdminById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -211,7 +211,7 @@ public class AdminController {
 
     @GetMapping("email/{email}")
     public ResponseEntity<GetAdminByEmailDto> getAdminByEmail(
-        @PathVariable(value = "email") String email
+        @PathVariable String email
     ){
 
         try {

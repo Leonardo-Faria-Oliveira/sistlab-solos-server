@@ -4,9 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreatePhosphorValueRequestDto(
 
-    @NotNull(message = "nome do laboratorio é necessario")
-    String labName,
-
     @NotNull(message = "x1 é necessario")
     Double X1,
 
@@ -35,6 +32,9 @@ public record CreatePhosphorValueRequestDto(
     Double Y4,
 
     @NotNull(message = "y5 é necessario")
-    Double Y5
+    Double Y5,
+
+    @NotNull(message = "Valor de absorbancia é necessário")
+    Double absorbanceValue
 
 ) {}

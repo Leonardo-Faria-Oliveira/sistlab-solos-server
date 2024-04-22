@@ -3,7 +3,6 @@ package com.example.sistlabsolos.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.hibernate.validator.constraints.UniqueElements;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;

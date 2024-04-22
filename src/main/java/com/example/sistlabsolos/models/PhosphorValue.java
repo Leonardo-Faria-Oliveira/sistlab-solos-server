@@ -94,7 +94,7 @@ public class PhosphorValue implements Serializable {
 
     public PhosphorValue(@NotBlank Double x1, @NotBlank Double x2, @NotNull Double x3, @NotNull Double x4,
     @NotNull Double x5, @NotBlank Double y1, @NotBlank Double y2, @NotNull Double y3, @NotNull Double y4,
-    @NotNull Double y5, LocalDateTime createdAt, Lab lab) {
+    @NotNull Double y5, LocalDateTime createdAt, Lab lab, @NotNull Double absorbanceValue) {
     
         this.x1 = x1;
         this.x2 = x2;
@@ -107,6 +107,7 @@ public class PhosphorValue implements Serializable {
         this.y4 = y4;
         this.y5 = y5;
         this.lab = lab;
+        this.absorbanceValue = absorbanceValue;
         this.createdAt = createdAt;
 
     }

@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -48,11 +49,14 @@ public class Lab implements Serializable{
 
     private String contact;
 
-    private String header1;
+    @Lob
+    private byte[] header1;
 
-    private String header2;
+    @Lob
+    private byte[] header2;
 
-    private String header3;
+    @Lob
+    private byte[] header3;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -152,9 +156,9 @@ public class Lab implements Serializable{
         LocalDateTime createdAt, 
         boolean active, 
         @NotBlank Address address,
-        String header1,
-        String header2,
-        String header3
+        byte[] header1,
+        byte[] header2,
+        byte[] header3
     ) {
 
         this.labId = labId;

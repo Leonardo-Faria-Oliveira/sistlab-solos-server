@@ -17,6 +17,12 @@ public record CreateChemicalPhysicalReportRequestDto(
     @NotBlank(message = "nome da propriedade é necessario")
     String landName,
 
+    @NotNull(message = "latitude da amostra coletada é necessaria")
+    Double lat,
+
+    @NotNull(message = "longitude da amostra coletada é necessaria")
+    Double lng,
+
     @NotBlank(message = "cidade é necessario")
     String city,
 

@@ -1,24 +1,31 @@
 package com.example.sistlabsolos.controllers;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import com.example.sistlabsolos.dtos.lab.AddHeadersResponseDto;
 import com.example.sistlabsolos.dtos.lab.CreateLabRequestDto;
 import com.example.sistlabsolos.dtos.lab.CreateLabResponseDto;
 import com.example.sistlabsolos.dtos.lab.GetLabByIdDto;
 import com.example.sistlabsolos.dtos.lab.GetLabsDto;
 import com.example.sistlabsolos.models.Address;
 import com.example.sistlabsolos.models.Employee;
+import com.example.sistlabsolos.models.Headers;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.models.Role;
 import com.example.sistlabsolos.models.Subscription;
@@ -26,7 +33,6 @@ import com.example.sistlabsolos.services.LabService;
 import com.example.sistlabsolos.services.PricingService;
 import com.example.sistlabsolos.services.RoleService;
 import com.example.sistlabsolos.services.SubscriptionService;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -151,7 +157,12 @@ public class LabController {
 
             for (Lab lab : labs) {
 
+              
+                lab.setSubscriptionList(null);
+                lab.setChemicalPhysicalReportList(null);
                 lab.setEmployeeList(null);
+                lab.setClientList(null);
+                lab.setPhosphorValueList(null);
 
             }
 
@@ -170,7 +181,7 @@ public class LabController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetLabByIdDto> getLabById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -202,5 +213,42 @@ public class LabController {
 
         
     }
-   
+
+    @Async
+    @PutMapping(value="{labName}/headers")
+    public ResponseEntity<AddHeadersResponseDto> addReportHeaders(
+        @PathVariable String labName,
+        @RequestParam(required = false) MultipartFile header1,
+        @RequestParam(required = false) MultipartFile header2,
+        @RequestParam(required = false) MultipartFile header3
+    ) throws IOException{
+
+
+        try {
+      
+            this.labService.addReportHeaders(labName, 
+                new Headers(
+                    header1 == null ? null : header1.getBytes(), 
+                    header2 == null ? null : header2.getBytes(), 
+                    header3 == null ? null : header3.getBytes()
+                )
+            );
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new AddHeadersResponseDto(new Lab(), null)
+            );
+            
+            
+        } catch (Exception e) {
+            
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new AddHeadersResponseDto(null, e.getMessage())
+                );
+            
+        }
+
+
+        
+    }
+
 }

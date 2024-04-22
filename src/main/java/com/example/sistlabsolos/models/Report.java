@@ -40,27 +40,55 @@ public class Report implements Serializable {
     @NotNull
     private Double depth;
 
+    private Double lat;
+
+    private Double lng;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     public Report(UUID reportId, @NotBlank String landName, @NotBlank String field, @NotNull Double depth,
-            LocalDateTime createdAt) {
+            LocalDateTime createdAt, Double lat, Double lng) {
         this.reportId = reportId;
         this.landName = landName;
         this.field = field;
         this.depth = depth;
         this.createdAt = createdAt;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Report(@NotBlank String landName, @NotBlank String field, @NotNull Double depth,
-    LocalDateTime createdAt,String city) {
+    LocalDateTime createdAt, String city, Double lat, Double lng) {
 
         this.landName = landName;
         this.field = field;
         this.city = city;
         this.depth = depth;
         this.createdAt = createdAt;
+        this.lat = lat;
+        this.lng = lng;
         
+    }
+
+    public Report(@NotBlank String landName, @NotBlank String field, @NotNull Double depth,
+    LocalDateTime createdAt, String city) {
+
+        this.landName = landName;
+        this.field = field;
+        this.city = city;
+        this.depth = depth;
+        this.createdAt = createdAt;
+
+    }
+
+    public Report(UUID reportId, @NotBlank String landName, @NotBlank String field, @NotNull Double depth,
+        LocalDateTime createdAt) {
+    this.reportId = reportId;
+    this.landName = landName;
+    this.field = field;
+    this.depth = depth;
+    this.createdAt = createdAt;
     }
     
 }

@@ -87,6 +87,29 @@ public class ChemicalPhysicalReport extends Report {
     
     }
 
+    public ChemicalPhysicalReport(UUID reportId, @NotBlank String landName, @NotNull Double lat, @NotNull Double lng, @NotBlank String field,
+    @NotNull Double depth, LocalDateTime createdAt, @NotNull Double acidity, Double phosphor, Double ctc,
+    Double bases, Saturation saturation, PhysicalAnalysis physicalAnalysis, ChemicalAnalysis chemicalAnalysis,
+    PhosphorValue phosphorValue, Micronutrients micronutrients, Employee employee,
+    Employee technicalResponsible, Client client, Lab lab) {
+
+        super(reportId, landName, field, depth, createdAt, lat, lng);
+        this.acidity = acidity;
+        this.phosphor = phosphor;
+        this.ctc = ctc;
+        this.bases = bases;
+        this.saturation = saturation;
+        this.physicalAnalysis = physicalAnalysis;
+        this.chemicalAnalysis = chemicalAnalysis;
+        this.phosphorValue = phosphorValue;
+        this.micronutrients = micronutrients;
+        this.client = client;
+        this.lab = lab;
+        
+
+
+    }
+
     public ChemicalPhysicalReport(
         @NotBlank String landName, 
         @NotBlank String city,
@@ -109,6 +132,47 @@ public class ChemicalPhysicalReport extends Report {
         ) {
 
         super(landName, field, depth, createdAt, city);
+        this.acidity = acidity;
+        this.phosphor = phosphor;
+        this.ctc = ctc;
+        this.bases = bases;
+        this.saturation = saturation;
+        this.physicalAnalysis = physicalAnalysis;
+        this.chemicalAnalysis = chemicalAnalysis;
+        this.phosphorValue = phosphorValue;
+        this.micronutrients = micronutrients;
+        this.client = client;
+        this.lab = lab;
+        this.employeesList.add(new Employee_Reports(employee, null));
+        this.employeesList.add(new Employee_Reports(technicalResponsible, null));
+        
+
+    }
+
+    public ChemicalPhysicalReport(
+        @NotBlank String landName, 
+        @NotBlank String city,
+        @NotBlank String field,
+        @NotNull Double depth, 
+        LocalDateTime createdAt, 
+        @NotNull Double acidity, 
+        @NotNull Double phosphor, 
+        @NotNull Double ctc,
+        @NotNull Double bases, 
+        @NotNull Saturation saturation, 
+        @NotNull PhysicalAnalysis physicalAnalysis, 
+        @NotNull ChemicalAnalysis chemicalAnalysis,
+        @NotNull PhosphorValue phosphorValue, 
+        @NotNull Employee employee,
+        @NotNull Employee technicalResponsible, 
+        @NotNull Client client,
+        @NotNull Lab lab,
+        Micronutrients micronutrients,
+        Double lat,
+        Double lng  
+        ) {
+
+        super(landName, field, depth, createdAt, city, lat, lng);
         this.acidity = acidity;
         this.phosphor = phosphor;
         this.ctc = ctc;
