@@ -34,6 +34,9 @@ public class PhysicalAnalysis implements Serializable {
     private Double sand;
 
     @NotNull
+    private Double carbon;
+
+    @NotNull
     private Double clay;
 
     @NotNull
@@ -78,6 +81,33 @@ public class PhysicalAnalysis implements Serializable {
         this.totalOrganicCarbon = 0.0;
         
     }
+
+    public PhysicalAnalysis(UUID id, @NotBlank Double sand, @NotBlank Double clay, @NotNull Double silt,
+            @NotNull Double organicMatter, @NotNull Double totalOrganicCarbon, @NotNull Double carbon) {
+
+        this.id = id;
+        this.sand = sand;
+        this.clay = clay;
+        this.silt = silt;
+        this.organicMatter = organicMatter;
+        this.totalOrganicCarbon = totalOrganicCarbon;
+        this.carbon = carbon;
+        
+    }
+
+    public PhysicalAnalysis(@NotBlank Double sand, @NotBlank Double clay, @NotNull Double silt,
+    @NotNull Double organicMatter, @NotNull Double totalOrganicCarbon, @NotNull Double carbon) {
+
+        this.sand = sand;
+        this.clay = clay;
+        this.silt = silt;
+        this.organicMatter = organicMatter;
+        this.totalOrganicCarbon =totalOrganicCarbon;
+        this.carbon = carbon;
+        
+    }
+
+   
 
     
 

@@ -126,7 +126,8 @@ public class ChemicalPhysicalReportController {
                 createChemicalPhysicalReportDto.clay(),
                 createChemicalPhysicalReportDto.silt(),
                 createChemicalPhysicalReportDto.organicMatter(),
-                createChemicalPhysicalReportDto.totalOrganicCarbon()
+                createChemicalPhysicalReportDto.totalOrganicCarbon(),
+                createChemicalPhysicalReportDto.carbon()
             );
 
             var chemicalAnalysis = new ChemicalAnalysis(

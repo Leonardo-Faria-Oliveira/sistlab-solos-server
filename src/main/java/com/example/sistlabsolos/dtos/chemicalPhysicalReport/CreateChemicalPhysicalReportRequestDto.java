@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateChemicalPhysicalReportRequestDto(
-
+ 
     @NotNull(message = "funcionario é necessario")
     String employeeEmail,
 
@@ -55,6 +55,9 @@ public record CreateChemicalPhysicalReportRequestDto(
 
     @NotNull(message = "materia organica é necessario")
     Double organicMatter,
+
+    @NotNull(message = "carbono é necessario")
+    Double carbon,
 
     @NotNull(message = "carbono organico total é necessario")
     Double totalOrganicCarbon,

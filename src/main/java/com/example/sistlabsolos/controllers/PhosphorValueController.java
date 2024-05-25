@@ -112,6 +112,9 @@ public class PhosphorValueController {
                 );
             }
 
+            var phosphorValue =this.phosphorValueService.getLastPhosphorValue(lab);
+            phosphorValue.setChemicalPhysicalReportsList(null);
+            phosphorValue.setLab(null);
             return ResponseEntity.status(HttpStatus.OK).body(
                 new GetLastPhosphorValueDto(this.phosphorValueService.getLastPhosphorValue(lab), null)
             );
