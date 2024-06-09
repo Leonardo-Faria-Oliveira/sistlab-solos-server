@@ -142,13 +142,13 @@ public class ChemicalPhysicalReportController {
                 createChemicalPhysicalReportDto.potencialAcidity()
             );
 
-            var micronutrients = new Micronutrients(
-                createChemicalPhysicalReportDto.boron(),
-                createChemicalPhysicalReportDto.copper(),
-                createChemicalPhysicalReportDto.iron(),
-                createChemicalPhysicalReportDto.manganese(),
-                createChemicalPhysicalReportDto.zinc()
-            );
+            // var micronutrients = new Micronutrients(
+            //     createChemicalPhysicalReportDto.boron(),
+            //     createChemicalPhysicalReportDto.copper(),
+            //     createChemicalPhysicalReportDto.iron(),
+            //     createChemicalPhysicalReportDto.manganese(),
+            //     createChemicalPhysicalReportDto.zinc()
+            // );
 
             ChemicalPhysicalReport res = this.chemicalPhysicalReportService.create(
                 new ChemicalPhysicalReport(
@@ -165,11 +165,11 @@ public class ChemicalPhysicalReportController {
                     physicalAnalysis,
                     chemicalAnalysis,
                     phosphorValue,
-                    employee.get(),
-                    technicalResponsible.get(),
                     client.get(),
                     lab,
-                    micronutrients,
+                    new Micronutrients(),
+                    employee.get(),
+                    technicalResponsible.get().getEmail().equals(employee.get().getEmail()) ? null : technicalResponsible.get(),
                     createChemicalPhysicalReportDto.lat(),
                     createChemicalPhysicalReportDto.lng()
                 )
@@ -193,7 +193,7 @@ public class ChemicalPhysicalReportController {
 
             
         } catch (Exception e) {
-            // System.out.println(e);
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 new CreateChemicalPhysicalReportResponseDto(null, e.getMessage())
             );
@@ -231,10 +231,20 @@ public class ChemicalPhysicalReportController {
                 report.getEmployeesList().get(0).setChemicalPhysicalReport(null);
                 report.getEmployeesList().get(0).getEmployee().setReportsList(null);
                 report.getEmployeesList().get(0).getEmployee().setLab(null);
+                System.out.println(report.getEmployeesList().size());
+                if(!report.getEmployeesList().get(0).getEmployee().getRole().getName().contains("echnical")){
+                    
+                    report.getEmployeesList().get(1).getEmployee().setReportsList(null);
+                    report.getEmployeesList().get(1).getEmployee().setLab(null);
+                    // report.getEmployeesList().get(1)
+                }
+                if(report.getEmployeesList().size() > 1){
+                    
+                    report.getEmployeesList().get(1).setChemicalPhysicalReport(null);
+
+                }
                 
-                report.getEmployeesList().get(1).getEmployee().setReportsList(null);
-                report.getEmployeesList().get(1).getEmployee().setLab(null);
-                report.getEmployeesList().get(1).setChemicalPhysicalReport(null);
+
                 
 
                 report.setLab(null);

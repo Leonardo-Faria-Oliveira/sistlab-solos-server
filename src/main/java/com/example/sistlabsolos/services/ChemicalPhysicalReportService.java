@@ -26,15 +26,16 @@ public class ChemicalPhysicalReportService extends ChemicalPhysicalReportAbstrac
     @Autowired
     Employee_ReportsRepository employee_ReportsRepository;
 
-
     @Override
     @Transactional(
         readOnly = false,
         propagation = Propagation.SUPPORTS,
         rollbackFor = {SQLException.class}
     )   
-    public ChemicalPhysicalReport create(ChemicalPhysicalReport obj)  {
+    public ChemicalPhysicalReport create(ChemicalPhysicalReport obj)throws SQLException  {
         
+        // System.out.println(obj.getEmployeesList().get(0).getEmployee().getName());
+        // System.out.println(obj);
         var report = this.chemicalPhysicalReportRepository.save(obj);
 
         this.employee_ReportsRepository.save(new Employee_Reports(
@@ -42,10 +43,19 @@ public class ChemicalPhysicalReportService extends ChemicalPhysicalReportAbstrac
             report
         ));
 
-        this.employee_ReportsRepository.save(new Employee_Reports(
-            report.getEmployeesList().get(1).getEmployee(),
-            report
-        ));
+        if(report.getEmployeesList().get(0).getEmployee() == null){
+            this.employee_ReportsRepository.save(new Employee_Reports(
+        null,
+                report
+            ));
+        }else{
+            
+            this.employee_ReportsRepository.save(new Employee_Reports(
+                report.getEmployeesList().get(1).getEmployee(),
+                report
+            ));
+            
+        }
 
         return report;
         

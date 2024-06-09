@@ -124,11 +124,11 @@ public class ChemicalPhysicalReport extends Report {
         @NotNull PhysicalAnalysis physicalAnalysis, 
         @NotNull ChemicalAnalysis chemicalAnalysis,
         @NotNull PhosphorValue phosphorValue, 
-        @NotNull Employee employee,
-        @NotNull Employee technicalResponsible, 
         @NotNull Client client,
         @NotNull Lab lab,
-        Micronutrients micronutrients
+        Micronutrients micronutrients,
+        Employee employee,
+        Employee technicalResponsible
         ) {
 
         super(landName, field, depth, createdAt, city);
@@ -163,17 +163,19 @@ public class ChemicalPhysicalReport extends Report {
         @NotNull PhysicalAnalysis physicalAnalysis, 
         @NotNull ChemicalAnalysis chemicalAnalysis,
         @NotNull PhosphorValue phosphorValue, 
-        @NotNull Employee employee,
-        @NotNull Employee technicalResponsible, 
         @NotNull Client client,
         @NotNull Lab lab,
         Micronutrients micronutrients,
+        Employee employee,
+        Employee technicalResponsible, 
         Double lat,
         Double lng  
         ) {
 
         super(landName, field, depth, createdAt, city, lat, lng);
+        
         this.acidity = acidity;
+        
         this.phosphor = phosphor;
         this.ctc = ctc;
         this.bases = bases;
