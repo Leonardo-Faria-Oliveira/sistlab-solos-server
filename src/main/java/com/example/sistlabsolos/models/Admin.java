@@ -3,7 +3,6 @@ package com.example.sistlabsolos.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.hibernate.validator.constraints.UniqueElements;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
@@ -23,12 +22,10 @@ uniqueConstraints = @UniqueConstraint(columnNames={"name", "email", "contact"}),
 indexes = @Index(columnList = "name"))
 public class Admin extends Account {
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role.roleId")
     private Role role;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution.institutionId")
     private Institution institution;

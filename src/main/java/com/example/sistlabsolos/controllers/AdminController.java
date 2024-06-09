@@ -107,6 +107,7 @@ public class AdminController {
             for (Admin admin : admins) {
 
                 admin.setPassword(null);
+                
             
             }
 
@@ -128,7 +129,7 @@ public class AdminController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetAdminByIdDto> getAdminById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -210,7 +211,7 @@ public class AdminController {
 
     @GetMapping("email/{email}")
     public ResponseEntity<GetAdminByEmailDto> getAdminByEmail(
-        @PathVariable(value = "email") String email
+        @PathVariable String email
     ){
 
         try {
@@ -224,11 +225,13 @@ public class AdminController {
                 );
 
             }
-            else{
 
-                admin.get().setPassword(null);
-            
-            }
+           
+            admin.get().setPassword(null);
+            admin.get().setInstitution(null);
+            admin.get().setRole(null);
+
+            admin.get().setRole(new Role("admin"));
 
             return ResponseEntity.status(HttpStatus.OK).body(
                 new GetAdminByEmailDto(admin, null)  

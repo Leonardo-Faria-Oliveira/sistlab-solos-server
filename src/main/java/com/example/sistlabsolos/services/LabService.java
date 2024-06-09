@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.sistlabsolos.abstracts.LabAbstract;
+import com.example.sistlabsolos.models.Headers;
 import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.repositories.EmployeeRepository;
 import com.example.sistlabsolos.repositories.LabRepository;
@@ -30,7 +31,7 @@ public class LabService extends LabAbstract {
     @Override
     @Transactional(
         readOnly = false,
-        propagation = Propagation.SUPPORTS,
+        propagation = Propagation.REQUIRED ,
         rollbackFor = {SQLException.class}
     )
     public Lab create(Lab lab) throws SQLException{
@@ -76,6 +77,7 @@ public class LabService extends LabAbstract {
         
     }
 
+
     @Override
     public Lab update(UUID id, Lab obj) {
        
@@ -97,6 +99,32 @@ public class LabService extends LabAbstract {
         this.labRepository.save(updatedLab.get());
 
         return updatedLab.get();
+        
+    }
+
+    @Override
+    @Transactional(
+        readOnly = false,
+        propagation = Propagation.REQUIRED ,
+        rollbackFor = {SQLException.class}
+        
+    )
+    public Lab addReportHeaders(String labName, Headers obj) throws SQLException {
+       
+        var updatedLab = this.labRepository.findByName(labName);
+
+        
+        if(updatedLab == null){
+            return null;
+        }
+        
+        updatedLab.setHeader1(obj.getHeader1());
+        updatedLab.setHeader2(obj.getHeader2());
+        updatedLab.setHeader3(obj.getHeader3());
+    
+        this.labRepository.save(updatedLab);
+
+        return updatedLab;
         
     }
 

@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -48,11 +49,14 @@ public class Lab implements Serializable{
 
     private String contact;
 
-    private String header1;
+    @Lob
+    private byte[] header1;
 
-    private String header2;
+    @Lob
+    private byte[] header2;
 
-    private String header3;
+    @Lob
+    private byte[] header3;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -62,6 +66,9 @@ public class Lab implements Serializable{
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.LAZY)
     private Address address;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lab", fetch = FetchType.EAGER)
+    private List<PhosphorValue> phosphorValueList;
+
     @OneToMany(mappedBy = "lab", fetch = FetchType.EAGER, orphanRemoval = false)
     private List<Subscription> subscriptionList = new ArrayList<>();
 
@@ -70,6 +77,9 @@ public class Lab implements Serializable{
 
     @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Client> clientList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "lab", fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<ChemicalPhysicalReport> chemicalPhysicalReportList = new ArrayList<>();
 
     public Lab(
         @NotBlank String name, 
@@ -146,9 +156,9 @@ public class Lab implements Serializable{
         LocalDateTime createdAt, 
         boolean active, 
         @NotBlank Address address,
-        String header1,
-        String header2,
-        String header3
+        byte[] header1,
+        byte[] header2,
+        byte[] header3
     ) {
 
         this.labId = labId;

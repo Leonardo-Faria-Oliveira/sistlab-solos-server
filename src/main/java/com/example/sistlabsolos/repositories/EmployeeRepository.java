@@ -6,22 +6,23 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import com.example.sistlabsolos.models.Employee;
+import com.example.sistlabsolos.models.Lab;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     public List<Employee> findByOrderByCreatedAtDesc();
-    public List<Employee> findByOrderByNameDesc();
-    public List<Employee> findByOrderByNameAsc();
-    public List<Employee> findTop3ByNameContainingIgnoreCase(String name);
-    public List<Employee> findByOrderByEmailDesc();
-    public List<Employee> findByOrderByEmailAsc();
-    public List<Employee> findTop3ByEmailContainingIgnoreCase(String email);
-    public List<Employee> findByOrderByJobDesc();
-    public List<Employee> findByOrderByJobAsc();
-    public List<Employee> findTop3ByJobContainingIgnoreCase(String job);
+    public List<Employee> findByLabOrderByCreatedAtDesc(Lab lab);
+    public List<Employee> findByLabOrderByNameDesc(Lab lab);
+    public List<Employee> findByLabOrderByNameAsc(Lab lab);
+    public List<Employee> findTop3ByLabAndNameContainingIgnoreCase(Lab lab, String name);
+    public List<Employee> findByLabOrderByEmailDesc(Lab lab);
+    public List<Employee> findByLabOrderByEmailAsc(Lab lab);
+    public List<Employee> findTop3ByLabAndEmailContainingIgnoreCase(Lab lab, String email);
+    public List<Employee> findByLabOrderByJobDesc(Lab lab);
+    public List<Employee> findByLabOrderByJobAsc(Lab lab);
+    public List<Employee> findTop3ByLabAndJobContainingIgnoreCase(Lab lab, String job);
     Optional<Employee> findByEmail(String email);
 
 }

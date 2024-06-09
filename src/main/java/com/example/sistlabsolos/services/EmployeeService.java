@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sistlabsolos.abstracts.EmployeeAbstract;
 import com.example.sistlabsolos.models.Employee;
+import com.example.sistlabsolos.models.Lab;
 import com.example.sistlabsolos.repositories.EmployeeRepository;
 
 
@@ -48,6 +49,13 @@ public class EmployeeService extends EmployeeAbstract {
     }
 
     @Override
+    public List<Employee> getEmployeesByLab(Lab lab) {
+
+        return this.employeeRepository.findByLabOrderByCreatedAtDesc(lab);
+
+    }
+
+    @Override
     public Optional<Employee> getEmployeeById(UUID EmployeeId){
         
         return this.employeeRepository.findById(EmployeeId);
@@ -76,65 +84,65 @@ public class EmployeeService extends EmployeeAbstract {
     }
 
     @Override
-    public List<Employee> getEmployeesByNameDesc() {
+    public List<Employee> getEmployeesByNameDesc(Lab lab) {
 
-        return this.employeeRepository.findByOrderByNameDesc();
+        return this.employeeRepository.findByLabOrderByNameDesc(lab);
         
     }
 
     @Override
-    public List<Employee> getEmployeesByNameAsc() {
+    public List<Employee> getEmployeesByNameAsc(Lab lab) {
 
-        return this.employeeRepository.findByOrderByNameAsc();
+        return this.employeeRepository.findByLabOrderByNameAsc(lab);
 
     }
 
     @Override
-    public List<Employee> getEmployeesByNameSearch(String name) {
+    public List<Employee> getEmployeesByNameSearch(Lab lab, String name) {
 
-        return this.employeeRepository.findTop3ByNameContainingIgnoreCase(name);
+        return this.employeeRepository.findTop3ByLabAndNameContainingIgnoreCase(lab, name);
     
     }
 
     @Override
-    public List<Employee> getEmployeesByEmailDesc() {
+    public List<Employee> getEmployeesByEmailDesc(Lab lab) {
 
-        return this.employeeRepository.findByOrderByEmailDesc();
-
-    }
-
-    @Override
-    public List<Employee> getEmployeesByEmailAsc() {
-
-        return this.employeeRepository.findByOrderByEmailAsc();
+        return this.employeeRepository.findByLabOrderByEmailDesc(lab);
 
     }
 
     @Override
-    public List<Employee> getEmployeesByEmailSearch(String email) {
+    public List<Employee> getEmployeesByEmailAsc(Lab lab) {
+
+        return this.employeeRepository.findByLabOrderByEmailAsc(lab);
+
+    }
+
+    @Override
+    public List<Employee> getEmployeesByEmailSearch(Lab lab, String email) {
         
-        return this.employeeRepository.findTop3ByEmailContainingIgnoreCase(email);
+        return this.employeeRepository.findTop3ByLabAndEmailContainingIgnoreCase(lab, email);
     
     }
 
     @Override
-    public List<Employee> getEmployeesByJobDesc() {
+    public List<Employee> getEmployeesByJobDesc(Lab lab) {
         
-        return this.employeeRepository.findByOrderByJobDesc();
+        return this.employeeRepository.findByLabOrderByJobDesc(lab);
         
     }
 
     @Override
-    public List<Employee> getEmployeesByJobAsc() {
+    public List<Employee> getEmployeesByJobAsc(Lab lab) {
                 
-        return this.employeeRepository.findByOrderByJobAsc();
+        return this.employeeRepository.findByLabOrderByJobAsc(lab);
         
     }
 
     @Override
-    public List<Employee> getEmployeesByJobSearch(String job) {
+    public List<Employee> getEmployeesByJobSearch(Lab lab, String job) {
         
-        return this.employeeRepository.findTop3ByJobContainingIgnoreCase(job);
+        return this.employeeRepository.findTop3ByLabAndJobContainingIgnoreCase(lab, job);
     
     }
 

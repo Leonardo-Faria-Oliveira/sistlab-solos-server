@@ -86,7 +86,7 @@ public class InstitutionController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetInstitutionByIdDto> getInstitutionById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {

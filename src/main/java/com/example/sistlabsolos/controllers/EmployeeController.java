@@ -121,17 +121,28 @@ public class EmployeeController {
 
     }
 
-    @GetMapping()
-    public ResponseEntity<GetEmployeesDto> getEmployees(){
+    @GetMapping("{labName}")
+    public ResponseEntity<GetEmployeesDto> getEmployees(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.list();
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByLab(lab);
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
         
@@ -151,17 +162,28 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("name/desc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByNameDesc(){
+    @GetMapping("{labName}/name/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByNameDesc(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByNameDesc();
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByNameDesc(lab);
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
         
@@ -180,49 +202,29 @@ public class EmployeeController {
         
     }
 
-    @GetMapping("name/asc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByNameAsc(){
+    @GetMapping("{labName}/name/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByNameAsc(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByNameAsc();
-        
-            for (Employee employee : employees) {
+            var lab = this.labService.getLabByName(labName);
 
-                employee.setPassword(null);
-                employee.setLab(null);
-            
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
             }
 
-        
-            return ResponseEntity.ok(
-                new GetEmployeesDto(employees, null)
-            );
-
-        } catch (Exception e) {
-            
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new GetEmployeesDto(null, e.getMessage())
-            );
-            
-        }
-
-        
-    }
-
-    @GetMapping("email/desc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailDesc(){
-
-        
-        try {
-
-            var employees = this.employeeService.getEmployeesByEmailDesc();
+            var employees = this.employeeService.getEmployeesByNameAsc(lab);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -242,18 +244,29 @@ public class EmployeeController {
         
     }
 
-    @GetMapping("email/asc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailAsc(){
+    @GetMapping("{labName}/email/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailDesc(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByEmailAsc();
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByEmailDesc(lab);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -273,18 +286,29 @@ public class EmployeeController {
         
     }
 
-    @GetMapping("job/desc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByJobDesc(){
+    @GetMapping("{labName}/email/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByEmailAsc(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByJobDesc();
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByEmailAsc(lab);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -304,18 +328,29 @@ public class EmployeeController {
         
     }
 
-    @GetMapping("job/asc")
-    public ResponseEntity<GetEmployeesDto> getEmployeesByJobAsc(){
+    @GetMapping("{labName}/job/desc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByJobDesc(
+        @PathVariable String labName
+    ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByJobAsc();
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByJobDesc(lab);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -335,20 +370,72 @@ public class EmployeeController {
         
     }
 
-    @GetMapping("search/name/{name}")
+    @GetMapping("{labName}/job/asc")
+    public ResponseEntity<GetEmployeesDto> getEmployeesByJobAsc(
+        @PathVariable String labName
+    ){
+
+        
+        try {
+
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByJobAsc(lab);
+        
+            for (Employee employee : employees) {
+
+                employee.setPassword(null);
+                employee.setLab(null);
+                employee.setReportsList(null);
+            
+            }
+
+        
+            return ResponseEntity.ok(
+                new GetEmployeesDto(employees, null)
+            );
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new GetEmployeesDto(null, e.getMessage())
+            );
+            
+        }
+
+        
+    }
+
+    @GetMapping("{labName}/search/name/{name}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByNameSearch(
-        @PathVariable(value = "name") String name
+        @PathVariable String labName,
+        @PathVariable String name
     ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByNameSearch(name);
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByNameSearch(lab, name);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -369,20 +456,30 @@ public class EmployeeController {
     }
 
     
-    @GetMapping("search/email/{email}")
+    @GetMapping("{labName}/search/email/{email}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByEmailSearch(
-        @PathVariable(value = "email") String email
+        @PathVariable String labName,
+        @PathVariable String email
     ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByNameSearch(email);
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByNameSearch(lab, email);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -403,20 +500,30 @@ public class EmployeeController {
     }
 
     
-    @GetMapping("search/job/{job}")
+    @GetMapping("{labName}/search/job/{job}")
     public ResponseEntity<GetEmployeesDto> getEmployeesByJobSearch(
-        @PathVariable(value = "job") String job
+        @PathVariable String labName,
+        @PathVariable String job
     ){
 
         
         try {
 
-            var employees = this.employeeService.getEmployeesByNameSearch(job);
+            var lab = this.labService.getLabByName(labName);
+
+            if(lab == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new GetEmployeesDto(null, "Laboratorio não encontrado")
+                );
+            }
+
+            var employees = this.employeeService.getEmployeesByNameSearch(lab, job);
         
             for (Employee employee : employees) {
 
                 employee.setPassword(null);
                 employee.setLab(null);
+                employee.setReportsList(null);
             
             }
 
@@ -437,9 +544,9 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<GetEmployeeByIdDto> getEmployeeById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
@@ -535,7 +642,7 @@ public class EmployeeController {
 
     @GetMapping("/email/{email}")
     public ResponseEntity<GetEmployeeByEmailDto> getEmployeeByEmail(
-        @PathVariable(value = "email") String email
+        @PathVariable String email
     ){
 
 
@@ -554,6 +661,7 @@ public class EmployeeController {
 
             employee.get().setPassword(null);
             employee.get().setLab(null);
+            employee.get().setReportsList(null);
             
             return ResponseEntity.status(HttpStatus.OK).body(
                 new GetEmployeeByEmailDto(
@@ -578,7 +686,7 @@ public class EmployeeController {
 
     @PatchMapping("/first-access/{email}")
     public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
-        @PathVariable(value = "email") String email,
+        @PathVariable String email,
         @RequestBody @Valid String password
     ){
 
@@ -625,7 +733,7 @@ public class EmployeeController {
     
     @PatchMapping("/status/{id}")
     public ResponseEntity<CreateEmployeeResponseDto> firstAccessEmployeeUpdate(
-        @PathVariable(value = "id") UUID id,    
+        @PathVariable UUID id,    
     @RequestBody @Valid boolean status
     ){
 

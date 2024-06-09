@@ -72,7 +72,7 @@ public class RoleController {
 
     @GetMapping("{id}")
     public ResponseEntity<GetRoleByIdDto> getRoleById(
-        @PathVariable(value = "id") UUID id
+        @PathVariable UUID id
     ){
 
         try {
