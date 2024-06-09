@@ -1,14 +1,27 @@
-# Usar uma imagem base do OpenJDK
+# Usar uma imagem base do Maven para construir o projeto
+FROM maven:3.8.5-openjdk-17 AS build
+
+# Definir o diretório de trabalho
+WORKDIR /app
+
+# Copiar o arquivo pom.xml e o diretório src para o diretório de trabalho
+COPY pom.xml .
+COPY src ./src
+
+# Executar o comando de construção do Maven (gera o JAR)
+RUN mvn clean package -DskipTests
+
+# Usar uma imagem base do OpenJDK para rodar a aplicação
 FROM openjdk:17-jdk-slim
 
-# Define o diretório de trabalho dentro do container
-WORKDIR /
+# Definir o diretório de trabalho
+WORKDIR /app
 
-# Copia o arquivo JAR da aplicação para o container
-COPY target/sistlab-solos-server.jar server.jar
+# Copiar o JAR gerado na fase de construção anterior para o diretório de trabalho
+COPY --from=build /app/target/sistlab-solos-server.jar app.jar
 
-# Define a porta que a aplicação irá expor
+# Expor a porta que a aplicação irá usar
 EXPOSE 8080
 
-# Comando para executar a aplicação
-ENTRYPOINT ["java", "-jar", "server.jar"]
+# Comando para rodar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]
