@@ -1,23 +1,23 @@
 services:
   postgres:
-    image: postgres:14
+    image: postgres:13
     container_name: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: FariaMano10
-      POSTGRES_DB: sistlabsolos
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   spring-app:
-    image: leonardofariaoliveiradev/sistlabsolos-api:latest
+    build: .
     container_name: spring-app
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sistlabsolos
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: FariaMano10
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
     ports:
       - "8080:8080"
     depends_on:
