@@ -25,6 +25,8 @@ WORKDIR /app
 # Copiar o JAR gerado na fase de construção anterior para o diretório de trabalho
 COPY --from=build /app/target/sistlabsolos-0.0.1-SNAPSHOT.jar app.jar
 
+CMD apt-get update -y
+
 # Expor a porta que a aplicação irá usar
 EXPOSE 8080
 
