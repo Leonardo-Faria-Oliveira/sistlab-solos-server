@@ -27,13 +27,13 @@ public class ChemicalPhysicalReportService extends ChemicalPhysicalReportAbstrac
     Employee_ReportsRepository employee_ReportsRepository;
 
     @Override
-    @Transactional(
-        readOnly = false,
-        propagation = Propagation.SUPPORTS,
-        rollbackFor = {SQLException.class}
-    )   
-    public ChemicalPhysicalReport create(ChemicalPhysicalReport obj)throws SQLException  {
-        
+    // @Transactional(
+    //     readOnly = false,
+    //     propagation = Propagation.SUPPORTS,
+    //     rollbackFor = {SQLException.class}
+    // )   
+    public ChemicalPhysicalReport create(ChemicalPhysicalReport obj)  {
+        //throws SQLException
         // System.out.println(obj.getEmployeesList().get(0).getEmployee().getName());
         // System.out.println(obj);
         var report = this.chemicalPhysicalReportRepository.save(obj);

@@ -103,8 +103,7 @@ public class SecurityFilter extends OncePerRequestFilter{
     
                     }
 
-                    else if(role.getName().equals("tecnicalResponsible")){
-    
+                    else if(role.getName().equals("technicalResponsible")){
                         if(this.verifyEmployeePath(servLetPath)){
     
                             filterChain.doFilter(request, response);

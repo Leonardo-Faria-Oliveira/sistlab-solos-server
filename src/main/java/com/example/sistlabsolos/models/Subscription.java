@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import ch.qos.logback.core.joran.spi.NoAutoStart;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,11 +18,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "assinaturas")
 public class Subscription implements Serializable{
@@ -56,7 +62,7 @@ public class Subscription implements Serializable{
     @JoinColumn(name = "lab.labId")
     private Lab lab;
 
-    public Subscription() {
+    public Subscription(int i, int j, LocalDateTime localDateTime, boolean b, boolean c, Pricing pricing2) {
 
         this.usage = 0;
         this.lateDays = 0;
@@ -88,28 +94,7 @@ public class Subscription implements Serializable{
     
     }
 
-    public Subscription(
-        UUID subscriptionId, 
-        Integer usage, 
-        @NotBlank Integer lateDays, 
-        LocalDateTime createdAt,    
-        boolean iPaid, 
-        boolean active, 
-        Pricing pricing,
-        Lab lab
-    ) {
-
-        this.subscriptionId = subscriptionId;
-        this.usage = usage;
-        this.lateDays = lateDays;
-        this.createdAt = createdAt;
-        this.isPaid = iPaid;
-        this.active = active;
-        this.pricing = pricing;
-        this.lab = lab;
     
-    }
-
     public static long getSerialversionuid() {
         return serialVersionUID;
     }

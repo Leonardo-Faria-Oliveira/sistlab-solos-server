@@ -54,7 +54,7 @@ public class ChemicalPhysicalReportController {
         @PathVariable UUID clientId,  
       @RequestBody @Valid CreateChemicalPhysicalReportRequestDto createChemicalPhysicalReportDto){
         
-        try {
+        // try {
 
             Lab lab = this.labService.getLabByName(createChemicalPhysicalReportDto.labName());
             if(lab == null){
@@ -192,13 +192,13 @@ public class ChemicalPhysicalReportController {
             );
 
             
-        } catch (Exception e) {
-            System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new CreateChemicalPhysicalReportResponseDto(null, e.getMessage())
-            );
+        // } catch (Exception e) {
+        //     System.out.println(e);
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+        //         new CreateChemicalPhysicalReportResponseDto(null, e.getMessage())
+        //     );
 
-        }
+        // }
         
     }
 
@@ -231,13 +231,13 @@ public class ChemicalPhysicalReportController {
                 report.getEmployeesList().get(0).setChemicalPhysicalReport(null);
                 report.getEmployeesList().get(0).getEmployee().setReportsList(null);
                 report.getEmployeesList().get(0).getEmployee().setLab(null);
-                System.out.println(report.getEmployeesList().size());
-                if(!report.getEmployeesList().get(0).getEmployee().getRole().getName().contains("echnical")){
+                // System.out.println(report.getEmployeesList().size());
+                // if(!report.getEmployeesList().get(0).getEmployee().getRole().getName().contains("echnical")){
                     
-                    report.getEmployeesList().get(1).getEmployee().setReportsList(null);
-                    report.getEmployeesList().get(1).getEmployee().setLab(null);
-                    // report.getEmployeesList().get(1)
-                }
+                //     report.getEmployeesList().get(1).getEmployee().setReportsList(null);
+                //     report.getEmployeesList().get(1).getEmployee().setLab(null);
+                //     // report.getEmployeesList().get(1)
+                // }
                 if(report.getEmployeesList().size() > 1){
                     
                     report.getEmployeesList().get(1).setChemicalPhysicalReport(null);

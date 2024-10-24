@@ -27,7 +27,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "planos",
-uniqueConstraints = @UniqueConstraint(columnNames={"value"}),
 indexes = @Index(columnList = "name"))
 public class Pricing implements Serializable{
     
@@ -76,7 +75,7 @@ public class Pricing implements Serializable{
     public Pricing(
         @NotBlank String name, 
         @NotBlank String description, 
-        @NotBlank @UniqueElements Double value,
+        @NotBlank Double value,
         @NotBlank Integer reportsLimit, 
         @NotBlank Integer employeesLimit, 
         LocalDateTime createdAt, 
@@ -97,7 +96,7 @@ public class Pricing implements Serializable{
         UUID id, 
         @NotBlank String name, 
         @NotBlank String description, 
-        @NotBlank @UniqueElements Double value,
+        @NotBlank Double value,
         @NotBlank Integer reportsLimit, 
         @NotBlank Integer employeesLimit, 
         LocalDateTime createdAt, 
