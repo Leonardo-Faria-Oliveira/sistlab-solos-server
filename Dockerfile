@@ -30,5 +30,8 @@ CMD apt-get update -y
 # Expor a porta que a aplicação irá usar
 EXPOSE 8080
 
+# Roda as seeders
+RUN mvn clean spring-boot:run -D spring-boot.run.arguments=--seeder=all
+
 # Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
