@@ -13,6 +13,8 @@ RUN mvn dependency:go-offline
 # Copiar o código fonte da aplicação para o diretório de trabalho
 COPY src ./src
 
+RUN mvn clean spring-boot:run -D spring-boot.run.arguments=--seeder=all
+
 # Construir a aplicação (gera o JAR)
 RUN mvn clean package -DskipTests
 
@@ -29,9 +31,6 @@ CMD apt-get update -y
 
 # Expor a porta que a aplicação irá usar
 EXPOSE 8080
-
-# Roda as seeders
-RUN mvn clean spring-boot:run -D spring-boot.run.arguments=--seeder=all
 
 # Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
